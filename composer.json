@@ -1,0 +1,53 @@
+{
+  "name": "rucksack",
+  "type": "project",
+  "license": "MIT",
+  "description": "A WordPress theme bundle.",
+  "homepage": "https://github.com/j2designpartnership/rucksack",
+  "authors": [
+    {
+      "name": "Daniel Olson",
+      "email": "emaildano@gmail.com",
+      "homepage": "https://github.com/emaildano"
+    }
+  ],
+  "keywords": [
+    "wordpress", "stack", "composer", "theme", "wp"
+  ],
+  "support": {
+    "issues": "https://github.com/j2designpartnership/rucksack/issues"
+  },
+  "config": {
+    "preferred-install": "dist",
+    "generate-salts": true,
+    "vendor-dir": "lib/vendor/"
+  },
+  "autoload": {
+    "psr-4": {"Apollo\\InitConfig\\": "lib/scripts/"}
+  },
+  "scripts": {
+    "post-root-package-install": [
+      "Apollo\\InitConfig\\Installer::addSalts",
+      "Apollo\\InitConfig\\Installer::addConfig"
+    ]
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "http://wpackagist.org"
+    }
+  ],
+  "require": {
+    "php": ">=5.4",
+    "johnpbloch/wordpress": "4.1",
+    "composer/installers": "v1.0.12"
+  },
+  "extra": {
+    "installer-paths": {
+      "assets/mu-plugins/{$name}/": ["type:wordpress-muplugin"],
+      "assets/plugins/{$name}/": ["type:wordpress-plugin"],
+      "./": ["type:wordpress-theme"]
+    },
+    "wordpress-install-dir": "wp"
+  }
+}
