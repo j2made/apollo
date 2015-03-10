@@ -1,0 +1,25 @@
+// Grid Extends
+// ------------
+// Format: %column-1-2-4-8 where 1 is mobile, 2 is $small, 3 is $medium, 4 is $large
+//
+// This format can end once the column reaches max width, such as %column-1-6-4 would be
+// four columns from $medium through $large, %column-1-6 would be six columns from $small
+// through $large.
+//
+// If a column has an attribute, such as @include shift(), include the attribute in the
+// naming structure. Example: %column-1-4-shift-2
+//
+// If a column has a shift pairing, include them together in the Column Shift Pairing section
+//
+
+
+
+ // BASIC COLUMNS
+ // ============================================================
+
+
+
+
+
+ // COLUMN SHIFT PAIRINGS
+ // ============================================================

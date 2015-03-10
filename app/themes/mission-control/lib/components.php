@@ -1,0 +1,5 @@
+<?php
+
+/**
+ * 	Component Building Functions
+ */

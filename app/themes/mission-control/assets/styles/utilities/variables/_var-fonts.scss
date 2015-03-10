@@ -1,0 +1,11 @@
+// Variables: Typography
+// ---------------------
+
+// Fonts
+$serif:							      $helvetica;
+$sans-serif:						  $georgia;
+$alt-font:						    $lucida-grande;
+
+// Line-Height
+$body-line-height: golden-ratio(1em, 1);
+$header-line-height: 1.25;

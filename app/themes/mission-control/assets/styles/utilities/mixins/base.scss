@@ -1,0 +1,8 @@
+// Base: Mixins
+// ------------
+
+// Import all Mixins
+@import "mix-utilities";      // Practical Mixins related to layout but not styling
+@import "mix-scaffolding";    // Layout and structural element mixins
+@import "mix-type";           // Mixins related to type
+@import "mix-elements";       // Mixins related to element styles (lists, sections, etc.)

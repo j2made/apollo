@@ -95,6 +95,7 @@ class Installer {
       $db_user = '';
       $db_pass = '';
       $db_host = 'localhost';
+      $theme_name = 'mission-control';
       $home_url = 'http://example.com';
     } else {
       $io->write('** Enviornment Definitions **', true);
@@ -105,6 +106,7 @@ class Installer {
       $db_pass = $io->ask('<info>DB_PASS: </info>', '');
       $db_host = $io->ask('<info>DB_HOST (Defaults to localhost): </info>', 'localhost');
       $io->write('** Site Definitions **', true);
+      $theme_name = $io->ask('<info>THEME_NAME: </info>', 'mission-control');
       $home_url = $io->ask('<info>HOME_URL: </info>', '');
     }
 
@@ -130,5 +132,8 @@ class Installer {
       $io->write("<error>An Error Occured while generating env_config</error>");
     }
 
+    // Change the theme name
+    $theme_root = $root . '/app/themes/';
+    rename( realpath($theme_root) . '/mission-control', realpath($theme_root) . '/' . $theme_name );
   }
 }

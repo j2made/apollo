@@ -1,0 +1,28 @@
+// Mixins: Scaffolding
+// -------------------
+
+// GRID
+// ============================================================
+
+// Container
+@mixin base-container($mobile-container-width: 90%) {
+  @include outer-container($mobile-container-width);
+
+  @include media($small) {
+    @include outer-container($small-container);
+  };
+
+  @include media($medium) {
+    @include outer-container($medium-container);
+  };
+
+  @include media($large) {
+    @include outer-container($large-container);
+  };
+}
+
+// Omega Reset (http://www.joshfry.me/blog/2013/05/13/omega-reset-for-bourbon-neat)
+@mixin omega-reset($nth) {
+  &:nth-child(#{$nth}) { margin-right: flex-gutter(); }
+  &:nth-child(#{$nth}+1) { clear: none }
+}

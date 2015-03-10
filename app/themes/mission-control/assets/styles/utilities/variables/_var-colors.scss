@@ -1,0 +1,30 @@
+// Variables: Colors
+// -----------------
+
+// MONOTONE
+// ============================================================
+$white: #fff;
+$gray-mid: darken($white, 50%);
+$black: darken($white, 95%);
+
+
+// BRAND COLORS
+// ============================================================
+$brand-color: #23cbd9;
+
+
+// ELEMENT COLORS
+// ============================================================
+
+// Background Color
+$base-background-color: $white;
+
+// Font Colors
+$base-font-color:     $black;
+$base-accent-color:   $brand-color;
+
+// Link Colors
+$base-link-color:     $base-accent-color;
+$hover-link-color:    $base-font-color;
+$base-button-color:   $base-link-color;
+$hover-button-color:  $hover-link-color;

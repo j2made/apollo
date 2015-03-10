@@ -18,5 +18,11 @@ wp/*
 lib/vendor/*
 !vendor/.gitkeep
 
-# Config
+# Apollo Config
 env-config.php
+
+# Theme
+dist
+bower_components
+node_modules
+npm-debug.log

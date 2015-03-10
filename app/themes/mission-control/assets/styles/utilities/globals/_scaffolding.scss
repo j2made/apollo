@@ -1,0 +1,39 @@
+// Global Scaffolding
+// ------------------
+
+// Container
+.container-fluid {
+  @include outer-container(100%);
+}
+
+.container {
+  @include base-container();
+}
+
+// Sidebar
+.sidebar-primary {
+  .content-column {
+
+    @include media($medium) {
+      @include span-columns(7);
+    }
+  }
+
+  .sidebar {
+
+    @include media($medium) {
+      @include span-columns(4);
+      @include shift (1);
+    }
+  }
+}
+
+// 10 Column container
+.column-container {
+  @include span-columns(10);
+  @include shift(1);
+}
+
+.content-column img, .column-container img, .sidebar img {
+  @include img-responsive();
+}

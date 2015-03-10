@@ -1,0 +1,32 @@
+// Mixins: Utilities
+// -----------------
+
+// VISUAL FUNCTION MIXINS
+// ============================================================
+
+// Hide only visually, but have it available for screenreaders: h5bp.com/v
+@mixin visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+
+// IMAGES
+// ============================================================
+
+@mixin img-responsive() {
+  display: block;
+  width: 100% \9;
+  max-width: 100%;
+  height: auto;
+  @include image-rendering(optimizeSpeed);
+}
+
+// MISC
+// ============================================================

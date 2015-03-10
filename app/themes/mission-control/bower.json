@@ -1,0 +1,28 @@
+{
+  "name": "Fleisher",
+  "version": "0.0.1",
+  "homepage": "http://github.com/emaildano/framework",
+  "authors": [
+    "Daniel Olson <emaildano@gmail.com.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "assets/vendor"
+  ],
+  "dependencies": {
+    "modernizr": "2.8.2",
+    "jquery": "1.11.1",
+    "respond": "1.4.2",
+    "bourbon": "~4.2.0",
+    "neat": "~1.7.1",
+    "normalize-scss": "latest"
+  },
+  "overrides": {
+    "modernizr": {
+      "main": "./modernizr.js"
+    }
+  }
+}
