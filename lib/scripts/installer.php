@@ -156,6 +156,8 @@ class Installer {
       // Run NPM Install in the Theme Directory
       $root = dirname( dirname(__DIR__) );
       $theme_root = $root . '/app/themes/' . APOLLO_THEME_NAME;
+      $io = $event->getIO();
+
       $io->write("** Running NPM Install in Theme Directory **");
       exec("cd $theme_root && npm install");
     }
