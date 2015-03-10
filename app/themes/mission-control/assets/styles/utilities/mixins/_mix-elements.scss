@@ -4,7 +4,7 @@
 // BUTTONS
 // ============================================================
 
-@mixin btn($padding: 7px 18px, $background: $black-20) {
+@mixin btn($padding: 7px 18px, $background: $black) {
   background-clip: padding-box;
   background: $background;
   color: $white;

@@ -29,6 +29,9 @@
     "post-root-package-install": [
       "Apollo\\InitConfig\\Installer::addSalts",
       "Apollo\\InitConfig\\Installer::addConfig"
+    ],
+    "post-install-cmd": [
+      "Apollo\\InitConfig\\Installer::runNPM"
     ]
   },
   "repositories": [

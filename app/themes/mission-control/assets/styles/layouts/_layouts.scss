@@ -1,11 +1,9 @@
 // Base: Layouts
 // -------------
 
-@import "header/_base";             // Header Styles
-@import "page-header/_base";        // Page-Header styles: global, specific
-@import "events/_base";             // Event Styles: global, specific, component
-@import "pages/_base";              // Page Related Styles: global, specific
-@import "sidebar/_base";            // Sidebar Styles, global, specific
-@import "job-list/_base";           // Unknown ??
-@import "layout-components/_base";  // Singular Component Styles unrelated to a specific group
-@import "footer/_base";             // Footer Files
+@import "header/base";             // Header Styles
+@import "page-header/base";        // Page-Header styles: global, specific
+@import "pages/base";              // Page Related Styles: global, specific
+@import "sidebar/base";            // Sidebar Styles, global, specific
+@import "layout-components/base";  // Singular Component Styles unrelated to a specific group
+@import "footer/base";             // Footer Files

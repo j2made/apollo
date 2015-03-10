@@ -83,10 +83,13 @@ class Installer {
   public static function addConfig(Event $event) {
 
     $root = dirname( dirname(__DIR__) );
+    $theme_root = $root . '/app/themes/';
+    $theme_init = $root . '/app/themes/mission-control';
     $db_config_file = "{$root}/env-config.php";
     $db_config_sample = "{$root}/lib/config/env-config-sample.php";
     $composer = $event->getComposer();
     $io = $event->getIO();
+
 
     // Get DB info as vars
     if (!$io->isInteractive()) {
@@ -95,7 +98,7 @@ class Installer {
       $db_user = '';
       $db_pass = '';
       $db_host = 'localhost';
-      $theme_name = 'mission-control';
+      $theme_name = null;
       $home_url = 'http://example.com';
     } else {
       $io->write('** Enviornment Definitions **', true);
@@ -106,8 +109,17 @@ class Installer {
       $db_pass = $io->ask('<info>DB_PASS: </info>', '');
       $db_host = $io->ask('<info>DB_HOST (Defaults to localhost): </info>', 'localhost');
       $io->write('** Site Definitions **', true);
-      $theme_name = $io->ask('<info>THEME_NAME: </info>', 'mission-control');
+
+      if(file_exists($theme_init)) {
+        $theme_name = $io->ask('<info>THEME_NAME: </info>', false);
+      } else {
+        $theme_name = false;
+      }
       $home_url = $io->ask('<info>HOME_URL: </info>', '');
+    }
+
+    if($theme_name) {
+      define('APOLLO_THEME_NAME', $theme_name);
     }
 
     // FUTURE =--> Convert this to array/sprintf function
@@ -132,8 +144,21 @@ class Installer {
       $io->write("<error>An Error Occured while generating env_config</error>");
     }
 
-    // Change the theme name
-    $theme_root = $root . '/app/themes/';
-    rename( realpath($theme_root) . '/mission-control', realpath($theme_root) . '/' . $theme_name );
+    // Change the theme name if the theme is still the initial theme
+    if(file_exists($theme_init)) {
+      rename( realpath($theme_init), realpath($theme_root) . '/' . APOLLO_THEME_NAME );
+    }
+
   }
+
+  public static function runNPM(Event $event) {
+    if(defined('APOLLO_THEME_NAME')) {
+      // Run NPM Install in the Theme Directory
+      $root = dirname( dirname(__DIR__) );
+      $theme_root = $root . '/app/themes/' . APOLLO_THEME_NAME;
+      $io->write("** Running NPM Install in Theme Directory **");
+      exec("cd $theme_root && npm install");
+    }
+  }
+
 }

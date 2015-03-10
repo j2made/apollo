@@ -1,10 +1,10 @@
 // Base: Variables
 // ---------------
 
+@import "_var-fonts";             // Fonts and Typography
+@import "_var-colors";            // Colors
 @import "_var-base-settings";     // Bourbon Base Setting Overwrites
 @import "_var-scaffolding";       // Grid, Layout Structures
-@import "_var-colors";            // Colors
-@import "_var-fonts";             // Fonts and Typography
 
 // Custom Sytles
 @import "_var-elements";          // Visual style variables for elements
