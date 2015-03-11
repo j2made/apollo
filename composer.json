@@ -47,8 +47,8 @@
   },
   "extra": {
     "installer-paths": {
-      "assets/mu-plugins/{$name}/": ["type:wordpress-muplugin"],
-      "assets/plugins/{$name}/": ["type:wordpress-plugin"],
+      "app/mu-plugins/{$name}/": ["type:wordpress-muplugin"],
+      "app/plugins/{$name}/": ["type:wordpress-plugin"],
       "./": ["type:wordpress-theme"]
     },
     "wordpress-install-dir": "wp"
