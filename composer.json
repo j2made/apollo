@@ -1,21 +1,26 @@
 {
-  "name": "rucksack",
+  "name": "apollo",
   "type": "project",
   "license": "MIT",
   "description": "A WordPress theme bundle.",
-  "homepage": "https://github.com/j2designpartnership/rucksack",
+  "homepage": "https://github.com/j2made/apollo",
   "authors": [
     {
       "name": "Daniel Olson",
       "email": "emaildano@gmail.com",
       "homepage": "https://github.com/emaildano"
+    },
+    {
+      "name": "Shaun M. Baer",
+      "email": "shaun.baer@gmail.com",
+      "homepage": "https://github.com/iamhexcoder"
     }
   ],
   "keywords": [
     "wordpress", "stack", "composer", "theme", "wp"
   ],
   "support": {
-    "issues": "https://github.com/j2designpartnership/rucksack/issues"
+    "issues": "https://github.com/j2made/apollo/issues"
   },
   "config": {
     "preferred-install": "dist",
@@ -27,10 +32,10 @@
   },
   "scripts": {
     "post-root-package-install": [
-      "Apollo\\InitConfig\\Installer::addSalts",
-      "Apollo\\InitConfig\\Installer::addConfig"
+      "Apollo\\InitConfig\\Installer::addConfig",
+      "Apollo\\InitConfig\\Installer::addSalts"
     ],
-    "post-install-cmd": [
+    "post-create-project-cmd": [
       "Apollo\\InitConfig\\Installer::runNPM"
     ]
   },
