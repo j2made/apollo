@@ -30,48 +30,35 @@ class Installer {
     $composer = $event->getComposer();
     $io = $event->getIO();
 
-    $db_key_array = array(
-      'com_env',
-      'WP_ENV',
-      'com_dev',
-      'DB_NAME',
-      'DB_USER',
-      'DB_PASSWORD',
-      'DB_HOST',
-      'com_site',
-      'WP_HOME',
-      'WP_SITEURL'
+    $def_key_array = array(
+      'com_env' => '// Enviornment Definitions',
+      'WP_ENV' => 'development',
+      'com_dev' => '// Database Definitions',
+      'DB_NAME' => 'db_name',
+      'DB_USER' => 'db_user',
+      'DB_PASSWORD' => 'db_user',
+      'DB_HOST' => 'db_pass',
+      'com_site' => 'localhost',
+      'WP_HOME' => 'http://example.com',
+      'WP_SITEURL' => 'http://example.com/wp'
     );
-
-    // Empty array for definitions
-    $db_defs = array();
 
     // Get DB info as vars
     if (!$io->isInteractive()) {
-      $db_defs[] = '// Enviornment Definitions';
-      $db_defs[] = 'development';
-      $db_defs[] = '// Database Definitions';
-      $db_defs[] = 'db_name';
-      $db_defs[] = 'db_user';
-      $db_defs[] = 'db_pass';
-      $db_defs[] = 'localhost';
       $theme_name = false;
-      $db_defs[] = '// Site Definitions';
-      $home_url = 'http://example.com';
-      $db_defs[] = $home_url;
-      $db_defs[] = $home_url . '/wp';
-
+      $run_npm = false;
     } else {
       $io->write('** Enviornment Definitions **', true);
-      $db_defs[] = '// Enviornment Definitions';
-      $db_defs[] = $io->ask('<info>WP Enviornment (development, staging, or production): </info>', 'development');
+      $def_key_array['WP_ENV'] = $io->ask('<info>WP Enviornment (development, staging, or production): </info>', 'development');
       $io->write('** Database Definitions **', true);
-      $db_defs[] = '// Database Definitions';
-      $db_defs[] = $io->ask('<info>DB_NAME: </info>', 'db_name');
-      $db_defs[] = $io->ask('<info>DB_USER: </info>', 'db_user');
-      $db_defs[] = $io->ask('<info>DB_PASS: </info>', 'db_pass');
-      $db_defs[] = $io->ask('<info>DB_HOST (Defaults to localhost): </info>', 'localhost');
+      $def_key_array['DB_NAME'] = $io->ask('<info>DB_NAME: </info>', 'db_name');
+      $def_key_array['DB_USER'] = $io->ask('<info>DB_USER: </info>', 'db_user');
+      $def_key_array['DB_PASSWORD'] = $io->ask('<info>DB_PASS: </info>', 'db_pass');
+      $def_key_array['DB_HOST'] = $io->ask('<info>DB_HOST (Defaults to localhost): </info>', 'localhost');
       $io->write('** Site Definitions **', true);
+      $home_url = $io->ask('<info>HOME_URL: </info>', 'http://example.com');
+      $def_key_array['WP_HOME'] = $home_url;
+      $def_key_array['WP_SITEURL'] = $home_url . '/wp';
 
       // Ask to define new theme name if the original theme name has not already been changed
       if(file_exists($theme_init)) {
@@ -79,27 +66,21 @@ class Installer {
       } else {
         $theme_name = false;
       }
-
-      $db_defs[] = '// Site Definitions';
-      $home_url = $io->ask('<info>HOME_URL: </info>', 'http://example.com');
-      $db_defs[] = $home_url;
-      $db_defs[] = $home_url . '/wp';
+      $run_npm = $io->askConfirmation('<info>Run NPM after dependencies have been installed?</info> [<comment>Y,n</comment>]? ', true);
     }
 
     // =---> ROUND UP VARS
-
-    // Combine $db_key_array as key, $db_defs as value
-    $db_key_defs = array_combine($db_key_array, $db_defs);
-    $db_defs_array = array();
-    foreach ($db_key_defs as $key => $def) {
+    $db_defs = array();
+    // Convert Key/Value array into Definition string
+    foreach ($def_key_array as $key => $def) {
       if(strpos($def, '// ') === 0) { // If the value is a comment
-        $db_defs_array[] = $def;
+        $db_defs[] = $def;
       } else {
-        $db_defs_array[] = 'define("' . $key . '", "' . $def . '");';
+        $db_defs[] = 'define("' . $key . '", "' . $def . '");';
       }
     }
 
-    $db_defs_string = "\n" . "\n" . implode($db_defs_array, "\n");
+    $db_defs_string = "\n" . "\n" . implode($db_defs, "\n");
 
     // Append the defs to the db config file
     if (copy($db_config_sample, $db_config_file)) {
@@ -116,9 +97,18 @@ class Installer {
       $mission_name = $theme_name;
     }
 
+    define('APOLLO_THEME_NAME', $mission_name);
+
     // Change the theme name if the theme is still the initial theme
     if(file_exists($theme_init)) {
       rename( realpath($theme_init), realpath($theme_root) . '/' . $mission_name );
+    }
+
+    // Setup for NPM
+    if($run_npm) {
+      define('APOLLO_LANUCH', 'contact');
+    } else {
+      define('APOLLO_LANUCH', 'no go');
     }
 
   }
@@ -183,10 +173,12 @@ class Installer {
   // RUN NPM INSTALL
   // ====================================================
   public static function runNPM(Event $event) {
-    if(defined('APOLLO_THEME_NAME')) {
+    $io = $event->getIO();
+
+    if ( APOLLO_LANUCH === 'contact' ) {
       // Run NPM Install in the Theme Directory
       $root = dirname( dirname(__DIR__) );
-      $theme_root = $root . '/app/themes/' . APOLLO_THEME_NAME;
+      $theme_root = realpath($root . '/app/themes/' . APOLLO_THEME_NAME);
       $io = $event->getIO();
 
       $io->write("** Running NPM Install in Theme Directory **");
