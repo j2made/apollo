@@ -44,5 +44,3 @@ if ( !defined('ABSPATH') ) {
   define('ABSPATH', $root_dir . '/wp/');
 }
 
-
-// SALTS APPENDED HERE VIA INSTALLER

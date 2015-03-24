@@ -5,7 +5,8 @@ namespace Apollo\InitConfig;
 use Composer\Script\Event;
 
 class Installer {
-  public static $KEYS = array(
+
+  public static $salt_keys = array(
     'AUTH_KEY',
     'SECURE_AUTH_KEY',
     'LOGGED_IN_KEY',
@@ -20,61 +21,66 @@ class Installer {
   // ====================================================
 
   public static function addConfig(Event $event) {
-
     $root = dirname( dirname(__DIR__) );
     $theme_root = $root . '/app/themes/';
-    $theme_init = $root . '/app/themes/mission-control';
+    $theme_init_name = 'mission-control';
+    $theme_init = $root . '/app/themes/' . $theme_init_name;
     $db_config_file = "{$root}/env-config.php";
     $db_config_sample = "{$root}/lib/config/env-config-sample.php";
     $composer = $event->getComposer();
     $io = $event->getIO();
 
+    $def_key_array = array(
+      'com_env' => '// Enviornment Definitions',
+      'WP_ENV' => 'development',
+      'com_dev' => '// Database Definitions',
+      'DB_NAME' => 'db_name',
+      'DB_USER' => 'db_user',
+      'DB_PASSWORD' => 'db_user',
+      'DB_HOST' => 'db_pass',
+      'com_site' => 'localhost',
+      'WP_HOME' => 'http://example.com',
+      'WP_SITEURL' => 'http://example.com/wp'
+    );
 
     // Get DB info as vars
     if (!$io->isInteractive()) {
-      $env_var = 'development';
-      $db_name = '';
-      $db_user = '';
-      $db_pass = '';
-      $db_host = 'localhost';
-      $theme_name = null;
-      $home_url = 'http://example.com';
+      $theme_name = false;
+      $run_npm = false;
     } else {
       $io->write('** Enviornment Definitions **', true);
-      $env_var = $io->ask('<info>WP Enviornment (development, staging, or production): </info>', 'development');
+      $def_key_array['WP_ENV'] = $io->ask('<info>WP Enviornment (development, staging, or production): </info>', 'development');
       $io->write('** Database Definitions **', true);
-      $db_name = $io->ask('<info>DB_NAME: </info>', '');
-      $db_user = $io->ask('<info>DB_USER: </info>', '');
-      $db_pass = $io->ask('<info>DB_PASS: </info>', '');
-      $db_host = $io->ask('<info>DB_HOST (Defaults to localhost): </info>', 'localhost');
+      $def_key_array['DB_NAME'] = $io->ask('<info>DB_NAME: </info>', 'db_name');
+      $def_key_array['DB_USER'] = $io->ask('<info>DB_USER: </info>', 'db_user');
+      $def_key_array['DB_PASSWORD'] = $io->ask('<info>DB_PASS: </info>', 'db_pass');
+      $def_key_array['DB_HOST'] = $io->ask('<info>DB_HOST (Defaults to localhost): </info>', 'localhost');
       $io->write('** Site Definitions **', true);
+      $home_url = $io->ask('<info>HOME_URL (domain level only, http:// automatically appended): </info>', 'example.com');
+      $def_key_array['WP_HOME'] = 'http://' . $home_url;
+      $def_key_array['WP_SITEURL'] = 'http://' . $home_url . '/wp';
 
+      // Ask to define new theme name if the original theme name has not already been changed
       if(file_exists($theme_init)) {
         $theme_name = $io->ask('<info>THEME_NAME: </info>', false);
       } else {
         $theme_name = false;
       }
-      $home_url = $io->ask('<info>HOME_URL: </info>', '');
+      $run_npm = $io->askConfirmation('<info>Run NPM after dependencies have been installed?</info> [<comment>Y,n</comment>]? ', true);
     }
 
-    if($theme_name) {
-      define('APOLLO_THEME_NAME', $theme_name);
+    // =---> ROUND UP VARS
+    $db_defs = array();
+    // Convert Key/Value array into Definition string
+    foreach ($def_key_array as $key => $def) {
+      if(strpos($def, '// ') === 0) { // If the value is a comment
+        $db_defs[] = $def;
+      } else {
+        $db_defs[] = 'define("' . $key . '", "' . $def . '");';
+      }
     }
 
-    // FUTURE =--> Convert this to array/sprintf function
-    $db_defs_string = PHP_EOL;
-    $db_defs_string .= '// Enviornment Definitions' . PHP_EOL;
-    $db_defs_string .= 'define("WP_ENV", "' . $env_var . '");' . PHP_EOL;
-    $db_defs_string .= PHP_EOL;
-    $db_defs_string .= '// Database Definitions' . PHP_EOL;
-    $db_defs_string .= 'define("DB_NAME", "' . $db_name . '");' . PHP_EOL;
-    $db_defs_string .= 'define("DB_USER", "' . $db_user . '");' . PHP_EOL;
-    $db_defs_string .= 'define("DB_PASSWORD", "' . $db_pass . '");' . PHP_EOL;
-    $db_defs_string .= 'define("DB_HOST", "' . $db_host . '");' . PHP_EOL;
-    $db_defs_string .= PHP_EOL;
-    $db_defs_string .= '// Site Definitions' . PHP_EOL;
-    $db_defs_string .= 'define("WP_HOME", "' . $home_url . '");' . PHP_EOL;
-    $db_defs_string .= 'define("WP_SITEURL", "' . $home_url . '/wp");' . PHP_EOL;
+    $db_defs_string = "\n" . "\n" . implode($db_defs, "\n");
 
     // Append the defs to the db config file
     if (copy($db_config_sample, $db_config_file)) {
@@ -83,13 +89,29 @@ class Installer {
       $io->write("<error>An Error Occured while generating env_config</error>");
     }
 
+    // =---> CHANGE THEME NAME
+
+    // If a theme name exists
+    $mission_name = $theme_init_name;
+    if($theme_name) {
+      $mission_name = $theme_name;
+    }
+
+    define('APOLLO_THEME_NAME', $mission_name);
+
     // Change the theme name if the theme is still the initial theme
     if(file_exists($theme_init)) {
-      rename( realpath($theme_init), realpath($theme_root) . '/' . APOLLO_THEME_NAME );
+      rename( realpath($theme_init), realpath($theme_root) . '/' . $mission_name );
+    }
+
+    // Setup for NPM
+    if($run_npm) {
+      define('APOLLO_LANUCH', 'contact');
+    } else {
+      define('APOLLO_LANUCH', 'no go');
     }
 
   }
-
 
   // SALT CREATION
   // ====================================================
@@ -103,7 +125,7 @@ class Installer {
     if (!$io->isInteractive()) {
       $generate_salts = $composer->getConfig()->get('generate-salts');
     } else {
-      $generate_salts = $io->askConfirmation('<info>Generate salts and append to env-config file?</info> [<comment>Y,n</comment>]? ', true);
+      $generate_salts = $io->askConfirmation('<info>Generate salts and append to the env-config.php file?</info> [<comment>Y,n</comment>]? ', true);
     }
 
     // If salts should not be generated
@@ -111,18 +133,17 @@ class Installer {
       // Create a default salt array
       $salts_array = array_map(function($key) {
         return sprintf("define('%s', 'put your unique phrase here');", $key, Installer::generateSalt());
-      }, self::$KEYS);
+      }, self::$salt_keys);
 
     } else {
       // Create a randomized salt array
       $salts_array = array_map(function($key) {
         return sprintf("define('%s', '%s');", $key, Installer::generateSalt());
-      }, self::$KEYS);
+      }, self::$salt_keys);
     }
 
-
     // Output array as a string of definitions
-    $salt_string = "\n" . "// Salts \n" . implode($salts_array, "\n");
+    $salt_string = "\n" . '// Salts' . "\n" . implode($salts_array, "\n");
 
     // Append the salts to
     if( file_exists($app_config_file) ) {
@@ -149,11 +170,15 @@ class Installer {
     return $salt;
   }
 
+  // RUN NPM INSTALL
+  // ====================================================
   public static function runNPM(Event $event) {
-    if(defined('APOLLO_THEME_NAME')) {
+    $io = $event->getIO();
+
+    if ( APOLLO_LANUCH === 'contact' ) {
       // Run NPM Install in the Theme Directory
       $root = dirname( dirname(__DIR__) );
-      $theme_root = $root . '/app/themes/' . APOLLO_THEME_NAME;
+      $theme_root = realpath($root . '/app/themes/' . APOLLO_THEME_NAME);
       $io = $event->getIO();
 
       $io->write("** Running NPM Install in Theme Directory **");
