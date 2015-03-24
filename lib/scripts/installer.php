@@ -38,7 +38,7 @@ class Installer {
       'DB_USER' => 'db_user',
       'DB_PASSWORD' => 'db_user',
       'DB_HOST' => 'db_pass',
-      'com_site' => 'localhost',
+      'com_site' => '// Site Definitions',
       'WP_HOME' => 'http://example.com',
       'WP_SITEURL' => 'http://example.com/wp'
     );
