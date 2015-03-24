@@ -27,8 +27,8 @@
   },
   "scripts": {
     "post-root-package-install": [
-      "Apollo\\InitConfig\\Installer::addSalts",
-      "Apollo\\InitConfig\\Installer::addConfig"
+      "Apollo\\InitConfig\\Installer::addConfig",
+      "Apollo\\InitConfig\\Installer::addSalts"
     ],
     "post-install-cmd": [
       "Apollo\\InitConfig\\Installer::runNPM"

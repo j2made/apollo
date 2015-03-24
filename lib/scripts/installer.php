@@ -16,67 +16,6 @@ class Installer {
     'NONCE_SALT'
   );
 
-
-  // SALT CREATION
-  // ====================================================
-  public static function addSalts(Event $event) {
-
-    $root = dirname( dirname(__DIR__) );
-    $app_config_file = "{$root}/lib/config/application.php";
-    $composer = $event->getComposer();
-    $io = $event->getIO();
-
-    if (!$io->isInteractive()) {
-      $generate_salts = $composer->getConfig()->get('generate-salts');
-    } else {
-      $generate_salts = $io->askConfirmation('<info>Generate salts and append to .env file?</info> [<comment>Y,n</comment>]? ', true);
-    }
-
-    // If salts should not be generated
-    if (!$generate_salts) {
-      // Create a default salt array
-      $salts_array = array_map(function($key) {
-        return sprintf("define('%s', 'put your unique phrase here');", $key, Installer::generateSalt());
-      }, self::$KEYS);
-
-    } else {
-      // Create a randomized salt array
-      $salts_array = array_map(function($key) {
-        return sprintf("define('%s', '%s');", $key, Installer::generateSalt());
-      }, self::$KEYS);
-    }
-
-
-    // Output array as a string of definitions
-    // =----> $salt_string = '<?php ' . "\n";
-    $salt_string = implode($salts_array, "\n");
-
-    // Append the salts to
-    if( file_exists($app_config_file) ) {
-      file_put_contents( $app_config_file, $salt_string, FILE_APPEND | LOCK_EX );
-    } else {
-      $io->write("<error>An Error Occured while generating salts</error>");
-    }
-  }
-
-  /**
-   * Slightly modified/simpler version of wp_generate_password
-   * https://github.com/WordPress/WordPress/blob/cd8cedc40d768e9e1d5a5f5a08f1bd677c804cb9/wp-includes/pluggable.php#L1575
-   */
-  public static function generateSalt($length = 64) {
-    $chars  = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    $chars .= '!@#$%^&*()';
-    $chars .= '-_ []{}<>~`+=,.;:/?|';
-
-    $salt = '';
-    for ($i = 0; $i < $length; $i++) {
-      $salt .= substr($chars, rand(0, strlen($chars) - 1), 1);
-    }
-
-    return $salt;
-  }
-
-
   // DB DEFINITIONS VIA COMPOSER IO
   // ====================================================
 
@@ -149,6 +88,65 @@ class Installer {
       rename( realpath($theme_init), realpath($theme_root) . '/' . APOLLO_THEME_NAME );
     }
 
+  }
+
+
+  // SALT CREATION
+  // ====================================================
+  public static function addSalts(Event $event) {
+
+    $root = dirname( dirname(__DIR__) );
+    $app_config_file = "{$root}/env-config.php";
+    $composer = $event->getComposer();
+    $io = $event->getIO();
+
+    if (!$io->isInteractive()) {
+      $generate_salts = $composer->getConfig()->get('generate-salts');
+    } else {
+      $generate_salts = $io->askConfirmation('<info>Generate salts and append to env-config file?</info> [<comment>Y,n</comment>]? ', true);
+    }
+
+    // If salts should not be generated
+    if (!$generate_salts) {
+      // Create a default salt array
+      $salts_array = array_map(function($key) {
+        return sprintf("define('%s', 'put your unique phrase here');", $key, Installer::generateSalt());
+      }, self::$KEYS);
+
+    } else {
+      // Create a randomized salt array
+      $salts_array = array_map(function($key) {
+        return sprintf("define('%s', '%s');", $key, Installer::generateSalt());
+      }, self::$KEYS);
+    }
+
+
+    // Output array as a string of definitions
+    $salt_string = "\n" . "// Salts \n" . implode($salts_array, "\n");
+
+    // Append the salts to
+    if( file_exists($app_config_file) ) {
+      file_put_contents( $app_config_file, $salt_string, FILE_APPEND | LOCK_EX );
+    } else {
+      $io->write("<error>An Error Occured while generating salts</error>");
+    }
+  }
+
+  /**
+   * Slightly modified/simpler version of wp_generate_password
+   * https://github.com/WordPress/WordPress/blob/cd8cedc40d768e9e1d5a5f5a08f1bd677c804cb9/wp-includes/pluggable.php#L1575
+   */
+  public static function generateSalt($length = 64) {
+    $chars  = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    $chars .= '!@#$%^&*()';
+    $chars .= '-_ []{}<>~`+=,.;:/?|';
+
+    $salt = '';
+    for ($i = 0; $i < $length; $i++) {
+      $salt .= substr($chars, rand(0, strlen($chars) - 1), 1);
+    }
+
+    return $salt;
   }
 
   public static function runNPM(Event $event) {
