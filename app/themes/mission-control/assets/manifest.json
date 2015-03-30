@@ -15,7 +15,7 @@
     },
     "editor-style.css": {
       "files": [
-        "styles/utilities/editor-style.less"
+        "styles/utilities/editor-style.scss"
       ]
     },
     "jquery.js": {

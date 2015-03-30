@@ -1,0 +1,46 @@
+// COLOR TILES
+// -----------
+
+// List of Colors and Vars, in corresponding order to $colors_array
+$colors-list: "black", "white", "brand-color";
+$vars-list:   $black, $white, $brand-color;
+
+// Loop through lists to output classes with background color
+@each $current-color in $colors-list {
+  $i: index($colors-list, $current-color);
+
+  .pattern-color-#{$current-color} {
+    background: nth($vars-list, $i);
+  }
+}
+
+
+// SECTION STYLES
+// --------------
+
+.pattern-color-wrapper {
+  height: 250px;
+  width: 23.5%;
+  margin-right: 2%;
+  position: relative;
+  margin-bottom: $gutter;
+
+  &:nth-child(4n) {
+    margin-right: 0;
+  }
+}
+
+.pattern-color-title {
+  width: 100%;
+  text-align: center;
+  background: rgba(0,0,0,0.2);
+  position: absolute;
+  bottom: 0;
+  padding: 8px;
+
+  p {
+    color: $white;
+    font-size: rem(18);
+    font-weight: 900;
+  }
+}
