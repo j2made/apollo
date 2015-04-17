@@ -2,7 +2,7 @@
 
 <header class="navigation" role="banner">
   <a href="<?= esc_url(home_url('/')); ?>" class="logo">
-    <img class="image" src="<?php echo get_template_directory_uri();?>/assets/svg/logo-image.svg" alt="<?php bloginfo('name'); ?>">
+    <img class="image" src="<?php echo get_template_directory_uri();?>/assets/images/logo-image.svg" alt="<?php bloginfo('name'); ?>">
   </a>
   <nav role="navigation">
     <?php
