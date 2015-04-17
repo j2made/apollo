@@ -1,0 +1,11 @@
+# .gitignore file for theme files
+
+# DIRECTORIES
+bower_components
+node_modules
+dist
+npm-debug.log
+
+# STYLES
+
+

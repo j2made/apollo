@@ -26,6 +26,6 @@
     }
   },
   "config": {
-    "devUrl": "CONFIG THIS!"
+    "devUrl": "apollo-working.dev"
   }
 }

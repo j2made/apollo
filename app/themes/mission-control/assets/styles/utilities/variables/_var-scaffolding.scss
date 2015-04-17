@@ -28,6 +28,7 @@ $small-max: 		new-breakpoint(max-width $small-container + $container-break); 		 
 $medium-max: 		new-breakpoint(max-width $medium-container + $container-break); 	 		// Laptops / Small Desktop
 $large-max: 		new-breakpoint(max-width $max-container-width + $container-break); 		// Large Desktops
 
+$primary-breakpoint: $medium; // When the site undergoes it most radical changes, such as mobile nav to desktop nav
 
 // Base Settings
 $visual-grid: false;
