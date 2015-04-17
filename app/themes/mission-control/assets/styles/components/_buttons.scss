@@ -1,48 +1,6 @@
 // Button Styles
 // -------------
 
-// BUTTON BASE EXTEND
-// ------------------
-
-%btn {
-  background: transparent;
-  background-clip: padding-box;
-  border-style: solid;
-  border-width: rem(3);
-  display: inline-block;
-  font-weight: 900;
-  padding: 18px;
-  text-decoration: none;
-  text-transform: uppercase;
-  white-space: nowrap;
-  font-size: rem(16);
-
-  @include media($small) {
-    font-size: rem(18);
-    border-width: rem(5);
-    padding: 18px 24px;
-  }
-
-  @include media($medium) {
-    font-size: $base-font-size-rem;
-  }
-}
-
-// BUTTON STYLER MIXIN
-// -------------------
-
-@mixin button-styler($btn-color: $base-font-color, $btn-hover-color: $brand-color, $btn-background-hover: $btn-color ) {
-  @extend %long-trans;
-  color: $btn-color;
-  border-color: $btn-color;
-
-  &:hover {
-    border-color: $btn-background-hover;
-    color: $btn-hover-color;
-    background-color: $btn-background-hover;
-  }
-}
-
 .btn {
   @extend %btn;
   @include button-styler;
