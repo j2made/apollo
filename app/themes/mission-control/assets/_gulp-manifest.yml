@@ -1,0 +1,9 @@
+---
+# File Piping Configuration
+sass:
+  main: "./assets/styles/main.scss"
+js:
+  main: "./assets/scripts/main.js"
+
+# Browsersync
+syncServer: "apollo-working.dev"
