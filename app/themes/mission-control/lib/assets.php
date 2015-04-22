@@ -97,9 +97,9 @@ function bower_map_to_cdn($dependency, $fallback) {
 function assets() {
 
   if (WP_ENV == 'production' || WP_ENV == 'staging') {
-   $dist_var = '/dist-prod/';
-  } else {
    $dist_var = '/dist/';
+  } else {
+   $dist_var = '/dist-dev/';
   }
 
   wp_enqueue_style('sage_css', asset_path('styles/main.css', $dist_var), false, null);

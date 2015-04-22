@@ -1,9 +1,0 @@
-{
-  "sass": {
-    "main": "./assets/styles/main.scss"
-  },
-  "js": {
-    "main": "./assets/scripts/main.js"
-  },
-  "syncServer": "apollo-working.dev"
-}
