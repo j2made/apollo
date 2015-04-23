@@ -7,14 +7,14 @@
 
 // VENDOR STYLES
 // ============================================================
-@charset "UTF-8";
-@import "../../bower_components/normalize-scss/_normalize.scss";              // Normalize
-@import "../../bower_components/bourbon/app/assets/stylesheets/_bourbon";     // Bourbon
-@import "../../bower_components/neat/app/assets/stylesheets/_neat";           // Bourbon Neat
+@charset 'UTF-8';
+@import '../../bower_components/normalize-scss/_normalize';                   // Normalize
+@import '../../bower_components/bourbon/app/assets/stylesheets/bourbon';      // Bourbon
+@import '../../bower_components/neat/app/assets/stylesheets/neat';            // Bourbon Neat
 
 
 // THEME STYLES
 // ============================================================
-@import "utilities/utilities";          // Utilities
-@import "components/components";        // Components Base
-@import "layouts/layouts";              // Layouts Base
+@import 'utilities/utilities';          // Utilities
+@import 'components/components';        // Components Base
+@import 'layouts/layouts';              // Layouts Base

@@ -1,80 +1,56 @@
-// ## Globals
-/*global $:true*/
+// The Gulpfile
+// -----------------------------------------------------------
+// Slightly altered version of the Sage gulpfile.
+
+// GULP VARS
+// -----------------------------------------------------------
 var $           = require('gulp-load-plugins')();
-var argv        = require('yargs').argv;
+var argv        = require('minimist')(process.argv.slice(2));
 var browserSync = require('browser-sync');
 var gulp        = require('gulp');
 var lazypipe    = require('lazypipe');
 var merge       = require('merge-stream');
+var runSequence = require('run-sequence');
 
+
+// MANIFEST VARS
+// ---------------------------------------------------------------------------------------
 // See https://github.com/austinpray/asset-builder
-var manifest = require('asset-builder')('./assets/manifest.json');
 
-// `path` - Paths to base asset directories. With trailing slashes.
-// - `path.source` - Path to the source files. Default: `assets/`
-// - `path.dist` - Path to the build directory. Default: `dist/`
-var path = manifest.paths;
-
-if(argv.production) {
-  path.dist = "dist-prod/";
-}
-
-// `config` - Store arbitrary configuration values here.
+// JSON file created from yaml file after `config` task is ran :
+var manifest = require('asset-builder')('./assets/config/manifest.json');
+var path = manifest.paths;                // See `paths:` in `mainfest.yml`
 var config = manifest.config || {};
-
-// `globs` - These ultimately end up in their respective `gulp.src`.
-// - `globs.js` - Array of asset-builder JS dependency objects. Example:
-//   ```
-//   {type: 'js', name: 'main.js', globs: []}
-//   ```
-// - `globs.css` - Array of asset-builder CSS dependency objects. Example:
-//   ```
-//   {type: 'css', name: 'main.css', globs: []}
-//   ```
-// - `globs.fonts` - Array of font path globs.
-// - `globs.images` - Array of image path globs.
-// - `globs.bower` - Array of all the main Bower files.
-var globs = manifest.globs;
-
-// `project` - paths to first-party assets.
-// - `project.js` - Array of first-party JS assets.
-// - `project.css` - Array of first-party CSS assets.
-var project = manifest.getProjectGlobs();
-
-// CLI options
-var enabled = {
-  // Enable static asset revisioning when `--production`
-  rev: false,
-  // Disable source maps when `--production`
-  maps: !argv.production,
-  // Fail styles task on error when `--production`
-  failStyleTask: argv.production
-};
+var globs = manifest.globs;               // `globs.js`, etc.
+var project = manifest.getProjectGlobs(); // `project` - paths to first-party assets.
 
 // Path to the compiled assets manifest in the dist directory
 var revManifest = path.dist + 'assets.json';
 
-// ## Reusable Pipelines
-// See https://github.com/OverZealous/lazypipe
+// Change distribution folder on --production so that it can be tracked for git deployment
+if(argv.production) { path.dist = config.shipDest; }
 
-// ### CSS processing pipeline
-// Example
-// ```
-// gulp.src(cssFiles)
-//   .pipe(cssTasks('main.css')
-//   .pipe(gulp.dest(path.dist + 'styles'))
-// ```
+
+// CLI OPTIONS
+// -------------------------------------------------------------------------------------
+var enabled = {
+  rev: argv.production,           // Enable static asset revisioning when `--production`
+  maps: !argv.production,         // Disable source maps when `--production`
+  failStyleTask: argv.production  // Fail styles task on error when `--production`
+};
+
+
+// ==============================================================================
+// REUSABLE PIPELINES
+// See https://github.com/OverZealous/lazypipe
+// ==============================================================================
+
+// CSS
+// --------------------------------------------------
 var cssTasks = function(filename) {
   return lazypipe()
-    .pipe(function() {
-      return $.if(!enabled.failStyleTask, $.plumber());
-    })
-    .pipe(function() {
-      return $.if(enabled.maps, $.sourcemaps.init());
-    })
-      .pipe(function() {
-        return $.if('*.less', $.less());
-      })
+    .pipe( function() { return $.if(!enabled.failStyleTask, $.plumber()); } )
+    .pipe( function() { return $.if(enabled.maps, $.sourcemaps.init()); } )
       .pipe(function() {
         return $.if('*.scss', $.sass({
           outputStyle: 'nested', // libsass doesn't support expanded yet
@@ -84,29 +60,18 @@ var cssTasks = function(filename) {
         }));
       })
       .pipe($.concat, filename)
-      .pipe($.pleeease, {
-        autoprefixer: {
-          browsers: [
-            'last 2 versions', 'ie 8', 'ie 9', 'android 2.3', 'android 4',
-            'opera 12'
-          ]
-        }
+      .pipe($.autoprefixer, {
+        browsers: [
+          'last 2 versions', 'ie 8', 'ie 9', 'android 2.3', 'android 4', 'opera 12'
+        ]
       })
-    .pipe(function() {
-      return $.if(enabled.rev, $.rev());
-    })
-    .pipe(function() {
-      return $.if(enabled.maps, $.sourcemaps.write('.'));
-    })();
+      .pipe($.minifyCss)
+    .pipe(function() {return $.if(enabled.rev, $.rev());})
+    .pipe(function() {return $.if(enabled.maps, $.sourcemaps.write('.'));})();
 };
 
-// ### JS processing pipeline
-// Example
-// ```
-// gulp.src(jsFiles)
-//   .pipe(jsTasks('main.js')
-//   .pipe(gulp.dest(path.dist + 'scripts'))
-// ```
+// JS
+// --------------------------------------------------
 var jsTasks = function(filename) {
   return lazypipe()
     .pipe(function() {
@@ -122,8 +87,8 @@ var jsTasks = function(filename) {
     })();
 };
 
-// ### Write to rev manifest
-// If there are any revved files then write them to the rev manifest.
+// WRITE TO REV MANIFEST
+// --------------------------------------------
 // See https://github.com/sindresorhus/gulp-rev
 var writeToManifest = function(directory) {
   return lazypipe()
@@ -138,10 +103,26 @@ var writeToManifest = function(directory) {
     .pipe(gulp.dest, path.dist)();
 };
 
-// ## Gulp tasks
-// Run `gulp -T` for a task summary
 
-// ### Styles
+
+// ==============================================================================
+// GULP TASKS
+// Run `gulp -T` for a task summary
+// ==============================================================================
+
+
+// CONFIG TASK
+// ------------------------------------------------------------------------------
+// Convert manifest.yml file to json.
+// ** Run on init, start of watch, and if changes are made to _gulp-manifest ***
+gulp.task('config', function() {
+  gulp.src('./assets/manifest.yml')
+    .pipe( $.yaml({space: 2}) )
+    .pipe(gulp.dest('./assets/config/'));
+});
+
+// STYLES TASK
+// ----------------------------------------------------------------------------
 // `gulp styles` - Compiles, combines, and optimizes Bower CSS and project CSS.
 // By default this task will only log a warning if a precompiler error is
 // raised. If the `--production` flag is set: this task will fail outright.
@@ -162,7 +143,8 @@ gulp.task('styles', ['wiredep'], function() {
     .pipe(writeToManifest('styles'));
 });
 
-// ### Scripts
+// SCRIPTS TASK
+// ----------------------------------------------------------------------------
 // `gulp scripts` - Runs JSHint then compiles, combines, and optimizes Bower JS
 // and project JS.
 gulp.task('scripts', ['jshint'], function() {
@@ -177,7 +159,8 @@ gulp.task('scripts', ['jshint'], function() {
     .pipe(writeToManifest('scripts'));
 });
 
-// ### Fonts
+// FONTS TASK
+// ----------------------------------------------------------------------------
 // `gulp fonts` - Grabs all the fonts and outputs them in a flattened directory
 // structure. See: https://github.com/armed/gulp-flatten
 gulp.task('fonts', function() {
@@ -186,7 +169,8 @@ gulp.task('fonts', function() {
     .pipe(gulp.dest(path.dist + 'fonts'));
 });
 
-// ### Images
+// IMAGES
+// -----------------------------------------------------------
 // `gulp images` - Run lossless compression on all the images.
 gulp.task('images', function() {
   return gulp.src(globs.images)
@@ -198,22 +182,42 @@ gulp.task('images', function() {
     .pipe(gulp.dest(path.dist + 'images'));
 });
 
-// ### JSHint
+// JSHINT
+// --------------------------------------------------------
 // `gulp jshint` - Lints configuration JSON and project JS.
 gulp.task('jshint', function() {
   return gulp.src([
-    'bower.json', 'gulpfile.js'
+    'bower.json'
   ].concat(project.js))
     .pipe($.jshint())
     .pipe($.jshint.reporter('jshint-stylish'))
     .pipe($.jshint.reporter('fail'));
 });
 
-// ### Clean
+// CLEAN
+// --------------------------------------------------------
 // `gulp clean` - Deletes the build folder entirely.
 gulp.task('clean', require('del').bind(null, [path.dist]));
 
-// ### Watch
+// WIREDEP
+// ----------------------------------------------------------------------------
+// `gulp wiredep` - Automatically inject Less and Sass Bower dependencies. See
+// https://github.com/taptapproduction/wiredep
+gulp.task('wiredep', function() {
+  var wiredep = require('wiredep').stream;
+  return gulp.src(project.css)
+    .pipe(wiredep())
+    .pipe($.changed(path.source + 'styles', {
+      hasChanged: $.changed.compareSha1Digest
+    }))
+    .pipe(gulp.dest(path.source + 'styles'));
+});
+
+
+
+// ----------------------------------------------------------------------------
+// WATCH TASK
+// ----------------------------------------------------------------------------
 // `gulp watch` - Use BrowserSync to proxy your dev server and synchronize code
 // changes across devices. Specify the hostname of your dev server at
 // `manifest.config.devUrl`. When a modification is made to an asset, run the
@@ -231,32 +235,46 @@ gulp.task('watch', function() {
   gulp.watch([path.source + 'scripts/**/*'], ['jshint', 'scripts']);
   gulp.watch([path.source + 'fonts/**/*'], ['fonts']);
   gulp.watch([path.source + 'images/**/*'], ['images']);
-  gulp.watch(['bower.json'], ['wiredep']);
+  gulp.watch(['bower.json', 'assets/manifest.yml'], ['config', 'build']);
   gulp.watch('**/*.php', function() {
     browserSync.reload();
   });
 });
 
-// ### Build
+
+// ---------------------------------------------------------------------
+// BUILD TASK
+// ---------------------------------------------------------------------
 // `gulp build` - Run all the build tasks but don't clean up beforehand.
 // Generally you should be running `gulp` instead of `gulp build`.
-gulp.task('build', ['styles', 'scripts', 'fonts', 'images']);
-
-// ### Wiredep
-// `gulp wiredep` - Automatically inject Less and Sass Bower dependencies. See
-// https://github.com/taptapship/wiredep
-gulp.task('wiredep', function() {
-  var wiredep = require('wiredep').stream;
-  return gulp.src(project.css)
-    .pipe(wiredep())
-    .pipe($.changed(path.source + 'styles', {
-      hasChanged: $.changed.compareSha1Digest
-    }))
-    .pipe(gulp.dest(path.source + 'styles'));
+gulp.task('build', ['config'], function(callback) {
+  runSequence('config',
+              'styles',
+              'scripts',
+              ['fonts', 'images'],
+              callback);
 });
 
-// ### Gulp
+
+// ---------------------------------------------------------------------------------
+// GULP TASK (DEFAULT)
+// ---------------------------------------------------------------------------------
 // `gulp` - Run a complete build. To compile for production run `gulp --production`.
-gulp.task('default', ['clean'], function() {
+gulp.task('default', ['config', 'clean'], function() {
   gulp.start('build');
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
