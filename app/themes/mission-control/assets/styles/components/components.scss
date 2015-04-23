@@ -1,5 +1,7 @@
 // Base: Components
 // ----------------
 
-@import "_type-styles";
-@import "_buttons";
+@import 'buttons';                  // Button Styles
+@import 'type-styles';              // Type Styles for page base
+@import 'page-elements';            // Page Elements, such as list groups or callouts
+@import 'sliders/sliders-global';   // Slider Styles

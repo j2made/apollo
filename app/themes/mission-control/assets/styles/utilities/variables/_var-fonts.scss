@@ -5,7 +5,19 @@
 $serif:							      $helvetica;
 $sans-serif:						  $georgia;
 $alt-font:						    $lucida-grande;
+$base-font-family:        $serif;
+$title-font:              $alt-font;
 
-// Line-Height
+// Font Sizes
+$em-base: 22px !default;
+$base-font-size: 22px;
+$base-font-size-rem: rem(22);
+
+// Line Height
+$base-line-height: 1.5;
+$base-spacing: $base-line-height * 1em;
 $body-line-height: golden-ratio(1em, 1);
 $header-line-height: 1.25;
+
+$base-z-index: 0;
+

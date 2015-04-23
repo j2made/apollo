@@ -2,5 +2,12 @@
 // -------------
 
 .btn {
-  @include btn();
+  @extend %btn;
+  @include button-styler;
 }
+
+// Example using button-styler:
+.btn-light {
+  @include button-styler($white);
+}
+

@@ -14,3 +14,15 @@
   text-decoration: none;
   white-space: nowrap;
 }
+
+@mixin button-styler($btn-color: $base-font-color, $btn-hover-color: $brand-color, $btn-background-hover: $btn-color) {
+  @extend %standard-trans;
+  color: $btn-color;
+  border-color: $btn-color;
+
+  &:hover {
+    background-color: $btn-background-hover;
+    border-color: $btn-background-hover;
+    color: $btn-hover-color;
+  }
+}
