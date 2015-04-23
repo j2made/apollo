@@ -104,6 +104,14 @@ class Installer {
       rename( realpath($theme_init), realpath($theme_root) . '/' . $mission_name );
     }
 
+    // Change th value in the manifest.yml file
+    if(file_exists($theme_root . '/' . $mission_name . '/assets/manifest.yml')) {
+      $yml_file = $theme_root . '/' . $mission_name . '/assets/manifest.yml';
+      $file_contents = file_get_contents($yml_file);
+      $file_contents = str_replace("CONFIG_THIS!", $home_url, $file_contents);
+      file_put_contents($yml_file, $file_contents);
+    }
+
     // Setup for NPM
     if($run_npm) {
       define('APOLLO_LANUCH', 'contact');
