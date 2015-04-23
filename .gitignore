@@ -26,3 +26,4 @@ dist
 bower_components
 node_modules
 npm-debug.log
+app/themes/mission-control/gulpfile-notes.md
