@@ -16,17 +16,17 @@ use Apollo\Admin\Structure;
     </div>
   <![endif]-->
 
-  <?php do_action('get_header'); ?>
+  <?php // Get head.php
+  do_action('get_header');
 
-  <?php
-    get_template_part( 'templates/header' );
-    if(!hide_page_header()) {
-      get_template_part( 'templates/page-header/_page-header-main' );
-    }
-  ?>
+  // Get the header
+  get_template_part( 'templates/header' );
 
+  // Conditionally get the page header
+  if(!hide_page_header())
+    get_template_part( 'templates/page-header/_page-header-main' );
 
-  <?php // If the display sidebar condition is
+  // Start the main event
   if ( Structure\display_sidebar() ) : ?>
     <main class="main container" role="main">
       <section class="content-column">
@@ -41,12 +41,12 @@ use Apollo\Admin\Structure;
     <main class="main" role="main">
       <?php include Wrapper\template_path(); ?>
     </main><!-- /.main -->
-  <?php endif; ?>
 
-  <?php get_template_part( 'templates/mailing-list-banner' ); ?>
-  <?php get_template_part( 'templates/footer' ); ?>
+  <?php endif;
 
-  <?php wp_footer(); ?>
+  get_template_part( 'templates/footer' );
+
+  wp_footer(); ?>
 
 </body>
 </html>

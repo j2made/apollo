@@ -3,6 +3,14 @@
 namespace Apollo\Admin\Structure;
 use Apollo\Config\Condition;
 
+// CONTENT WIDTH
+// ============================================================
+// Defined in config-settings
+
+if (!isset($content_width)) {
+  $content_width = CONTENT_WIDTH;
+}
+
 // SIDEBAR
 // ============================================================
 // If hide_sidebar() is true, this will return false, hiding
@@ -15,6 +23,14 @@ function display_sidebar() {
   }
 }
 
+// Add Sidebar class to body
+function sidebar_body_class($classes) {
+  if (display_sidebar()) {
+    $classes[] = 'sidebar-primary';
+  }
+  return $classes;
+}
+add_filter('body_class', __NAMESPACE__ . '\\sidebar_body_class');
 
 // NAV
 // ============================================================

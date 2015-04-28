@@ -110,7 +110,7 @@ function assets() {
    * If a plugin enqueues jQuery-dependent scripts in the head, jQuery will load in the head to meet the plugin's dependencies
    * To explicitly load jQuery in the head, change the last wp_enqueue_script parameter to false
    */
-  if (!is_admin() && current_theme_supports('jquery-cdn')) {
+  if (!is_admin() ) {
     wp_deregister_script('jquery');
 
     wp_register_script('jquery', bower_map_to_cdn([

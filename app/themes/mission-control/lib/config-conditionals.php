@@ -11,10 +11,6 @@ function hide_sidebar() {
   if( is_404() || is_front_page() ) {
     return true;
   }
-
-  // if( is_post_type_archive( array( 'board','staff' ) ) ) {
-  //   return true;
-  // }
 }
 
 // HIDE PAGE HEADER

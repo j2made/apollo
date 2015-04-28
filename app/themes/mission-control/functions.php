@@ -10,16 +10,14 @@
  * @link https://github.com/roots/sage/pull/1042
  */
 $sage_includes = [
-  'lib/variables.php',             // Utility functions
+  'lib/config-settings.php',        // Variables and Theme Support
   'lib/config-conditionals.php',    // Config Conditionals
 
   'lib/theme-structure.php',        // Build Theme Layouts
 
   'lib/utils.php',                 // Utility functions
-  'lib/init.php',                  // Initial theme setup and constants
   'lib/wrapper.php',               // Theme wrapper class
   'lib/sidebar.php',               // Sidebar class
-  'lib/config.php',                // Configuration
   'lib/assets.php',                // Scripts and stylesheets
   'lib/titles.php',                // Page titles
   'lib/nav.php',                   // Custom nav modifications
