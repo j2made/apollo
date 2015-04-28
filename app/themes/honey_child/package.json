@@ -1,17 +1,17 @@
 {
-  "name": "framework",
+  "name": "mission-control",
   "version": "0.0.1",
-  "description": "Framework build on Bourbon, Neat, & more!",
+  "description": "Mission Control theme for Apollo Stack, with Bower, Bourbon and More",
   "authors": [
-    "Daniel Olson <emaildano@gmail.com.com>"
+    "Shaun Baer <shaun.baer@gmail.com>"
   ],
-  "homepage": "http://github.com/emaildano/framework",
+  "homepage": "http://github.com/iamhexcoder",
   "repository": {
     "type": "git",
-    "url": "git://github.com/emaildano/framework.git"
+    "url": "git://github.com/j2made/apollo.git"
   },
   "bugs": {
-    "url": "https://github.com/emaildano/framework/issues"
+    "url": "https://github.com/j2made/apollo/issues"
   },
   "licenses": [
     {
@@ -19,15 +19,9 @@
       "url": "http://opensource.org/licenses/MIT"
     }
   ],
-  "scripts": {
-    "postinstall": "bower install",
-    "build": "bower install && gulp",
-    "jshint": "gulp jshint",
-    "jscs": "jscs gulpfile.js assets/scripts/*.js"
-  },
   "engines": {
     "node": ">= 0.10.0",
-    "npm": ">=2.1.5"
+    "npm": ">=1.4.28"
   },
   "devDependencies": {
     "asset-builder": "^1.0.2",
