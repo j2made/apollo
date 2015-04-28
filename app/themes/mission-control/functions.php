@@ -11,6 +11,10 @@
  */
 $sage_includes = [
   'lib/variables.php',             // Utility functions
+  'lib/config-conditionals.php',    // Config Conditionals
+
+  'lib/theme-structure.php',        // Build Theme Layouts
+
   'lib/utils.php',                 // Utility functions
   'lib/init.php',                  // Initial theme setup and constants
   'lib/wrapper.php',               // Theme wrapper class

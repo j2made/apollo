@@ -3,6 +3,8 @@
 namespace Roots\Sage;
 use Roots\Sage\Config;
 use Roots\Sage\Wrapper;
+// --------------------
+use Apollo\Admin\Structure;
 ?>
 
 <?php get_template_part('templates/head'); ?>
@@ -24,15 +26,17 @@ use Roots\Sage\Wrapper;
   ?>
 
 
-  <?php if (Config\display_sidebar()) : ?>
+  <?php // If the display sidebar condition is
+  if ( Structure\display_sidebar() ) : ?>
     <main class="main container" role="main">
       <section class="content-column">
         <?php include Wrapper\template_path(); ?>
       </section>
       <aside class="sidebar" role="complementary">
         <?php include Wrapper\sidebar_path(); ?>
-      </aside><!-- /.sidebar -->
-    </main><!-- /.main -->
+      </aside>
+    </main>
+
   <?php else : ?>
     <main class="main" role="main">
       <?php include Wrapper\template_path(); ?>
