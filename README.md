@@ -7,13 +7,13 @@
 Apollo is a two stage unit: A Wordpress Stack built with Composer, and a Starter Theme packed with Sass, Gulp, Bourbon, Bower, and a Theme Wrapper structure.
 
 
-## Minimum Requirements (Stack)
+### Minimum Requirements (Stack)
 Versions listed are required to be equal to or greater than.
 
 - PHP v5.4.3
 - [Composer] (https://getcomposer.org/) v1.0.0-alpha8
 
-## Minimum Requirements (Theme)
+### Minimum Requirements (Theme)
 Versions listed are required to be equal to or greater than.
 
 - [Node] (https://nodejs.org/) v0.10.0
@@ -29,7 +29,7 @@ Make sure you have everything listed in the above requirements installed, and th
 
 - Open your terminal, and `cd` into the directory you just cloned.
 - Run `composer create-project`
-- A series of prompts will collect information based on your enviornment, which will be used to generate a config file. See [Prompts] (#Prompts) below for more information.
+- A series of prompts will collect information based on your enviornment, which will be used to generate a config file. See Prompts below for more information.
 - If you choose not to run NPM from the composer prompt, cd to the theme and run `npm install`
 - Run `bower update` and `gulp build` to complete theme initialization.
 - Point local hosts to the directory you created (the folder should now have a file name `env-config.php` inside of it.
@@ -39,12 +39,12 @@ Make sure you have everything listed in the above requirements installed, and th
 ## Stack Information
 ### Configuration
 
-####Site Configuration
+#### Site Configuration
 Apollo only uses `wp-config.php` as an initializer file. The information that is typically configured in `wp-config.php` is instead spread throughout the stack. As such, you should never alter `wp-config.php` with site confing information.
 
 All neccessary config information, such as database info, salts, theme enviornment, host url, etc., is stored in the generated `env-config.php` file. This should file should be ignored in git, because you should keep your creds to your own damn self.
 
-####Theme Enviornment Configuration
+#### Theme Enviornment Configuration
 Theme enviornments are controlled via the `WP_ENV` definition in `eng-config.php` and should be one of the following options:
 
 - `development`
@@ -53,12 +53,12 @@ Theme enviornments are controlled via the `WP_ENV` definition in `eng-config.php
 
 This definition controls how errors are output and whether or not certain functions should be ran. Local development? Use `development`. Site running live? Use `production`. Testing on a staging server?...I think you get it.
 
-**Want to change enviornmental attributes?**
+#### Want to change enviornmental attributes?
 See `lib/config/application.php`.
 
 ### Composer
 
-####(#Prompts)
+#### Prompts
 Running `create-project` will use prompts to setup your config files. If you just press enter, the default value for each will be rendered in the file(s).
 
 | Prompt | Info | Default |
@@ -89,10 +89,10 @@ You will also be asked some boolean questions:
 
 If you have an issue with the prompts, or a `env-config.php` cannot be created, open an issue on the [project repo] (http://github.com/j2made/apollo/issues). You can copy the file `lib/config/env-config-default.php` to the root of the project and rename it `env-config.php`. Then change the values of the definitions.
 
-####Wordpress Versions
+#### Wordpress Versions
 Apollo uses [John Bloch Composer Repo] (https://github.com/johnpbloch/wordpress-core-installer) to install Wordpress. To update WP, simply update the version of `"johnpbloch/wordpress"` to match the version of Wordpress you would like.
 
-####Plugins
+#### Plugins
 Apollo's composer.json is setup to connect with the [Wordpress Packagist] (http://wpackagist.org/) library. If you want to use a plugin, find it in the Wordpress plugin repo, and copy the slug. In `composer.json`, add the plugin slug prepended by `wpackagist-plugin/` and its verion in the `require` array. 
 
 Example:
