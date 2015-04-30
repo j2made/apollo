@@ -1,10 +1,9 @@
 <?php
 
-namespace Roots\Sage;
-use Roots\Sage\Config;
-use Roots\Sage\Wrapper;
-// --------------------
+namespace Apollo\Base;
+use Apollo\Sage\Wrapper;
 use Apollo\Admin\Structure;
+use Apollo\Config\Condition;
 ?>
 
 <?php get_template_part('templates/head'); ?>
@@ -23,10 +22,10 @@ use Apollo\Admin\Structure;
   get_template_part( 'templates/header' );
 
   // Conditionally get the page header
-  if(!hide_page_header())
+  if(!Condition\hide_page_header())
     get_template_part( 'templates/page-header/_page-header-main' );
 
-  // Start the main event
+  // Sidebar Conditional
   if ( Structure\display_sidebar() ) : ?>
     <main class="main container" role="main">
       <section class="content-column">
@@ -37,15 +36,15 @@ use Apollo\Admin\Structure;
       </aside>
     </main>
 
-  <?php else : ?>
+  <?php // Non-sidebar template
+  else : ?>
     <main class="main" role="main">
       <?php include Wrapper\template_path(); ?>
-    </main><!-- /.main -->
+    </main>
 
   <?php endif;
 
   get_template_part( 'templates/footer' );
-
   wp_footer(); ?>
 
 </body>

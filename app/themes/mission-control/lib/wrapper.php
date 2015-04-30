@@ -1,6 +1,8 @@
 <?php
 
-namespace Roots\Sage\Wrapper;
+namespace Apollo\Sage\Wrapper;
+// Theme Wrapper function from Sage:
+// https://github.com/roots/sage/blob/8.0.0/lib/wrapper.php
 
 /**
  * Theme wrapper
@@ -18,17 +20,11 @@ function sidebar_path() {
 }
 
 class Sage_Wrapping {
-  // Stores the full path to the main template file
-  public static $main_template;
+  public static $main_template; // Stores the full path to the main template file
+  public $slug;                 // Basename of template file
+  public $templates;            // Array of templates
 
-  // Basename of template file
-  public $slug;
-
-  // Array of templates
-  public $templates;
-
-  // Stores the base name of the template file; e.g. 'page' for 'page.php' etc.
-  static $base;
+  static $base;                 // Stores the base name of the template file; e.g. 'page' for 'page.php' etc.
 
   public function __construct($template = 'base.php') {
     $this->slug = basename($template, '.php');
