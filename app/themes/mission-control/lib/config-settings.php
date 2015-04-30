@@ -20,7 +20,7 @@ define('CONTENT_WIDTH', '1140');    // Content Width: https://codex.wordpress.or
 // THEME SUPPORT
 // ============================================================
 
-function theme_support() {
+function theme_setup() {
   // Register Nav Menus:                                                  // (1)
   // Add any additional menus here!
   register_nav_menus([
@@ -45,7 +45,7 @@ function theme_support() {
   // 4. https://codex.wordpress.org/Function_Reference/add_theme_support#HTML5
 }
 
-add_action('after_setup_theme', __NAMESPACE__ . '\\setup');
+add_action('after_setup_theme', __NAMESPACE__ . '\\theme_setup');
 
 
 // WIDGETS
