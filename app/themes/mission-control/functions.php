@@ -7,13 +7,12 @@ $function_includes = [
   'lib/utilities.php',              // Utility functions
   'lib/wrapper.php',                // Theme wrapper class
   'lib/assets.php',                 // Scripts and stylesheets
-  'lib/extras.php',                // Custom functions
-  'lib/components.php',            // Theme Components
-  'lib/admin.php',                 // Customize WP Admin
-  'lib/query-configs.php',         // Alterations to queries via hooks
-  'lib/custom-conditionals.php',   // Custom conditionals
-  'lib/utilities.php',     // Custom Functions for Practical Purposes
-  'lib/events.php'                 // Tribe Events
+  'lib/extras.php',                 // Custom functions
+  'lib/components.php',             // Theme Components
+  'lib/admin.php',                  // Customize WP Admin
+  'lib/query-configs.php',          // Alterations to queries via hooks
+  'lib/utilities.php',              // Custom Functions for Practical Purposes
+  // 'lib/events.php'                  // Tribe Events
 ];
 
 foreach ($function_includes as $file) {

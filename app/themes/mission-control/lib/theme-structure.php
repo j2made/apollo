@@ -36,22 +36,34 @@ add_filter('body_class', __NAMESPACE__ . '\\sidebar_body_class');
 // ============================================================
 // Create a nav menu with very basic markup.
 //Deletes all CSS classes and id's, except for those listed in the array below
-function custom_wp_nav_menu($var) {
-  return is_array($var) ? array_intersect($var, array(
-    //List of allowed menu classes
-    'current_page_item',
-    'current_page_parent',
-    'current_page_ancestor',
-    'first',
-    'last',
-    'vertical',
-    'horizontal'
+function custom_wp_nav_menu_classes($classes, $item) {
+
+  $shrunken_classes = array_intersect($classes, array(
+    // List of allowed menu classes
+      'current_page_item',
+      'current_page_parent',
+      'current_page_ancestor',
     )
-  ) : '';
+  );
+  // Replace all classes with new jams
+  $classes = $shrunken_classes;
+
+  $menu_title = strtolower($item->title);
+  $menu_title = preg_replace("/[^a-z0-9_\s-]/", "", $menu_title); // Make alphanumeric
+  $menu_title = preg_replace("/[\s-]+/", " ", $menu_title);       // Clean up multiple dashes or whitespaces
+  $menu_title = preg_replace("/[\s_]/", "-", $menu_title);        // Convert whitespaces and underscore to dash
+
+  $classes[] = 'menu-' . $menu_title;
+
+  return $classes;
 }
-add_filter('nav_menu_css_class', __NAMESPACE__ . '\\custom_wp_nav_menu');
-add_filter('nav_menu_item_id', __NAMESPACE__ . '\\custom_wp_nav_menu');
-add_filter('page_css_class', __NAMESPACE__ . '\\custom_wp_nav_menu');
+add_filter('nav_menu_css_class', __NAMESPACE__ . '\\custom_wp_nav_menu_classes', 10, 2);
+
+function strip_wp_nav_menu($var) {
+  return '';
+}
+add_filter('nav_menu_item_id', __NAMESPACE__ . '\\strip_wp_nav_menu');
+add_filter('page_css_class', __NAMESPACE__ . '\\strip_wp_nav_menu');
 
 //Replaces "current-menu-item" with "active"
 function current_to_active($text){
@@ -66,9 +78,9 @@ function current_to_active($text){
   }
 add_filter ('wp_nav_menu', __NAMESPACE__ . '\\current_to_active');
 
-//Deletes empty classes and removes the sub menu class
+// Deletes empty classes
 function strip_empty_classes($menu) {
-    $menu = preg_replace('/ class=""| class="sub-menu"/','',$menu);
+    $menu = preg_replace('/ class=""/','',$menu);
     return $menu;
 }
 add_filter ('wp_nav_menu', __NAMESPACE__ . '\\strip_empty_classes');

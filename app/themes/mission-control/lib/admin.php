@@ -1,7 +1,9 @@
 <?php
 
+namespace Apollo\Config\AdminView;
+
 // Custom ACF Toolbars
-add_filter( 'acf/fields/wysiwyg/toolbars' , 'my_toolbars'  );
+add_filter( 'acf/fields/wysiwyg/toolbars', __NAMESPACE__ . '\\my_toolbars' );
 function my_toolbars( $toolbars ) {
 
 	$toolbar_options = array(
@@ -24,8 +26,8 @@ function my_toolbars( $toolbars ) {
 }
 
 // Customize TinyMCE Editor
-add_filter( 'tiny_mce_before_init', 'my_format_TinyMCE' );
-function my_format_TinyMCE( $in ) {
+add_filter( 'tiny_mce_before_init', __NAMESPACE__ . '\\format_TinyMCE' );
+function format_TinyMCE( $in ) {
 
 	// FUTURE: APPLY THESE SETTINGS TO ACF WYSIWYG
 
@@ -54,34 +56,35 @@ function my_format_TinyMCE( $in ) {
 }
 
 // Remove Media Buttons
-add_action('admin_head','remove_media_controls');
+add_action('admin_head', __NAMESPACE__ . '\\remove_media_controls');
+
 function remove_media_controls() {
 	remove_action( 'media_buttons', 'media_buttons' );
 }
 
 // Remove Gravity Forms "Add Form" Button
-add_filter( 'gform_display_add_form_button', function(){
-	return false;
-});
+// add_filter( 'gform_display_add_form_button', function(){
+// 	return false;
+// });
 
 // Hide Features in Editor
-add_action( 'init', 'hide_on_screen', 10 );
-function hide_on_screen() {
+// add_action( 'init', 'hide_on_screen', 10 );
+// function hide_on_screen() {
 
-	$post_types = [
-		'page'
-	];
+// 	$post_types = [
+// 		'page'
+// 	];
 
-	// FUTURE: ADD SECOND FOREACH TO COVER FEATURES
-	// $features = [
-	// 	'editor'
-	// ];
+// 	// FUTURE: ADD SECOND FOREACH TO COVER FEATURES
+// 	// $features = [
+// 	// 	'editor'
+// 	// ];
 
-	foreach ($post_types as $p) {
-		remove_post_type_support( $p, 'editor');
-	}
+// 	foreach ($post_types as $p) {
+// 		remove_post_type_support( $p, 'editor');
+// 	}
 
-}
+// }
 
 // Hide the Admin Bar in in dev
 if(WP_ENV === 'development' || WP_ENV === 'staging') :
