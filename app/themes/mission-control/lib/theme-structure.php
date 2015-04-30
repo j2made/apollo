@@ -41,7 +41,6 @@ function custom_wp_nav_menu_classes($classes, $item) {
   $shrunken_classes = array_intersect($classes, array(
     // List of allowed menu classes
       'current_page_item',
-      'current_page_parent',
       'current_page_ancestor',
     )
   );
@@ -70,9 +69,9 @@ function current_to_active($text){
   $replace = array(
     //List of menu item classes that should be changed to "active"
     'current_page_item' => 'active',
-    'current_page_parent' => 'active',
-    'current_page_ancestor' => 'active',
+    'current_page_ancestor' => 'active-ancestor',
   );
+
   $text = str_replace(array_keys($replace), $replace, $text);
     return $text;
   }
