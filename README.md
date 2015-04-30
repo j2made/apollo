@@ -7,13 +7,13 @@
 Apollo is a two stage unit: A Wordpress Stack built with Composer, and a Starter Theme packed with Sass, Gulp, Bourbon, Bower, and a Theme Wrapper structure.
 
 
-### Minimum Requirements (Stack)
+#### Minimum Requirements (Stack)
 Versions listed are required to be equal to or greater than.
 
 - PHP v5.4.3
 - [Composer] (https://getcomposer.org/) v1.0.0-alpha8
 
-### Minimum Requirements (Theme)
+#### Minimum Requirements (Theme)
 Versions listed are required to be equal to or greater than.
 
 - [Node] (https://nodejs.org/) v0.10.0
@@ -98,20 +98,22 @@ Apollo's composer.json is setup to connect with the [Wordpress Packagist] (http:
 Example:
     `"wpackagist-plugin/duplicate-post": "~2.6",`
 
+
 ## Theme Configuration
 
 Coming Soon, dawg.
 
 
 ## Contributing:
-### Issues
+#### Issues
 
 Report all issues [here] (https://github.com/j2made/apollo/issues)
 
-### Git Repo Branch Structure
+#### Git Repo Branch Structure
 
 The Apollo repo workflow utilizes Git Flow. Features branches should be named with the part of Apollo being worked on: `stack-` or `theme-`. Features should be merged into the `develop` branch, where they will wait to be merged into 
 `master`.
+
 
 ## Credits:
 This project is heavily influenced by [Bedrock] (https://github.com/roots/bedrock) and [Sage] (https://github.com/roots/sage) by the [Roots] (https://roots.io/) team. A lot of the code here has been adoted from or inspired by those projects, including the gulpfile and the wrapper.
