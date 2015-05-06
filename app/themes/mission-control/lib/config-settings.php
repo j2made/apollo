@@ -2,7 +2,7 @@
 
 namespace Apollo\Config\Settings;
 
-// If enviornment is not defined
+// If enviornment is not defined, set production as default
 if (!defined('WP_ENV')) {
   define('WP_ENV', 'production');
 }

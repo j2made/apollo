@@ -1,6 +1,6 @@
 <?php
 
-namespace Roots\Sage\Extras;
+namespace Apollo\Extend\Core;
 
 // IMAGE SIZES
 // ============================================================
@@ -11,14 +11,14 @@ namespace Roots\Sage\Extras;
 // WP CORE
 // ============================================================
 
-// Allow SVG uploads
-function cc_mime_types($mimes) {
+// Allow SVG uploads (1)
+function mime_types($mimes) {
   $mimes['svg'] = 'image/svg+xml';
   return $mimes;
 }
-add_filter('upload_mimes',  __NAMESPACE__ . '\\cc_mime_types');
+add_filter('upload_mimes',  __NAMESPACE__ . '\\mime_types');
 
-// Fix SVG Thumb Display
+// Fix SVG Thumb Display (1)
 function fix_svg_thumb_display() {
   echo '
     <style type="text/css">
@@ -45,13 +45,6 @@ function add_custom_body_classes( $classes ) {
     $classes[] = 'development-env';
   }
 
-  // Add Class to Tribe Event Pages
-  // if( !is_search() ) {
-  //   if( tribe_is_event() ) {
-  //     $classes[] = 'tribe-event-page';
-  //   }
-  // }
-
   return $classes;
 }
 add_filter( 'body_class', __NAMESPACE__ . '\\add_custom_body_classes' );
@@ -70,26 +63,15 @@ if (TYPEKIT_ID) {
   add_action('wp_head', __NAMESPACE__ . '\\typekit', 1);
 }
 
-// FontAwesome
-function fontawesome() { ?>
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-<?php }
+// FontAwesome from CDN
 if (FONTAWESOME == 'true') {
+  function fontawesome() { ?>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <?php }
+
   add_action('wp_head', __NAMESPACE__ . '\\fontawesome', 1);
 }
 
 
-// ACF
-// ============================================================
-
-// Add ACF Menu
-if(function_exists("acf_add_options_page")) {
-  acf_add_options_page();
-}
-
-if(function_exists("register_options_page")) {
-  register_options_page('Global Options');
-  register_options_page('Page Options');
-}
-
-
+// CREDITS:
+// (1) https://css-tricks.com/snippets/wordpress/allow-svg-through-wordpress-media-uploader/
