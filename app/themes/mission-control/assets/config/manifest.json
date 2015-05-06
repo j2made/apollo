@@ -43,7 +43,7 @@
     "dist": "dist-dev/"
   },
   "config": {
-    "devUrl": "mm2.dev",
+    "devUrl": "apollo.dev",
     "shipDest": "dist/"
   }
 }

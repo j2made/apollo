@@ -1,6 +1,6 @@
 <?php
 
-namespace Apollo\Util;
+namespace Apollo\Extend\Util;
 
 // TRUNCATION
 // ============================================================

@@ -1,11 +1,11 @@
 <div class="alert alert-warning">
-  <?php _e('Sorry, but the page you were trying to view does not exist.', 'sage'); ?>
+  Sorry, but the page you were trying to view does not exist.
 </div>
 
-<p><?php _e('It looks like this was the result of either:', 'sage'); ?></p>
+<p>It looks like this was the result of either:</p>
 <ul>
-  <li><?php _e('a mistyped address', 'sage'); ?></li>
-  <li><?php _e('an out-of-date link', 'sage'); ?></li>
+  <li>a mistyped address</li>
+  <li>an out-of-date link</li>
 </ul>
 
 <?php get_search_form(); ?>

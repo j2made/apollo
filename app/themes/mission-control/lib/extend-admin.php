@@ -1,28 +1,25 @@
 <?php
 
-namespace Apollo\Config\AdminView;
+namespace Apollo\Extend\Admin;
 
-// Custom ACF Toolbars
-add_filter( 'acf/fields/wysiwyg/toolbars', __NAMESPACE__ . '\\my_toolbars' );
-function my_toolbars( $toolbars ) {
+// Functions to alter the appearance of admin pages
 
-	$toolbar_options = array(
-		'bold',
-		'italic',
-		'undo',
-		'redo',
-		'link',
-		'unlink',
-		'removeformat',
-		'fullscreen'
-	);
+// Hide Features in Editor
+add_action( 'init', 'hide_on_screen', 10 );
+function hide_on_screen() {
 
-	$toolbars['Full'][1] = $toolbar_options;
+	$post_types = [
+	 'page'
+	];
 
-	// remove the 'Basic' toolbar completely
-	unset( $toolbars['Basic'] );
+	// FUTURE: ADD SECOND FOREACH TO COVER FEATURES
+	// $features = [
+	//  'editor'
+	// ];
 
-	return $toolbars;
+	foreach ($post_types as $p) {
+		remove_post_type_support( $p, 'editor');
+	}
 }
 
 // Customize TinyMCE Editor
@@ -61,30 +58,6 @@ add_action('admin_head', __NAMESPACE__ . '\\remove_media_controls');
 function remove_media_controls() {
 	remove_action( 'media_buttons', 'media_buttons' );
 }
-
-// Remove Gravity Forms "Add Form" Button
-// add_filter( 'gform_display_add_form_button', function(){
-// 	return false;
-// });
-
-// Hide Features in Editor
-// add_action( 'init', 'hide_on_screen', 10 );
-// function hide_on_screen() {
-
-// 	$post_types = [
-// 		'page'
-// 	];
-
-// 	// FUTURE: ADD SECOND FOREACH TO COVER FEATURES
-// 	// $features = [
-// 	// 	'editor'
-// 	// ];
-
-// 	foreach ($post_types as $p) {
-// 		remove_post_type_support( $p, 'editor');
-// 	}
-
-// }
 
 // Hide the Admin Bar in in dev
 if(WP_ENV === 'development' || WP_ENV === 'staging') :
