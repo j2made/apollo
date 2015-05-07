@@ -40,7 +40,7 @@
 
 # PATHS
 ## ============================================================
-"path":
+"paths":
   "source":   "assets/"    # Default source: `assets/`
   "dist":     "dist-dev/"  # Default source: `dist/`
 
