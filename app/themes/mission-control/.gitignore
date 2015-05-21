@@ -7,7 +7,7 @@ dist
 npm-debug.log
 
 # CONFIG
-mainfest.json
+assets/config/mainfest.json
 
 # STYLES
 
