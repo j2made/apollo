@@ -27,6 +27,14 @@ function display_sidebar() {
 function sidebar_body_class($classes) {
   if (display_sidebar()) {
     $classes[] = 'sidebar-primary';
+
+    if(Condition\sidebar_layout() === 'R') {
+      $classes[] = 'sidebar-right';
+    }
+
+    if(Condition\sidebar_layout() === 'L') {
+      $classes[] = 'sidebar-left';
+    }
   }
   return $classes;
 }
