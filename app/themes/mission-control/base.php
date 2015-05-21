@@ -15,30 +15,38 @@ use Apollo\Config\Condition;
     </div>
   <![endif]-->
 
-  <?php // Get head.php
-  do_action('get_header');
+<?php
+  do_action('get_header');                  // For WP support (not Theme)
+  get_template_part( 'templates/header' );  // Theme Wrapper Header
 
-  // Get the header
-  get_template_part( 'templates/header' );
-
-  // Conditionally get the page header
-  if(!Condition\hide_page_header())
+  if(!Condition\hide_page_header())         // Conditionally get the page header
     get_template_part( 'templates/page-header/_page-header-main' );
 
   // Sidebar Conditional
-  if ( Structure\display_sidebar() ) : ?>
+  if ( Structure\display_sidebar() ) :
+    $sidebar_open = '<aside class="sidebar" role="complementary">';
+    $sidebar_close = '</aside>'; ?>
+
     <main class="main container" role="main">
+
+      <?php if( Condition\sidebar_layout() === 'R' ) {
+        echo $sidebar_open; include Wrapper\sidebar_path(); echo $sidebar_close;
+      } ?>
+
       <section class="content-column">
         <?php include Wrapper\template_path(); ?>
       </section>
-      <aside class="sidebar" role="complementary">
-        <?php include Wrapper\sidebar_path(); ?>
-      </aside>
+
+      <?php if( Condition\sidebar_layout() === 'L' ) {
+        echo $sidebar_open; include Wrapper\sidebar_path(); echo $sidebar_close;
+      } ?>
+
     </main>
+
 
   <?php // Non-sidebar template
   else : ?>
-    <main class="main" role="main">
+    <main class="main container" role="main">
       <?php include Wrapper\template_path(); ?>
     </main>
 

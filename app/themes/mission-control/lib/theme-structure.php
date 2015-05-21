@@ -35,7 +35,8 @@ add_filter('body_class', __NAMESPACE__ . '\\sidebar_body_class');
 // NAV
 // ============================================================
 // Create a nav menu with very basic markup.
-//Deletes all CSS classes and id's, except for those listed in the array below
+// Deletes all CSS classes and id's, except for those listed in the array below
+
 function custom_wp_nav_menu_classes($classes, $item) {
 
   $shrunken_classes = array_intersect($classes, array(

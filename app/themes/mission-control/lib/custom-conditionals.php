@@ -34,9 +34,9 @@ function hide_page_header() {
 // ============================================================
 
 // If the event is a Tribe Event
-function is_tribe() {
+// function is_tribe() {
   // if(function_exists('tribe_is_event')) {
   //   if(tribe_is_event())
   //     return true;
   // }
-}
+// }
