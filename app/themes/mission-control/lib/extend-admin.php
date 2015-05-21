@@ -1,6 +1,6 @@
 <?php
 
-namespace Apollo\Config\AdminView;
+namespace Apollo\Extend\Admin;
 
 // Functions to alter the appearance of admin pages
 

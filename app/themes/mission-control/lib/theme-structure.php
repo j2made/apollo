@@ -35,7 +35,8 @@ add_filter('body_class', __NAMESPACE__ . '\\sidebar_body_class');
 // NAV
 // ============================================================
 // Create a nav menu with very basic markup.
-//Deletes all CSS classes and id's, except for those listed in the array below
+// Deletes all CSS classes and id's, except for those listed in the array below
+
 function custom_wp_nav_menu_classes($classes, $item) {
 
   $shrunken_classes = array_intersect($classes, array(
@@ -84,3 +85,14 @@ function strip_empty_classes($menu) {
 }
 add_filter ('wp_nav_menu', __NAMESPACE__ . '\\strip_empty_classes');
 
+// CLEAN WP_HEAD
+// ============================================================
+if(CLEAN_THEME_WP_HEAD) {
+  remove_action( 'wp_head', 'rsd_link' );
+  remove_action( 'wp_head', 'wlwmanifest_link' );
+  remove_action( 'wp_head', 'wp_generator' );
+  remove_action( 'wp_head', 'start_post_rel_link' );
+  remove_action( 'wp_head', 'index_rel_link' );
+  remove_action( 'wp_head', 'adjacent_posts_rel_link' );
+  remove_action( 'wp_head', 'wp_shortlink_wp_head' );
+}

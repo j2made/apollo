@@ -104,11 +104,19 @@ class Installer {
       rename( realpath($theme_init), realpath($theme_root) . '/' . $mission_name );
     }
 
-    // Change th value in the manifest.yml file
+    // Change the value in the manifest.yml file
     if(file_exists($theme_root . '/' . $mission_name . '/assets/manifest.yml')) {
       $yml_file = $theme_root . '/' . $mission_name . '/assets/manifest.yml';
       $file_contents = file_get_contents($yml_file);
       $file_contents = str_replace("CONFIG_THIS!", $home_url, $file_contents);
+      file_put_contents($yml_file, $file_contents);
+    }
+
+    // Replace Style.css Line
+    if(file_exists($theme_root . '/' . $mission_name . '/style.css')) {
+      $yml_file = $theme_root . '/' . $mission_name . '/style.css';
+      $file_contents = file_get_contents($yml_file);
+      $file_contents = str_replace("Mission Control by J2", $mission_name, $file_contents);
       file_put_contents($yml_file, $file_contents);
     }
 

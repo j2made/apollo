@@ -13,6 +13,22 @@ function hide_sidebar() {
   }
 }
 
+// SIDEBAR LAYOUT
+// ============================================================
+/* Determines which side the sidebar should be on. This
+ * function should only return 'R' or 'L'                    */
+
+function sidebar_layout() {
+  $direction = SIDEBAR_LAYOUT_RIGHT === true ? 'R' : 'L';
+
+  // if( /* argument(s) that returns true */ ) {
+  //   // Return the opposite of existing default
+  //   $direction = $direction === 'R' ? 'L' : 'R';
+  // }
+
+  return $direction;
+}
+
 // HIDE PAGE HEADER
 // ============================================================
 /* If this conditional returns true, the page header will not
