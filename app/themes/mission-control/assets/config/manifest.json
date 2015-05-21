@@ -38,7 +38,7 @@
       ]
     }
   },
-  "path": {
+  "paths": {
     "source": "assets/",
     "dist": "dist-dev/"
   },
