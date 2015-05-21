@@ -8,4 +8,4 @@
   <li>an out-of-date link</li>
 </ul>
 
-<?php get_search_form(); ?>
+<?php Apollo\Extend\Util\get_search_form(); ?>

@@ -4,8 +4,9 @@ namespace Apollo\Config\Condition;
 
 // CUSTOM SIDEBAR TESTS
 // ============================================================
-/* If the conditional is a standard WP function, add to lib/config
- * Only add to this if a custom conditional is required.        */
+
+// Hide Sidebar
+// If function returns true, the sidebar will be hidden
 
 function hide_sidebar() {
   if( is_404() || is_front_page() ) {
@@ -13,20 +14,13 @@ function hide_sidebar() {
   }
 }
 
-// SIDEBAR LAYOUT
-// ============================================================
-/* Determines which side the sidebar should be on. This
- * function should only return 'R' or 'L'                    */
+// Switch Sidebar Orientation
+// If function returns true, sidebar layout will be switched
 
-function sidebar_layout() {
-  $direction = SIDEBAR_LAYOUT_RIGHT === true ? 'R' : 'L';
-
-  // if( /* argument(s) that returns true */ ) {
-  //   // Return the opposite of existing default
-  //   $direction = $direction === 'R' ? 'L' : 'R';
+function sidebar_switch() {
+  // if( is_search() ) {
+  //   return true;
   // }
-
-  return $direction;
 }
 
 // HIDE PAGE HEADER

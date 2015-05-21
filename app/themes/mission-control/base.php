@@ -25,21 +25,24 @@ use Apollo\Config\Condition;
 
     <?php                                       // Sidebar Template
     if ( Structure\display_sidebar() ) {
-      $sidebar_direction = Condition\sidebar_layout();
-      $sidebar_open = '<aside class="sidebar" role="complementary">';
-      $sidebar_close = '</aside>';
+      $sidebar_direction = Structure\sidebar_orientation();
+      $sidebar_open      = '<aside class="sidebar" role="complementary">';
+      $sidebar_close     = '</aside>';
 
       if( $sidebar_direction === 'L' ) {        // Left Sidebar
-        echo $sidebar_open; include Wrapper\sidebar_path(); echo $sidebar_close;
+        echo $sidebar_open;
+        include Wrapper\sidebar_path();
+        echo $sidebar_close;
       }
 
-      // Content Container
-      echo '<section class="content-column">';
+      echo '<section class="content-column">';  // Content Container
         include Wrapper\template_path();
       echo '</section>';
 
       if( $sidebar_direction === 'R' ) {        // Right Sidebar
-        echo $sidebar_open; include Wrapper\sidebar_path(); echo $sidebar_close;
+        echo $sidebar_open;
+        include Wrapper\sidebar_path();
+        echo $sidebar_close;
       }
 
     } else {                                    // Non-sidebar template
