@@ -1,7 +1,7 @@
 <?php
 
 namespace Apollo\Base;
-use Apollo\Sage\Wrapper;
+use Apollo\Wrapper;
 use Apollo\Admin\Structure;
 use Apollo\Config\Condition;
 ?>
