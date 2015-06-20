@@ -5,14 +5,10 @@
 /* If the conditional is a standard WP function, add to lib/config
  * Only add to this if a custom conditional is required.        */
 
-function custom_sidebar_tests() {
-  // if( is_post_type_archive( array( 'board','staff' ) ) ) {
-  //   return true;
-  // }
-
-  // if(is_tribe() && !is_single()) {
-  //   return true;
-  // }
+function hide_sidebar() {
+  if( is_404() || is_front_page() ) {
+    return true;
+  }
 }
 
 // HIDE PAGE HEADER
@@ -29,6 +25,21 @@ function hide_page_header() {
   // }
 }
 
+// SIDEBAR LAYOUT
+// ============================================================
+/* Determines which side the sidebar should be on. This
+ * function should only return 'R' or 'L'                    */
+
+function sidebar_layout() {
+  $direction = SIDEBAR_LAYOUT_RIGHT === true ? 'R' : 'L';
+
+  // if( /* argument(s) that returns true */ ) {
+  //   // Return the opposite of existing default
+  //   $direction = $direction === 'R' ? 'L' : 'R';
+  // }
+
+  return $direction;
+}
 
 // THEME SPECIFIC CUSTOM CONDITIONALS
 // ============================================================
