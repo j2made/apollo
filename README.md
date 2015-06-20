@@ -1,10 +1,10 @@
 # Apollo
 
-#### A Worpress craft launched with Composer, manned with automation.
+#### A WordPress craft launched with Composer, manned with automation.
 
 ## About
 
-Apollo is a two stage unit: A Wordpress Stack built with Composer, and a Starter Theme packed with Sass, Gulp, Bourbon, Bower, and a Theme Wrapper structure.
+Apollo is a two stage unit: A WordPress Stack built with Composer, and a Starter Theme packed with Sass, Gulp, Bourbon, Bower, and a Theme Wrapper structure.
 
 
 #### Minimum Requirements (Stack)
@@ -21,7 +21,7 @@ Versions listed are required to be equal to or greater than.
 - PHP v5.4.3
 - [Gulp] (http://gulpjs.com/) v3.8.10
 - [Bower] (http://bower.io/) v1.3.12
-- Wordpress v4.1.0 (installed via stack)
+- WordPress v4.1.0 (installed via stack)
 
 ## Installation
 
@@ -89,11 +89,11 @@ You will also be asked some boolean questions:
 
 If you have an issue with the prompts, or a `env-config.php` cannot be created, open an issue on the [project repo] (http://github.com/j2made/apollo/issues). You can copy the file `lib/config/env-config-default.php` to the root of the project and rename it `env-config.php`. Then change the values of the definitions.
 
-#### Wordpress Versions
-Apollo uses [John Bloch Composer Repo] (https://github.com/johnpbloch/wordpress-core-installer) to install Wordpress. To update WP, simply update the version of `"johnpbloch/wordpress"` to match the version of Wordpress you would like.
+#### WordPress Versions
+Apollo uses [John Bloch Composer Repo] (https://github.com/johnpbloch/wordpress-core-installer) to install WordPress. To update WP, simply update the version of `"johnpbloch/wordpress"` to match the version of WordPress you would like.
 
 #### Plugins
-Apollo's composer.json is setup to connect with the [Wordpress Packagist] (http://wpackagist.org/) library. If you want to use a plugin, find it in the Wordpress plugin repo, and copy the slug. In `composer.json`, add the plugin slug prepended by `wpackagist-plugin/` and its verion in the `require` array. 
+Apollo's composer.json is setup to connect with the [WordPress Packagist] (http://wpackagist.org/) library. If you want to use a plugin, find it in the WordPress plugin repo, and copy the slug. In `composer.json`, add the plugin slug prepended by `wpackagist-plugin/` and its verion in the `require` array. 
 
 Example:
     `"wpackagist-plugin/duplicate-post": "~2.6",`
@@ -116,4 +116,4 @@ The Apollo repo workflow utilizes Git Flow. Features branches should be named wi
 
 
 ## Credits:
-This project is heavily influenced by [Bedrock] (https://github.com/roots/bedrock) and [Sage] (https://github.com/roots/sage) by the [Roots] (https://roots.io/) team. A lot of the code here has been adoted from or inspired by those projects, including the gulpfile and the wrapper.
+This project is heavily influenced by [Bedrock] (https://github.com/roots/bedrock) and [Sage] (https://github.com/roots/sage) by the [Roots] (https://roots.io/) team. A lot of the code here has been adoted from or inspired by those projects, including the gulpfile and [the wrapper] (https://roots.io/sage/docs/theme-wrapper/).

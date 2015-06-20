@@ -1,6 +1,6 @@
 <?php
 
-namespace Apollo\Sage\Assets;
+namespace Apollo\Assets;
 
 /**
  * Scripts and stylesheets

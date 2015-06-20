@@ -1,4 +1,4 @@
-<?php use Roots\Sage\Nav; ?>
+<?php use Apollo\Nav; ?>
 
 <header class="navigation" role="banner">
   <a href="<?= esc_url(home_url('/')); ?>" class="logo">
@@ -21,4 +21,3 @@
     ?>
   </nav>
 </header>
-<div class="nav-bounce-fix"></div>
