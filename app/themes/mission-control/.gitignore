@@ -1,15 +1,8 @@
-# .gitignore file for theme files
-
-# DIRECTORIES
+# Theme
+error_log
+dist-dev
 bower_components
 node_modules
-dist
 npm-debug.log
-
-# CONFIG
+gulpfile-notes.md
 assets/config/mainfest.json
-
-# STYLES
-
-
-
