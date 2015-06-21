@@ -18,7 +18,7 @@ if(function_exists("register_options_page")) {
   register_options_page('Page Options');
 }
 
-// CUSTOM ADMIN DISPAY
+// CUSTOM ADMIN DISPLAY
 // ============================================================
 
 add_filter( 'acf/fields/wysiwyg/toolbars', __NAMESPACE__ . '\\my_toolbars' );

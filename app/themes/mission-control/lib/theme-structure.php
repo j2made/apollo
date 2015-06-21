@@ -3,6 +3,7 @@
 namespace Apollo\Admin\Structure;
 use Apollo\Config\Condition;
 
+
 // CONTENT WIDTH
 // ============================================================
 // Defined in config-settings
@@ -11,10 +12,23 @@ if (!isset($content_width)) {
   $content_width = CONTENT_WIDTH;
 }
 
+
 // SIDEBAR
 // ============================================================
-// If hide_sidebar() is true, this will return false, hiding
 
+// Determine the layout of the sidebar
+function sidebar_orientation() {
+  $direction = SIDEBAR_LAYOUT_RIGHT === true ? 'R' : 'L';
+
+  if( Condition\sidebar_switch() ) {
+    // Swap layout orientation
+    $direction = $direction === 'R' ? 'L' : 'R';
+  }
+
+  return $direction;
+}
+
+// Determine if sidebar is visible or not
 function display_sidebar() {
   if( Condition\hide_sidebar() ) {
     return false;
@@ -27,10 +41,18 @@ function display_sidebar() {
 function sidebar_body_class($classes) {
   if (display_sidebar()) {
     $classes[] = 'sidebar-primary';
+
+    if( Condition\sidebar_switch() ) {
+      $orientation = sidebar_orientation();
+      if($orientation === 'R') $classes[] = 'sidebar-right';
+      if($orientation === 'L') $classes[] = 'sidebar-left';
+    }
   }
+
   return $classes;
 }
 add_filter('body_class', __NAMESPACE__ . '\\sidebar_body_class');
+
 
 // NAV
 // ============================================================
@@ -84,6 +106,7 @@ function strip_empty_classes($menu) {
     return $menu;
 }
 add_filter ('wp_nav_menu', __NAMESPACE__ . '\\strip_empty_classes');
+
 
 // CLEAN WP_HEAD
 // ============================================================
