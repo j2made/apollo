@@ -32,7 +32,7 @@ Make sure you have everything listed in the above requirements installed, and th
 - A series of prompts will collect information based on your enviornment, which will be used to generate a config file. See Prompts below for more information.
 - If you choose not to run NPM from the composer prompt, cd to the theme and run `npm install`
 - Run `bower update` and `gulp build` to complete theme initialization.
-- Point local hosts to the directory you created (the folder should now have a file name `env-config.php` inside of it.
+- Point local hosts to the directory you created (the folder should now have a file name `env.php` inside of it.
 - Change the remote repo location to your own damn repo.
 - Start coding. Shoot for the moon.
 
@@ -42,7 +42,7 @@ Make sure you have everything listed in the above requirements installed, and th
 #### Site Configuration
 Apollo only uses `wp-config.php` as an initializer file. The information that is typically configured in `wp-config.php` is instead spread throughout the stack. As such, you should never alter `wp-config.php` with site confing information.
 
-All neccessary config information, such as database info, salts, theme enviornment, host url, etc., is stored in the generated `env-config.php` file. This should file should be ignored in git, because you should keep your creds to your own damn self.
+All neccessary config information, such as database info, salts, theme enviornment, host url, etc., is stored in the generated `env.php` file. This should file should be ignored in git, because you should keep your creds to your own damn self.
 
 #### Theme Enviornment Configuration
 Theme enviornments are controlled via the `WP_ENV` definition in `eng-config.php` and should be one of the following options:
@@ -85,9 +85,9 @@ You will also be asked some boolean questions:
 | Prompt | Info | Default |
 | ------ | ---- | ------- |
 | `Run NPM after dependencies have been installed?` | Enter `Y` or `N` | `N` |
-| `Generate salts and append to the env-config.php file?` | Enter `Y` or `N` | `N` |
+| `Generate salts and append to the env.php file?` | Enter `Y` or `N` | `N` |
 
-If you have an issue with the prompts, or a `env-config.php` cannot be created, open an issue on the [project repo] (http://github.com/j2made/apollo/issues). You can copy the file `lib/config/env-config-default.php` to the root of the project and rename it `env-config.php`. Then change the values of the definitions.
+If you have an issue with the prompts, or a `env.php` cannot be created, open an issue on the [project repo] (http://github.com/j2made/apollo/issues). You can copy the file `lib/config/env-default.php` to the root of the project and rename it `env.php`. Then change the values of the definitions.
 
 #### WordPress Versions
 Apollo uses [John Bloch Composer Repo] (https://github.com/johnpbloch/wordpress-core-installer) to install WordPress. To update WP, simply update the version of `"johnpbloch/wordpress"` to match the version of WordPress you would like.

@@ -19,7 +19,7 @@ lib/vendor/*
 !vendor/.gitkeep
 
 # Apollo Config
-env-config.php
+env.php
 
 # Theme
 dist
