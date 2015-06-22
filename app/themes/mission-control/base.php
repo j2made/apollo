@@ -15,45 +15,24 @@ use Apollo\Config\Condition;
     </div>
   <![endif]-->
 
-  <?php do_action('get_header');                // WP Header (ignore)
-  get_template_part( 'templates/header' );      // Theme Wrapper Header
+  <?php do_action('get_header');                  // WP Header (ignore)
+  get_template_part( 'templates/header' );        // Theme Wrapper Header
 
-  if(!Condition\hide_page_header())             // Conditionally get the page header
+  if(!Condition\hide_page_header())               // Conditionally get the page header
     get_template_part( 'templates/page-header/_page-header-main' ); ?>
 
   <main class="main container" role="main">
-
-    <?php                                       // Sidebar Template
-    if ( Structure\display_sidebar() ) {
-      $sidebar_direction = Structure\sidebar_orientation();
-      $sidebar_open      = '<aside class="sidebar" role="complementary">';
-      $sidebar_close     = '</aside>';
-
-      if( $sidebar_direction === 'L' ) {        // Left Sidebar
-        echo $sidebar_open;
-        include Wrapper\sidebar_path();
-        echo $sidebar_close;
-      }
-
-      echo '<section class="content-column">';  // Content Container
-        include Wrapper\template_path();
-      echo '</section>';
-
-      if( $sidebar_direction === 'R' ) {        // Right Sidebar
-        echo $sidebar_open;
-        include Wrapper\sidebar_path();
-        echo $sidebar_close;
-      }
-
-    } else {                                    // Non-sidebar template
-      include Wrapper\template_path();
-    } ?>
-
+    <?php
+      // Content layout structure
+      // Refer to `lib/theme-structure.php`
+      // @params: $main_class, $sidebar_class
+      Structure\base_structure('main-content', 'sidebar');
+    ?>
   </main>
 
   <?php
-    get_template_part( 'templates/footer' );    // Theme Wrapper Footer
-    wp_footer();                                // WP Footer (ignore)
+    get_template_part( 'templates/footer' );      // Theme Wrapper Footer
+    wp_footer();                                  // WP Footer (ignore)
   ?>
 
 </body>

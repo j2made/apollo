@@ -2,6 +2,7 @@
 
 namespace Apollo\Admin\Structure;
 use Apollo\Config\Condition;
+use Apollo\Theme\Wrapper;
 
 
 // CONTENT WIDTH
@@ -120,3 +121,37 @@ if(CLEAN_THEME_WP_HEAD) {
   remove_action( 'wp_head', 'adjacent_posts_rel_link' );
   remove_action( 'wp_head', 'wp_shortlink_wp_head' );
 }
+
+
+// BASE STRUCTURE
+// ============================================================
+// Create the base layout structure, based on sidebar settings
+
+function base_structure($main_class = 'main_content', $sidebar_class = 'sidebar') {
+  if ( display_sidebar() ) {
+    $sidebar_direction = Structure\sidebar_orientation();
+    $sidebar_open      = '<aside class="' . $sidebar_class . '" role="complementary">';
+    $sidebar_close     = '</aside>';
+
+    if( $sidebar_direction === 'L' ) {        // Left Sidebar
+      echo $sidebar_open;
+      include Wrapper\sidebar_path();
+      echo $sidebar_close;
+    }
+
+    echo '<section class="' . $main_class . '">';  // Content Container
+      include Wrapper\template_path();
+    echo '</section>';
+
+    if( $sidebar_direction === 'R' ) {        // Right Sidebar
+      echo $sidebar_open;
+      include Wrapper\sidebar_path();
+      echo $sidebar_close;
+    }
+
+  } else {                                    // Non-sidebar template
+    include Wrapper\template_path();
+  }
+}
+
+
