@@ -1,8 +1,9 @@
 # Theme
 error_log
-dist-dev
 bower_components
 node_modules
 npm-debug.log
-gulpfile-notes.md
+
+# Assets
+dist-dev
 assets/config/mainfest.json
