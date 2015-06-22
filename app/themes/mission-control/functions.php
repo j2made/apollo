@@ -14,6 +14,7 @@ $function_includes = [
   // 'lib/extend-taxonomy.php',     // Custom Taxonomies
   // 'lib/extend-admin.php',        // Customize WP Admin
   // 'lib/extend-queries.php',      // Alterations to queries via hooks
+  // 'lib/extend-plugins.php',      // Hooks and Functions specific to plugins
   // 'lib/extend-events.php',       // Tribe Event Functions
   // 'lib/extend-acf.php',          // Advanced Custom Field Functions
   // 'lib/extend-gforms.php'        // Gravity Form Functions
