@@ -10,9 +10,8 @@ $function_includes = [
   'lib/extend-utilities.php',       // Custom Functions for Practical Purposes
 
   /* Uncomment as needed */
-  // 'lib/custom-conditionals.php'  // Advanced Theme Conditionals
-  // 'lib/custom-post-type.php',    // Custom Post Types
-  // 'lib/custom-taxonomy.php',     // Custom Taxonomies
+  // 'lib/extend-post-type.php',    // Custom Post Types
+  // 'lib/extend-taxonomy.php',     // Custom Taxonomies
   // 'lib/extend-admin.php',        // Customize WP Admin
   // 'lib/extend-queries.php',      // Alterations to queries via hooks
   // 'lib/extend-events.php',       // Tribe Event Functions
