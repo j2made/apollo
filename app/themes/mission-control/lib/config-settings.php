@@ -23,6 +23,12 @@ define('CLEAN_THEME_WP_HEAD', true);      // Clean up wp head       Boolean. Fun
 
 define('SIDEBAR_LAYOUT_RIGHT', true);     // Sidebar Layout         Boolean. Setting to false produces left layout
 
+if (WP_ENV == 'production' || WP_ENV == 'staging') {
+ define('DIST_DIR', '/dist/');
+} else {
+ define('DIST_DIR', '/dist-dev/');
+}
+
 
 // THEME SUPPORT
 // ============================================================
