@@ -1,5 +1,7 @@
 <?php
 
+namespace Apollo\Config\Condition;
+
 // CUSTOM SIDEBAR TESTS
 // ============================================================
 /* If the conditional is a standard WP function, add to lib/config
@@ -30,15 +32,13 @@ function hide_page_header() {
 /* Determines which side the sidebar should be on. This
  * function should only return 'R' or 'L'                    */
 
-function sidebar_layout() {
-  $direction = SIDEBAR_LAYOUT_RIGHT === true ? 'R' : 'L';
+function sidebar_switch() {
 
-  // if( /* argument(s) that returns true */ ) {
+  // if( is_page('blog') ) {
   //   // Return the opposite of existing default
-  //   $direction = $direction === 'R' ? 'L' : 'R';
+  //   return true;
   // }
 
-  return $direction;
 }
 
 // THEME SPECIFIC CUSTOM CONDITIONALS

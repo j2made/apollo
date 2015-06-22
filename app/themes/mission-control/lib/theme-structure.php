@@ -44,6 +44,7 @@ function sidebar_body_class($classes) {
 
     if( Condition\sidebar_switch() ) {
       $orientation = sidebar_orientation();
+
       if($orientation === 'R') $classes[] = 'sidebar-right';
       if($orientation === 'L') $classes[] = 'sidebar-left';
     }
