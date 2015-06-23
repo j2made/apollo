@@ -47,7 +47,7 @@
   ],
   "require": {
     "php": ">=5.4",
-    "johnpbloch/wordpress": "4.1",
+    "johnpbloch/wordpress": "4.2.2",
     "composer/installers": "v1.0.12"
   },
   "extra": {
