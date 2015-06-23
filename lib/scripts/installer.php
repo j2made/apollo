@@ -25,8 +25,8 @@ class Installer {
     $theme_root = $root . '/app/themes/';
     $theme_init_name = 'mission-control';
     $theme_init = $root . '/app/themes/' . $theme_init_name;
-    $db_config_file = "{$root}/env-config.php";
-    $db_config_sample = "{$root}/lib/config/env-config-sample.php";
+    $db_config_file = "{$root}/env.php";
+    $db_config_sample = "{$root}/lib/config/env-sample.php";
     $composer = $event->getComposer();
     $io = $event->getIO();
 
@@ -134,14 +134,14 @@ class Installer {
   public static function addSalts(Event $event) {
 
     $root = dirname( dirname(__DIR__) );
-    $app_config_file = "{$root}/env-config.php";
+    $app_config_file = "{$root}/env.php";
     $composer = $event->getComposer();
     $io = $event->getIO();
 
     if (!$io->isInteractive()) {
       $generate_salts = $composer->getConfig()->get('generate-salts');
     } else {
-      $generate_salts = $io->askConfirmation('<info>Generate salts and append to the env-config.php file?</info> [<comment>Y,n</comment>]? ', true);
+      $generate_salts = $io->askConfirmation('<info>Generate salts and append to the env.php file?</info> [<comment>Y,n</comment>]? ', true);
     }
 
     // If salts should not be generated
