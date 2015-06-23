@@ -17,43 +17,30 @@ if (!isset($content_width)) {
 // SIDEBAR
 // ============================================================
 
-// Determine the layout of the sidebar
+// Determine sidebar layout
 function sidebar_orientation() {
-  $direction = SIDEBAR_LAYOUT_RIGHT === true ? 'R' : 'L';
+  // Determine layout orientation
+  $sidebar_direction = SIDEBAR_LAYOUT_RIGHT === true ? 'R' : 'L';
+  if( Condition\sidebar_switch() )
+    $sidebar_direction = $sidebar_direction === 'R' ? 'L' : 'R';
 
-  if( Condition\sidebar_switch() ) {
-    // Swap layout orientation
-    $direction = $direction === 'R' ? 'L' : 'R';
-  }
-
-  return $direction;
-}
-
-// Determine if sidebar is visible or not
-function display_sidebar() {
-  if( Condition\hide_sidebar() ) {
-    return false;
-  } else {
-    return true;
-  }
+  return $sidebar_direction;
 }
 
 // Add Sidebar class to body
-function sidebar_body_class($classes) {
-  if (display_sidebar()) {
+function sidebar_body_class($boolean) {
+  if($boolean) {
     $classes[] = 'sidebar-primary';
 
-    if( Condition\sidebar_switch() ) {
-      $orientation = sidebar_orientation();
+    $sidebar_direction = sidebar_orientation();
+    if($sidebar_direction === 'R') $classes[] = 'sidebar-right';
+    if($sidebar_direction === 'L') $classes[] = 'sidebar-left';
 
-      if($orientation === 'R') $classes[] = 'sidebar-right';
-      if($orientation === 'L') $classes[] = 'sidebar-left';
-    }
+    return $classes;
   }
-
-  return $classes;
 }
 add_filter('body_class', __NAMESPACE__ . '\\sidebar_body_class');
+
 
 
 // NAV
@@ -128,22 +115,30 @@ if(CLEAN_THEME_WP_HEAD) {
 // Create the base layout structure, based on sidebar settings
 
 function base_structure($main_class = 'main_content', $sidebar_class = 'sidebar') {
-  if ( display_sidebar() ) {
-    $sidebar_direction = Structure\sidebar_orientation();
+  if ( !Condition\hide_sidebar() ) {
+
+    // Determine layout orientation
+    $sidebar_direction = sidebar_orientation();
+
+    // Create classes for sidebar
+    sidebar_body_class(true);
     $sidebar_open      = '<aside class="' . $sidebar_class . '" role="complementary">';
     $sidebar_close     = '</aside>';
 
-    if( $sidebar_direction === 'L' ) {        // Left Sidebar
+    // Left Sidebar
+    if( $sidebar_direction === 'L' ) {
       echo $sidebar_open;
       include Wrapper\sidebar_path();
       echo $sidebar_close;
     }
 
-    echo '<section class="' . $main_class . '">';  // Content Container
+    // Content Container
+    echo '<section class="' . $main_class . '">';
       include Wrapper\template_path();
     echo '</section>';
 
-    if( $sidebar_direction === 'R' ) {        // Right Sidebar
+    // Right Sidebar
+    if( $sidebar_direction === 'R' ) {
       echo $sidebar_open;
       include Wrapper\sidebar_path();
       echo $sidebar_close;
