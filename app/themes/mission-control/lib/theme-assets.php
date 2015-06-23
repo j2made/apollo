@@ -96,13 +96,7 @@ function bower_map_to_cdn($dependency, $fallback) {
 
 function assets() {
 
-  if (WP_ENV == 'production' || WP_ENV == 'staging') {
-   $dist_var = '/dist/';
-  } else {
-   $dist_var = '/dist-dev/';
-  }
-
-  wp_enqueue_style('sage_css', asset_path('styles/main.css', $dist_var), false, null);
+  wp_enqueue_style('sage_css', asset_path('styles/main.css', DIST_DIR), false, null);
 
   /**
    * Grab Google CDN's latest jQuery with a protocol relative URL; fallback to local if offline
@@ -117,7 +111,7 @@ function assets() {
       'name' => 'jquery',
       'cdn' => 'google',
       'file' => 'jquery.min.js'
-    ], asset_path('scripts/jquery.js', $dist_var)), [], null, true);
+    ], asset_path('scripts/jquery.js', DIST_DIR)), [], null, true);
 
     add_filter('script_loader_src', __NAMESPACE__ . '\\jquery_local_fallback', 10, 2);
   }
@@ -126,9 +120,9 @@ function assets() {
     wp_enqueue_script('comment-reply');
   }
 
-  wp_enqueue_script('modernizr', asset_path('scripts/modernizr.js', $dist_var), [], null, true);
+  wp_enqueue_script('modernizr', asset_path('scripts/modernizr.js', DIST_DIR), [], null, true);
   wp_enqueue_script('jquery');
-  wp_enqueue_script('sage_js', asset_path('scripts/main.js', $dist_var), [], null, true);
+  wp_enqueue_script('sage_js', asset_path('scripts/main.js', DIST_DIR), [], null, true);
 }
 add_action('wp_enqueue_scripts', __NAMESPACE__ . '\\assets', 100);
 
@@ -136,14 +130,8 @@ add_action('wp_enqueue_scripts', __NAMESPACE__ . '\\assets', 100);
 function jquery_local_fallback($src, $handle = null) {
   static $add_jquery_fallback = false;
 
-  if (WP_ENV == 'production') {
-   $dist_var = '/dist-prod/';
-  } else {
-   $dist_var = '/dist/';
-  }
-
   if ($add_jquery_fallback) {
-    echo '<script>window.jQuery || document.write(\'<script src="' . get_template_directory_uri() . $dist_var . 'scripts/jquery.js"><\/script>\')</script>' . "\n";
+    echo '<script>window.jQuery || document.write(\'<script src="' . get_template_directory_uri() . DIST_DIR . 'scripts/jquery.js"><\/script>\')</script>' . "\n";
     $add_jquery_fallback = false;
   }
 

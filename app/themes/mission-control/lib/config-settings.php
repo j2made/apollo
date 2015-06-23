@@ -11,8 +11,8 @@ if (!defined('WP_ENV')) {
 // VARIABLE DEFINITIONS
 // ============================================================
 
-define('TYPEKIT_ID', 'tjr8wlz');          // Typekit                Kit ID
-define('FONTAWESOME', true);              // Include FontAwesome    Boolean, if true, will be loaded from CDN
+define('TYPEKIT_ID', false);              // Typekit                Kit ID
+define('FONTAWESOME', false);             // Include FontAwesome    Boolean, if true, will be loaded from CDN
 define('GOOGLE_ANALYTICS_ID', '');        // Google Analytics ID    Example: UA-XXXXXXXX-X)
 define('CONTENT_WIDTH', '1140');          // Content Width          https://codex.wordpress.org/Content_Width
 define('CLEAN_THEME_WP_HEAD', true);      // Clean up wp head       Boolean. Function found in lib/theme-structure (Clean wp_head)
@@ -22,6 +22,12 @@ define('CLEAN_THEME_WP_HEAD', true);      // Clean up wp head       Boolean. Fun
 // ============================================================
 
 define('SIDEBAR_LAYOUT_RIGHT', true);     // Sidebar Layout         Boolean. Setting to false produces left layout
+
+if (WP_ENV == 'production' || WP_ENV == 'staging') {
+ define('DIST_DIR', '/dist/');
+} else {
+ define('DIST_DIR', '/dist-dev/');
+}
 
 
 // THEME SUPPORT

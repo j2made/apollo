@@ -1,15 +1,9 @@
-# .gitignore file for theme files
-
-# DIRECTORIES
+# Theme
+error_log
 bower_components
 node_modules
-dist
 npm-debug.log
 
-# CONFIG
+# Assets
+dist-dev
 assets/config/mainfest.json
-
-# STYLES
-
-
-

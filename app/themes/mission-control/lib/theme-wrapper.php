@@ -1,6 +1,6 @@
 <?php
 
-namespace Apollo\Wrapper;
+namespace Apollo\Theme\Wrapper;
 // Theme Wrapper function from Sage:
 // https://github.com/roots/sage/blob/8.0.0/lib/wrapper.php
 

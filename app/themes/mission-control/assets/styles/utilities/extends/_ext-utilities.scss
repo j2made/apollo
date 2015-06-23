@@ -18,6 +18,42 @@
 }
 
 
+// SPACING (SPACING VARS IN VARIABLES/_VAR-UTILITIES)
+// ============================================================
+
+%space-before-sm {
+  margin-top: $space-sm;
+}
+
+%space-after-sm {
+  margin-bottom: $space-sm;
+}
+
+%space-before-md {
+  margin-top: $space-md;
+}
+
+%space-after-md {
+  margin-bottom: $space-md;
+}
+
+%space-before-lg {
+  margin-top: $space-lg;
+}
+
+%space-after-lg {
+  margin-bottom: $space-lg;
+}
+
+%space-before-xl {
+  margin-top: $space-xl;
+}
+
+%space-after-xl {
+  margin-bottom: $space-xl;
+}
+
+
 // CSS3 EXTENDS
 // ============================================================
 
@@ -38,3 +74,4 @@
 %long-trans {
   transition: all 0.5s;
 }
+

@@ -20,10 +20,3 @@ lib/vendor/*
 
 # Apollo Config
 env.php
-
-# Theme
-dist
-bower_components
-node_modules
-npm-debug.log
-app/themes/mission-control/gulpfile-notes.md
