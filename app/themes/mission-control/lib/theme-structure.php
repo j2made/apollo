@@ -33,14 +33,52 @@ function sidebar_body_class($boolean) {
     $classes[] = 'sidebar-primary';
 
     $sidebar_direction = sidebar_orientation();
-    if($sidebar_direction === 'R') $classes[] = 'sidebar-right';
-    if($sidebar_direction === 'L') $classes[] = 'sidebar-left';
+    $classes[] = ($sidebar_direction === 'R') ? 'sidebar-right' : 'sidebar-left';
 
     return $classes;
   }
 }
 add_filter('body_class', __NAMESPACE__ . '\\sidebar_body_class');
 
+
+// BASE STRUCTURE
+// ============================================================
+// Create the base layout structure, based on sidebar settings
+
+function base_structure($main_class = 'main_content', $sidebar_class = 'sidebar') {
+  if ( !Condition\hide_sidebar() ) {
+
+    // Determine layout orientation
+    $sidebar_direction = sidebar_orientation();
+
+    // Create classes for sidebar
+    sidebar_body_class(true);
+    $sidebar_open      = '<aside class="' . $sidebar_class . '" role="complementary">';
+    $sidebar_close     = '</aside>';
+
+    // Left Sidebar
+    if( $sidebar_direction === 'L' ) {
+      echo $sidebar_open;
+      include Wrapper\sidebar_path();
+      echo $sidebar_close;
+    }
+
+    // Content Container
+    echo '<section class="' . $main_class . '">';
+      include Wrapper\template_path();
+    echo '</section>';
+
+    // Right Sidebar
+    if( $sidebar_direction === 'R' ) {
+      echo $sidebar_open;
+      include Wrapper\sidebar_path();
+      echo $sidebar_close;
+    }
+
+  } else {                                    // Non-sidebar template
+    include Wrapper\template_path();
+  }
+}
 
 
 // NAV
@@ -107,46 +145,12 @@ if(CLEAN_THEME_WP_HEAD) {
   remove_action( 'wp_head', 'index_rel_link' );
   remove_action( 'wp_head', 'adjacent_posts_rel_link' );
   remove_action( 'wp_head', 'wp_shortlink_wp_head' );
-}
 
-
-// BASE STRUCTURE
-// ============================================================
-// Create the base layout structure, based on sidebar settings
-
-function base_structure($main_class = 'main_content', $sidebar_class = 'sidebar') {
-  if ( !Condition\hide_sidebar() ) {
-
-    // Determine layout orientation
-    $sidebar_direction = sidebar_orientation();
-
-    // Create classes for sidebar
-    sidebar_body_class(true);
-    $sidebar_open      = '<aside class="' . $sidebar_class . '" role="complementary">';
-    $sidebar_close     = '</aside>';
-
-    // Left Sidebar
-    if( $sidebar_direction === 'L' ) {
-      echo $sidebar_open;
-      include Wrapper\sidebar_path();
-      echo $sidebar_close;
-    }
-
-    // Content Container
-    echo '<section class="' . $main_class . '">';
-      include Wrapper\template_path();
-    echo '</section>';
-
-    // Right Sidebar
-    if( $sidebar_direction === 'R' ) {
-      echo $sidebar_open;
-      include Wrapper\sidebar_path();
-      echo $sidebar_close;
-    }
-
-  } else {                                    // Non-sidebar template
-    include Wrapper\template_path();
-  }
+  // REMOVE EMOJI SCRIPTS
+  remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+  remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+  remove_action( 'wp_print_styles', 'print_emoji_styles' );
+  remove_action( 'admin_print_styles', 'print_emoji_styles' );
 }
 
 
