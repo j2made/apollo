@@ -248,8 +248,7 @@ gulp.task('watch', function() {
 // `gulp build` - Run all the build tasks but don't clean up beforehand.
 // Generally you should be running `gulp` instead of `gulp build`.
 gulp.task('build', ['config'], function(callback) {
-  runSequence('config',
-              'styles',
+  runSequence('styles',
               'scripts',
               ['fonts', 'images'],
               callback);
