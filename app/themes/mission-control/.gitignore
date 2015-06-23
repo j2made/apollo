@@ -6,4 +6,5 @@ npm-debug.log
 
 # Assets
 dist-dev
+dist-dev/*
 assets/config/mainfest.json

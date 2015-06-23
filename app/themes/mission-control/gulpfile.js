@@ -223,7 +223,7 @@ gulp.task('wiredep', function() {
 // `manifest.config.devUrl`. When a modification is made to an asset, run the
 // build step for that asset and inject the changes into the page.
 // See: http://www.browsersync.io
-gulp.task('watch', function() {
+gulp.task('watch', ['config'], function() {
   browserSync({
     proxy: config.devUrl,
     snippetOptions: {

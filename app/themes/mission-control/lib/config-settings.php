@@ -42,7 +42,7 @@ function theme_setup() {
 
   add_theme_support('title-tag');                                         // (2)
   add_theme_support('post-thumbnails');                                   // (3)
-  add_editor_style('/dist/styles/editor-style.css');
+  add_editor_style( DIST_DIR . 'styles/editor-style.css');
   add_theme_support( 'html5', [                                           // (4)
     'comment-list', 'comment-form', 'search-form', 'gallery', 'caption'
   ] );

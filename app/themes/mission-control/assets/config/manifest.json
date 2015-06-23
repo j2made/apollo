@@ -29,7 +29,7 @@
     },
     "editor-style.css": {
       "files": [
-        "styles/utilities/editor-style.scss"
+        "styles/editor-style.scss"
       ]
     },
     "pattern-lib.css": {
@@ -43,7 +43,7 @@
     "dist": "dist-dev/"
   },
   "config": {
-    "devUrl": "apollo-working.dev",
+    "devUrl": "apollo.dev",
     "shipDest": "dist/"
   }
 }

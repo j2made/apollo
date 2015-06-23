@@ -33,7 +33,7 @@
 
   # Individual CSS Files
   "editor-style.css":
-    "files":  [ "styles/utilities/editor-style.scss" ]
+    "files":  [ "styles/editor-style.scss" ]
 
   "pattern-lib.css":
     "files":  ["pattern-lib/styles/pattern-lib.scss"]
@@ -48,7 +48,7 @@
 ## ============================================================
 # Need to add things to the gulpfile? add them here!
 "config":
-  "devUrl":   "apollo-working.dev"      # Local dev url for browsersync
+  "devUrl":   "apollo.dev"      # Local dev url for browsersync
   "shipDest": "dist/"
 
 
