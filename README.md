@@ -104,9 +104,35 @@ Example:
 #### Buttons
 Just the basics for starters but get as fancy as you'd like with the `.btn-styler` mixin.
 
+```html
+<a class="btn btn-default" href="#">Default</a>
+<a class="btn btn-simple" href="#">Simple</a>
+<a class="btn btn-kitchen-sink" href="#">Kitchen Sink</a>
+```
+
 ```scss
+// Most Basic
 .btn-default {
   @include button-styler;
+}
+
+// Simple Variation
+.btn-simple {
+  @include button-styler($background: orange);
+}
+
+// Kitchen Sink Example
+.btn-kitchen-sink {
+  @include button-styler(
+    $padding: 20px 30px,
+    $color: white,
+    $background: crimson,
+    $border: 2px dashed black,
+    $hover-color: maroon,
+    $hover-background: lightblue,
+    $hover-border: 4px dotted crimson,
+    $font-weight: 900
+  );
 }
 ```
 
