@@ -105,6 +105,7 @@ Example:
 Just the basics for starters but get as fancy as you'd like with the `.btn-styler` mixin.
 
 ```html
+<a class="btn" href="#">OG Button Link</a>
 <a class="btn btn-default" href="#">Default</a>
 <a class="btn btn-simple" href="#">Simple</a>
 <a class="btn btn-kitchen-sink" href="#">Kitchen Sink</a>
