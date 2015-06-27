@@ -2,26 +2,14 @@
 // ============================================================
 
 %btn {
-  @extend %bold-caps;
-  background: transparent;
   background-clip: padding-box;
-  border-style: solid;
-  border-width: rem(3);
-  display: inline-block;
-  font-size: rem(15);
-  font-weight: 900;
-  padding: 18px;
   text-decoration: none;
-  // text-transform: uppercase;
   white-space: nowrap;
-
-  @include media($small) {
-    border-width: rem(5);
-    font-size: rem(18);
-    padding: 18px 24px;
-  }
-
-  @include media($medium) {
-    font-size: rem(20);
-  }
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  user-select: none;
+  background-image: none;
 }

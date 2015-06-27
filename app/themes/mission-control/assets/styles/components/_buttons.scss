@@ -1,13 +1,20 @@
 // Button Styles
 // -------------
 
+//====================================================
+// Edit base button-styler mixin in _mix-elements.scss
+//====================================================
+
 .btn {
   @extend %btn;
+}
+
+.btn-default {
   @include button-styler;
 }
 
 // Example using button-styler:
+
 .btn-light {
   @include button-styler($white);
 }
-

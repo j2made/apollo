@@ -4,25 +4,37 @@
 // BUTTONS
 // ============================================================
 
-@mixin btn($padding: 7px 18px, $background: $black) {
-  background-clip: padding-box;
-  background: $background;
-  color: $white;
-  display: inline-block;
-  font-weight: 700;
-  padding: $padding;
-  text-decoration: none;
-  white-space: nowrap;
-}
+@mixin button-styler(
 
-@mixin button-styler($btn-color: $base-font-color, $btn-hover-color: $brand-color, $btn-background-hover: $btn-color) {
+    // Base Vars
+    $padding: 10px 20px,
+    $color: $base-font-color,
+    $background: $brand-color,
+
+    // Null Vars (Optional)
+    $border: null,
+
+    // Hover Vars
+    $hover-color: null,
+    $hover-background: darken($brand-color, 5%)
+
+  ) {
+
+
+  // Properties
   @extend %standard-trans;
-  color: $btn-color;
-  border-color: $btn-color;
+  color: $color;
+  padding: $padding;
+  text-align: center;
+  background-color: $background;
+  @if $border != null {
+     border: $border;
+  }
 
   &:hover {
-    background-color: $btn-background-hover;
-    border-color: $btn-background-hover;
-    color: $btn-hover-color;
+    background-color: $hover-background;
+    @if $hover-color != null {
+       color: $hover-color;
+    }
   }
 }
