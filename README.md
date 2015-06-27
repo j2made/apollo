@@ -121,6 +121,11 @@ Just the basics for starters but get as fancy as you'd like with the `.btn-style
 ```
 
 ```scss
+// Base
+.btn {
+  @extend %btn;
+}
+
 // Most Basic
 .btn-default {
   @include button-styler;
@@ -138,10 +143,27 @@ Just the basics for starters but get as fancy as you'd like with the `.btn-style
     $color: white,
     $background: crimson,
     $border: 2px dashed black,
+
+    // Hover
     $hover-color: maroon,
     $hover-background: lightblue,
     $hover-border: 4px dotted crimson,
-    $font-weight: 900
+    $font-weight: 900,
+
+    // Focus
+    $focus-color: red,
+    $focus-background: yellow,
+    $focus-border: 4px dotted beige,
+
+    // Active
+    $active-color: green,
+    $active-background: blue,
+    $active-border: 4px dotted purple,
+
+    // Visited
+    $visited-color: brown,
+    $visited-background: gold,
+    $visited-border: 4px dotted dodgerblue
   );
 }
 ```
