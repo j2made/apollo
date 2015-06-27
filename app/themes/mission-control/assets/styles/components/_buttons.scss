@@ -3,11 +3,10 @@
 
 .btn {
   @extend %btn;
+}
+
+#{$all-buttons},
+.btn-default {
+  @extend %btn;
   @include button-styler;
 }
-
-// Example using button-styler:
-.btn-light {
-  @include button-styler($white);
-}
-

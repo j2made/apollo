@@ -25,7 +25,7 @@ Versions listed are required to be equal to or greater than.
 
 ## Installation
 
-Make sure you have everything listed in the above requirements installed, and then clone this repo on your machine. 
+Make sure you have everything listed in the above requirements installed, and then clone this repo on your machine.
 
 - Open your terminal, and `cd` into the directory you just cloned.
 - Run `composer create-project`
@@ -93,16 +93,80 @@ If you have an issue with the prompts, or a `env.php` cannot be created, open an
 Apollo uses [John Bloch Composer Repo] (https://github.com/johnpbloch/wordpress-core-installer) to install WordPress. To update WP, simply update the version of `"johnpbloch/wordpress"` to match the version of WordPress you would like.
 
 #### Plugins
-Apollo's composer.json is setup to connect with the [WordPress Packagist] (http://wpackagist.org/) library. If you want to use a plugin, find it in the WordPress plugin repo, and copy the slug. In `composer.json`, add the plugin slug prepended by `wpackagist-plugin/` and its verion in the `require` array. 
+Apollo's composer.json is setup to connect with the [WordPress Packagist] (http://wpackagist.org/) library. If you want to use a plugin, find it in the WordPress plugin repo, and copy the slug. In `composer.json`, add the plugin slug prepended by `wpackagist-plugin/` and its verion in the `require` array.
 
 Example:
     `"wpackagist-plugin/duplicate-post": "~2.6",`
 
 
 ## Theme Configuration
+### Functions
+TK
 
-Coming Soon, dawg.
+### Styles
 
+#### Basic Concepts
+Unlike most frameworks, there are no set styles. For starters each configurable element will give you the bare necessities to build upon.
+
+For Example: The `.btn` class will give you all the basic properities of a button. Adding the `@include btn-styler()` mixin to any custom button class will give you full range to build your own as-needed.
+
+#### Buttons
+Just the basics for starters but get as fancy as you'd like with the `.btn-styler` mixin.
+
+```html
+<a class="btn" href="#">OG Button Link</a>
+<a class="btn btn-default" href="#">Default</a>
+<a class="btn btn-simple" href="#">Simple</a>
+<a class="btn btn-kitchen-sink" href="#">Kitchen Sink</a>
+```
+
+```scss
+// Base
+.btn {
+  @extend %btn;
+}
+
+// Most Basic
+.btn-default {
+  @include button-styler;
+}
+
+// Simple Variation
+.btn-simple {
+  @include button-styler($background: orange);
+}
+
+// Kitchen Sink Example
+.btn-kitchen-sink {
+  @include button-styler(
+    $padding: 20px 30px,
+    $color: white,
+    $background: crimson,
+    $border: 2px dashed black,
+
+    // Hover
+    $hover-color: maroon,
+    $hover-background: lightblue,
+    $hover-border: 4px dotted crimson,
+    $font-weight: 900,
+
+    // Focus
+    $focus-color: red,
+    $focus-background: yellow,
+    $focus-border: 4px dotted beige,
+
+    // Active
+    $active-color: green,
+    $active-background: blue,
+    $active-border: 4px dotted purple,
+
+    // Visited
+    $visited-color: brown,
+    $visited-background: gold,
+    $visited-border: 4px dotted dodgerblue
+  );
+}
+```
 
 ## Contributing:
 #### Issues
@@ -111,7 +175,7 @@ Report all issues [here] (https://github.com/j2made/apollo/issues)
 
 #### Git Repo Branch Structure
 
-The Apollo repo workflow utilizes Git Flow. Features branches should be named with the part of Apollo being worked on: `stack-` or `theme-`. Features should be merged into the `develop` branch, where they will wait to be merged into 
+The Apollo repo workflow utilizes Git Flow. Features branches should be named with the part of Apollo being worked on: `stack-` or `theme-`. Features should be merged into the `develop` branch, where they will wait to be merged into
 `master`.
 
 
