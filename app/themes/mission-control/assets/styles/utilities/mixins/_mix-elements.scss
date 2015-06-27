@@ -10,31 +10,42 @@
     $padding: 10px 20px,
     $color: $base-font-color,
     $background: $brand-color,
+    $font-weight: normal,
+
+    // Hover Vars
+    $hover-background: darken($background, 5%),
 
     // Null Vars (Optional)
     $border: null,
-
-    // Hover Vars
-    $hover-color: null,
-    $hover-background: darken($brand-color, 5%)
+    $hover-border: null,
+    $hover-color: null
 
   ) {
 
-
-  // Properties
+  // Class Properties
   @extend %standard-trans;
   color: $color;
   padding: $padding;
   text-align: center;
   background-color: $background;
+  font-weight: $font-weight;
+
+  // Optional Properties
   @if $border != null {
      border: $border;
   }
 
   &:hover {
     background-color: $hover-background;
+    color: $color;
+
+    // Optional Properties
     @if $hover-color != null {
        color: $hover-color;
+    }
+
+    @if $hover-border != null {
+       border: $hover-border;
     }
   }
 }
