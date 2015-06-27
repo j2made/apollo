@@ -100,6 +100,15 @@ Example:
 
 
 ## Theme Configuration
+### Functions
+TK
+
+### Styles
+
+#### Basic Concepts
+Unlike most frameworks, there are no set styles. For starters each configurable element will give you the bare necessities to build upon.
+
+For Example: The `.btn` class will give you all the basic properities of a button. Adding the `@include btn-styler()` mixin to any custom button class will give you full range to build your own as-needed.
 
 #### Buttons
 Just the basics for starters but get as fancy as you'd like with the `.btn-styler` mixin.
