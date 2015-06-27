@@ -25,7 +25,7 @@ Versions listed are required to be equal to or greater than.
 
 ## Installation
 
-Make sure you have everything listed in the above requirements installed, and then clone this repo on your machine. 
+Make sure you have everything listed in the above requirements installed, and then clone this repo on your machine.
 
 - Open your terminal, and `cd` into the directory you just cloned.
 - Run `composer create-project`
@@ -93,7 +93,7 @@ If you have an issue with the prompts, or a `env.php` cannot be created, open an
 Apollo uses [John Bloch Composer Repo] (https://github.com/johnpbloch/wordpress-core-installer) to install WordPress. To update WP, simply update the version of `"johnpbloch/wordpress"` to match the version of WordPress you would like.
 
 #### Plugins
-Apollo's composer.json is setup to connect with the [WordPress Packagist] (http://wpackagist.org/) library. If you want to use a plugin, find it in the WordPress plugin repo, and copy the slug. In `composer.json`, add the plugin slug prepended by `wpackagist-plugin/` and its verion in the `require` array. 
+Apollo's composer.json is setup to connect with the [WordPress Packagist] (http://wpackagist.org/) library. If you want to use a plugin, find it in the WordPress plugin repo, and copy the slug. In `composer.json`, add the plugin slug prepended by `wpackagist-plugin/` and its verion in the `require` array.
 
 Example:
     `"wpackagist-plugin/duplicate-post": "~2.6",`
@@ -101,8 +101,14 @@ Example:
 
 ## Theme Configuration
 
-Coming Soon, dawg.
+#### Buttons
+Just the basics for starters but get as fancy as you'd like with the `.btn-styler` mixin.
 
+```scss
+.btn-default {
+  @include button-styler;
+}
+```
 
 ## Contributing:
 #### Issues
@@ -111,7 +117,7 @@ Report all issues [here] (https://github.com/j2made/apollo/issues)
 
 #### Git Repo Branch Structure
 
-The Apollo repo workflow utilizes Git Flow. Features branches should be named with the part of Apollo being worked on: `stack-` or `theme-`. Features should be merged into the `develop` branch, where they will wait to be merged into 
+The Apollo repo workflow utilizes Git Flow. Features branches should be named with the part of Apollo being worked on: `stack-` or `theme-`. Features should be merged into the `develop` branch, where they will wait to be merged into
 `master`.
 
 
