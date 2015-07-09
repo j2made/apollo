@@ -20,3 +20,4 @@ lib/vendor/*
 
 # Apollo Config
 env.php
+wp-config.php

@@ -143,11 +143,11 @@ function jquery_local_fallback($src, $handle = null) {
 }
 add_action('wp_head', __NAMESPACE__ . '\\jquery_local_fallback');
 
-/**
- * Google Analytics snippet from HTML5 Boilerplate
- *
- * Cookie domain is 'auto' configured. See: http://goo.gl/VUCHKM
- */
+
+// GOOGLE ANALYTICS
+// ============================================================
+// Cookie domain is 'auto' configured: http://goo.gl/VUCHKM
+
 function google_analytics() {
   ?>
   <script>

@@ -27,6 +27,8 @@ class Installer {
     $theme_init = $root . '/app/themes/' . $theme_init_name;
     $db_config_file = "{$root}/env.php";
     $db_config_sample = "{$root}/lib/config/env-sample.php";
+    $wp_config_no_track = "{$root}/wp-config.php";
+    $wp_config_sample = "{$root}/lib/config/wp-config-sample.php";
     $composer = $event->getComposer();
     $io = $event->getIO();
 
@@ -66,7 +68,7 @@ class Installer {
       } else {
         $theme_name = false;
       }
-      $run_npm = $io->askConfirmation('<info>Run NPM after dependencies have been installed?</info> [<comment>Y,n</comment>]? ', true);
+      $run_npm = $io->askConfirmation('<info>Build project (npm and bower install, gulp build) after dependencies have been installed?</info> [<comment>Y,n</comment>]? ', true);
     }
 
     // =---> ROUND UP VARS
@@ -82,12 +84,21 @@ class Installer {
 
     $db_defs_string = "\n" . "\n" . implode($db_defs, "\n");
 
-    // Append the defs to the db config file
+    // Append the defs to the db config file and create env.php
     if (copy($db_config_sample, $db_config_file)) {
       file_put_contents( $db_config_file, $db_defs_string, FILE_APPEND | LOCK_EX );
     } else {
       $io->write("<error>An Error Occured while generating env_config</error>");
     }
+
+    // Create wp-config.php
+    if (!file_exists($wp_config_no_track) && copy($wp_config_sample, $wp_config_no_track)) {
+      copy($wp_config_sample, $wp_config_no_track);
+    } else {
+      $io->write("<error>An Error Occured while generating env_config</error>");
+    }
+
+
 
     // =---> CHANGE THEME NAME
 
@@ -189,7 +200,6 @@ class Installer {
   // RUN NPM INSTALL
   // ====================================================
   public static function runNPM(Event $event) {
-    $io = $event->getIO();
 
     if ( APOLLO_LANUCH === 'contact' ) {
       // Run NPM Install in the Theme Directory
@@ -197,8 +207,8 @@ class Installer {
       $theme_root = realpath($root . '/app/themes/' . APOLLO_THEME_NAME);
       $io = $event->getIO();
 
-      $io->write("** Running NPM Install in Theme Directory **");
-      exec("cd $theme_root && npm install");
+      $io->write("** Running Build (npm and bower installs) in Theme Directory **");
+      exec("cd $theme_root && npm install && bower install && gulp build");
     }
   }
 
