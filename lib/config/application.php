@@ -16,16 +16,27 @@ if ( WP_ENV === 'development' ) :
   define('SCRIPT_DEBUG', true);
 
 elseif ( WP_ENV === 'staging' ) :
-  ini_set('display_errors', 0);
-  define('WP_DEBUG_DISPLAY', false);
-  define('SCRIPT_DEBUG', false);
-  define('DISALLOW_FILE_MODS', true);
+
+  if ( isset( $_GET['debug'] ) && 'true' == $_GET['debug'] ) {
+    define( 'WP_DEBUG', true );
+    define( 'SCRIPT_DEBUG', true );
+  } else {
+    define('WP_DEBUG_DISPLAY', false);
+    define('SCRIPT_DEBUG', false);
+    ini_set('display_errors', 0);
+    define('DISALLOW_FILE_MODS', true);
+  }
 
 else : // Production Site
-  ini_set('display_errors', 0);
-  define('WP_DEBUG_DISPLAY', false);
-  define('SCRIPT_DEBUG', false);
-  define('DISALLOW_FILE_MODS', true);
+  if ( isset( $_GET['debug'] ) && 'debug' == $_GET['debug'] ) {
+    define( 'WP_DEBUG', true );
+    define( 'SCRIPT_DEBUG', true );
+  } else {
+    ini_set('display_errors', 0);
+    define('WP_DEBUG_DISPLAY', false);
+    define('SCRIPT_DEBUG', false);
+    define('DISALLOW_FILE_MODS', true);
+  }
 
 endif;
 

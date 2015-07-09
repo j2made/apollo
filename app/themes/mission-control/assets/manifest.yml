@@ -48,7 +48,7 @@
 ## ============================================================
 # Need to add things to the gulpfile? add them here!
 "config":
-  "devUrl":   "apollo.dev"      # Local dev url for browsersync
+  "devUrl":   "CONFIG_THIS!"      # Local dev url for browsersync
   "shipDest": "dist/"
 
 

@@ -23,6 +23,9 @@
     "node": ">= 0.10.0",
     "npm": ">=2.1.5"
   },
+  "scripts": {
+    "postinstall": "bower install && gulp build"
+  },
   "devDependencies": {
     "asset-builder": "^1.1.0",
     "browser-sync": "2.7.12",
