@@ -93,7 +93,7 @@ class Installer {
 
     // Create wp-config.php
     if ( copy($wp_config_sample, $wp_config_no_track) ) {
-      copy($wp_config_sample, $wp_config_no_track)
+      copy($wp_config_sample, $wp_config_no_track);
     } else {
       $io->write("<error>An Error Occured while generating wp-config.php</error>");
     }
