@@ -208,7 +208,7 @@ class Installer {
       $io = $event->getIO();
 
       $io->write("** Running Build (npm and bower installs) in Theme Directory **");
-      exec("cd $theme_root && npm install && bower install && gulp build");
+      exec("cd $theme_root && npm install"); // Note: Bower and Gulp Build should in npm (see package.json->scripts->postinstall)
     }
   }
 
