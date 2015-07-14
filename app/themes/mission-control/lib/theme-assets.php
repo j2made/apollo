@@ -154,8 +154,37 @@ add_action('wp_head', __NAMESPACE__ . '\\jquery_local_fallback');
 
 // GOOGLE ANALYTICS
 // ============================================================
-// Cookie domain is 'auto' configured: http://goo.gl/VUCHKM
 
+// Add Google Analytics ID to general settings page in admin
+add_action('admin_init', __NAMESPACE__ . '\\j2_fb_api_settings_section');
+
+// Add a new section to the General Settings Page
+function j2_fb_api_settings_section() {
+  add_settings_section('ga_id_section', 'Google Analytics', __NAMESPACE__ . '\\ga_id_callback', 'general');
+
+  // Add an analytics Form Field
+  add_settings_field( 'ga_id', 'Google Analytics ID', __NAMESPACE__ . '\\ga_id_textbox_callback', 'general', 'ga_id_section', array('ga_id'));
+
+  // Register the field
+  register_setting('general','ga_id', 'esc_attr');
+}
+
+// GA ID Callback - add descriptive message
+function ga_id_callback() {
+  echo '<p>Enter your '.
+        '<a href="https://support.google.com/analytics/answer/1032385?hl=en" target="blank">' .
+        'Google Analytics UA ID'.
+        '</a> number to allow tracking.</p>';
+}
+
+// Save Analytics Field
+function ga_id_textbox_callback($args) {
+  $option = get_option($args[0]);
+  echo '<input type="text" id="'. $args[0] .'" name="'. $args[0] .'" value="' . $option . '" />';
+}
+
+// Add Google Analytics to the head
+// Cookie domain is 'auto' configured: http://goo.gl/VUCHKM
 function google_analytics() {
   ?>
   <script>
@@ -172,12 +201,12 @@ function google_analytics() {
         }
       }
     <?php endif; ?>
-    ga('create','<?= GOOGLE_ANALYTICS_ID; ?>','auto');ga('send','pageview');
+    ga('create','<?= get_option('ga_id') ?>','auto');ga('send','pageview');
   </script>
   <?php
 }
 
-if (GOOGLE_ANALYTICS_ID && WP_ENV !== 'development') {
+if (get_option('ga_id') && WP_ENV === 'production') {
   add_action('wp_footer', __NAMESPACE__ . '\\google_analytics', 20);
 }
 
