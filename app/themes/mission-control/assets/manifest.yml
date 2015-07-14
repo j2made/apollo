@@ -13,8 +13,8 @@
 "dependencies":
 
   ## JS FILES
-  "main.js":                         # Concatenated js file
-    "files":  ["scripts/main.js"]    # Add additional files or globs in `files:` array
+  "main.js":                          # Concatenated js file
+    "files":  ["scripts/main.js"]     # Add additional files or globs in `files:` array
     "main":   true
 
   "jquery.js":

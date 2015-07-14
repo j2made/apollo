@@ -23,6 +23,7 @@
     'typography-basic' => 'Typography',
     'typography-styles' => 'Typography Styles',
     'buttons' => 'Buttons',
+    'modules' => 'Modules'
   );
 
 // Loop through array and create sections, get template parts

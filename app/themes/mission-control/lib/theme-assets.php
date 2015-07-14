@@ -52,14 +52,14 @@ class JsonManifest {
   }
 }
 
-function asset_path($filename, $dist_var) {
-  $dist_path = get_template_directory_uri() . $dist_var;
+function asset_path($filename, $dist) {
+  $dist_path = get_template_directory_uri() . $dist;
   $directory = dirname($filename) . '/';
   $file = basename($filename);
   static $manifest;
 
   if (empty($manifest)) {
-    $manifest_path = get_template_directory() . $dist_var . 'assets.json';
+    $manifest_path = get_template_directory() . $dist . 'assets.json';
     $manifest = new JsonManifest($manifest_path);
   }
 
@@ -116,13 +116,21 @@ function assets() {
     add_filter('script_loader_src', __NAMESPACE__ . '\\jquery_local_fallback', 10, 2);
   }
 
+  // Comments
   if (is_single() && comments_open() && get_option('thread_comments')) {
     wp_enqueue_script('comment-reply');
   }
 
+  // Pattern Lib
+  if( is_page_template('pattern-lib/pattern-lib-template.php') ) {
+    wp_enqueue_style( 'pattern-lib-styles', asset_path('styles/pattern-lib.css', DIST_DIR), array('apollo-css') );
+    wp_enqueue_script( 'pattern-lib-scripts', asset_path('scripts/pattern-lib.js', DIST_DIR), array('jquery'), true );
+  }
+
+  // Site Basics
   wp_enqueue_script('modernizr', asset_path('scripts/modernizr.js', DIST_DIR), [], null, true);
   wp_enqueue_script('jquery');
-  wp_enqueue_script('sage_js', asset_path('scripts/main.js', DIST_DIR), [], null, true);
+  wp_enqueue_script('apollo-js', asset_path('scripts/main.js', DIST_DIR), [], null, true);
 }
 add_action('wp_enqueue_scripts', __NAMESPACE__ . '\\assets', 100);
 

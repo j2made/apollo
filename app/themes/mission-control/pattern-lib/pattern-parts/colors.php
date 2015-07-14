@@ -11,6 +11,9 @@
   $color_array = array(
     'black',
     'white',
+    'gray-10',
+    'gray-30',
+    'gray-50',
     'brand-color'
   );
 
