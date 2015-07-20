@@ -1,9 +1,9 @@
 <?php
 
 namespace Apollo\Base;
-use Apollo\Wrapper;
 use Apollo\Admin\Structure;
 use Apollo\Config\Condition;
+
 ?>
 
 <?php get_template_part('templates/head'); ?>
