@@ -52,14 +52,14 @@ class JsonManifest {
   }
 }
 
-function asset_path($filename, $dist_var) {
-  $dist_path = get_template_directory_uri() . $dist_var;
+function asset_path($filename, $dist) {
+  $dist_path = get_template_directory_uri() . $dist;
   $directory = dirname($filename) . '/';
   $file = basename($filename);
   static $manifest;
 
   if (empty($manifest)) {
-    $manifest_path = get_template_directory() . $dist_var . 'assets.json';
+    $manifest_path = get_template_directory() . $dist . 'assets.json';
     $manifest = new JsonManifest($manifest_path);
   }
 
@@ -116,9 +116,11 @@ function assets() {
     add_filter('script_loader_src', __NAMESPACE__ . '\\jquery_local_fallback', 10, 2);
   }
 
+  // COMMENTS
   if (is_single() && comments_open() && get_option('thread_comments')) {
     wp_enqueue_script('comment-reply');
   }
+
 
   // PATTERN LIB SCRIPTS
   if( is_page_template('pattern-lib/pattern-lib-template.php') ) {
@@ -127,6 +129,7 @@ function assets() {
   }
 
 
+  // BASIC SITE SCRIPTS
   wp_enqueue_script('modernizr', asset_path('scripts/modernizr.js', DIST_DIR), [], null, true);
   wp_enqueue_script('jquery');
   wp_enqueue_script('apollo-js', asset_path('scripts/main.js', DIST_DIR), [], null, true);
@@ -153,8 +156,37 @@ add_action('wp_head', __NAMESPACE__ . '\\jquery_local_fallback');
 
 // GOOGLE ANALYTICS
 // ============================================================
-// Cookie domain is 'auto' configured: http://goo.gl/VUCHKM
 
+// Add Google Analytics ID to general settings page in admin
+add_action('admin_init', __NAMESPACE__ . '\\j2_fb_api_settings_section');
+
+// Add a new section to the General Settings Page
+function j2_fb_api_settings_section() {
+  add_settings_section('ga_id_section', 'Google Analytics', __NAMESPACE__ . '\\ga_id_callback', 'general');
+
+  // Add an analytics Form Field
+  add_settings_field( 'ga_id', 'Google Analytics ID', __NAMESPACE__ . '\\ga_id_textbox_callback', 'general', 'ga_id_section', array('ga_id'));
+
+  // Register the field
+  register_setting('general','ga_id', 'esc_attr');
+}
+
+// GA ID Callback - add descriptive message
+function ga_id_callback() {
+  echo '<p>Enter your '.
+        '<a href="https://support.google.com/analytics/answer/1032385?hl=en" target="blank">' .
+        'Google Analytics UA ID'.
+        '</a> number to allow tracking.</p>';
+}
+
+// Save Analytics Field
+function ga_id_textbox_callback($args) {
+  $option = get_option($args[0]);
+  echo '<input type="text" id="'. $args[0] .'" name="'. $args[0] .'" value="' . $option . '" />';
+}
+
+// Add Google Analytics to the head
+// Cookie domain is 'auto' configured: http://goo.gl/VUCHKM
 function google_analytics() {
   ?>
   <script>
@@ -171,12 +203,12 @@ function google_analytics() {
         }
       }
     <?php endif; ?>
-    ga('create','<?= GOOGLE_ANALYTICS_ID; ?>','auto');ga('send','pageview');
+    ga('create','<?= get_option('ga_id') ?>','auto');ga('send','pageview');
   </script>
   <?php
 }
 
-if (GOOGLE_ANALYTICS_ID && WP_ENV !== 'development') {
+if (get_option('ga_id') && WP_ENV === 'production') {
   add_action('wp_footer', __NAMESPACE__ . '\\google_analytics', 20);
 }
 

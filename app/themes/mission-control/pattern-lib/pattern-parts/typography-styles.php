@@ -7,19 +7,19 @@
   //                           'class_name' => 'extend_name'
   //                         )
   // =====================================================================
+  $code_string = '';
 
-$class_array = array(
-  'h1' => array(
-            'head-1' => '%head-1',
-            'head-2' => '%head-2',
-          ),
-  'h2' => array(
-            'head-3' => '%head-3',
-          ),
-  'p' => array(
-            'mod-copy-1' => '%mod-copy-1'
-          )
-); ?>
+  $class_array = array(
+    'h1' => array(
+              'head-1' => '%head-1',
+              'head-2' => '%head-2',
+              'head-3' => '%head-3',
+            ),
+    'p' => array(
+              'mod-copy-1' => '%mod-copy-1'
+            )
+  );
+?>
 
 <div class="pattern-code-result">
   <?php foreach($class_array as $tag => $class_extend) :
@@ -31,6 +31,7 @@ $class_array = array(
         $html .= '</' . $tag . '>';
 
         echo $html;
+        $code_string .= $html . "\n";
 
       endforeach;
     echo '</div>';
@@ -40,15 +41,5 @@ $class_array = array(
 <a class="pattern-button" href="#">Show Code</a>
 
 <div class="pattern-code-input">
-  <pre>
-    <?php foreach($class_array as $tag => $class_extend) :
-      foreach($class_extend as $class => $extend) :
-        $html = '<' . $tag . ' class="' . $class . '">' . $tag .' tag with class ' . $class;
-        if($extend) $html .= ' via @extend ' . $extend;
-        $html .= '</' . $tag . '>' . PHP_EOL;
-        echo htmlspecialchars($html);
-      endforeach;
-    endforeach; ?>
-  </pre>
+  <pre><code class="language-markup"><?= $code_string ?></code></pre>
 </div>
-
