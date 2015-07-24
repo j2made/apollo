@@ -27,16 +27,10 @@
     "generate-salts": true,
     "vendor-dir": "lib/vendor/"
   },
-  "autoload": {
-    "psr-4": {"Apollo\\InitConfig\\": "lib/scripts/"}
-  },
   "scripts": {
     "post-root-package-install": [
-      "Apollo\\InitConfig\\Installer::addConfig",
-      "Apollo\\InitConfig\\Installer::addSalts"
-    ],
-    "post-create-project-cmd": [
-      "Apollo\\InitConfig\\Installer::runNPM"
+      "php -r \"copy('lib/config/env-sample.php', 'env.php');\"",
+      "php -r \"copy('lib/config/wp-config-sample.php', 'wp-config.php');\""
     ]
   },
   "repositories": [
