@@ -1,6 +1,6 @@
 <?php
 
-namespace Apollo\Functions\Queries
+namespace Apollo\Functions\Queries;
 
 // // Change Posts Per Page and Order for Post Types
 // function manipulate_queries( $query ) {
@@ -15,6 +15,6 @@ namespace Apollo\Functions\Queries
 //     return;
 //   }
 // }
-// add_action( 'pre_get_posts', __NAMESPACE__, '\\manipulate_queries', 1 );
+// add_action( 'pre_get_posts', __NAMESPACE__ . '\\manipulate_queries', 1 );
 
 ?>
