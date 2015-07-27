@@ -29,8 +29,8 @@
   },
   "scripts": {
     "post-root-package-install": [
-      "php -r \"copy('lib/config/env-sample.php', 'env.php');\"",
-      "php -r \"copy('lib/config/wp-config-sample.php', 'wp-config.php');\""
+      "php -r \"if(!file_exists('env.php')) { copy('lib/config/env-sample.php', 'env.php'); }\"",
+      "php -r \"if(!file_exists('wp-config.php')) { copy('lib/config/wp-config-sample.php', 'wp-config.php'); }\""
     ]
   },
   "repositories": [
