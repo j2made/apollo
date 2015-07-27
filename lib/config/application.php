@@ -1,7 +1,7 @@
 <?php
 
-// Things you may want to edit
-// ===========================
+// Defs you may want to edit
+// =========================
 
 // DB Stuffs
 $table_prefix  = 'wp_';
@@ -18,7 +18,7 @@ if ( WP_ENV === 'development' ) :
 else :
   // Allow adding `?debug=debug` to the url to display errors
   // in non-development enviornments
-  if ( isset( $_GET['debug'] ) && 'true' == $_GET['debug'] ) :
+  if ( isset( $_GET['debug'] ) && 'true' === $_GET['debug'] ) :
     define( 'WP_DEBUG', true );
     define( 'SCRIPT_DEBUG', true );
 
@@ -28,20 +28,21 @@ else :
     define('SCRIPT_DEBUG', false);
     define('DISALLOW_FILE_MODS', true);
 
+    // Enviornment Specific Conditionals here
+    // if ( WP_ENV === 'staging' ) {
 
-    if ( WP_ENV === 'staging' ) {
+    // }
 
-    }
+    // if ( WP_ENV === 'production' ) {
 
-    if ( WP_ENV === 'production' ) {
+    // }
 
-    }
+  endif;
 
 endif;
 
 // THINGS YOU SHOULD NOT EDIT
 // ==========================
-
 $root_dir = dirname(dirname(__DIR__));
 
 // Apollo Definitions
