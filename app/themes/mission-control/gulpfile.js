@@ -25,7 +25,7 @@ var globs = manifest.globs;               // `globs.js`, etc.
 var project = manifest.getProjectGlobs(); // `project` - paths to first-party assets.
 
 // Path to the compiled assets manifest in the dist directory
-var revManifest = path.dist + 'assets.json';
+var revManifest = config.shipDest + 'assets.json';
 
 // Change distribution folder on --production so that it can be tracked for git deployment
 if(argv.production) { path.dist = config.shipDest; }
