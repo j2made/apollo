@@ -24,7 +24,6 @@
   },
   "config": {
     "preferred-install": "dist",
-    "generate-salts": true,
     "vendor-dir": "lib/vendor/"
   },
   "scripts": {
