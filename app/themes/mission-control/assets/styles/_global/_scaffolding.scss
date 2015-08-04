@@ -23,7 +23,7 @@
 
     @include media($medium) {
       @include span-columns(4);
-      @include shift (1);
+      @include shift(1);
     }
   }
 }
