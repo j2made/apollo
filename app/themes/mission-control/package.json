@@ -3,9 +3,17 @@
   "version": "0.0.1",
   "description": "Mission Control theme for Apollo Stack, with Bower, Bourbon and More",
   "authors": [
-    "Shaun Baer <shaun.baer@gmail.com>"
+    {
+      "name": "Daniel Olson",
+      "email": "emaildano@gmail.com",
+      "homepage": "https://github.com/emaildano"
+    },
+    {
+      "name": "Shaun Baer",
+      "email": "shaun.baer@gmail.com",
+      "homepage": "https://github.com/iamhexcoder"
+    }
   ],
-  "homepage": "http://github.com/iamhexcoder",
   "repository": {
     "type": "git",
     "url": "git://github.com/j2made/apollo.git"
