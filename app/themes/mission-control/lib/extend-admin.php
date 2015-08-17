@@ -5,7 +5,7 @@ namespace Apollo\Extend\Admin;
 // Functions to alter the appearance of admin pages
 
 // Hide Features in Editor
-add_action( 'init', 'hide_on_screen', 10 );
+add_action( 'init', __NAMESPACE__ . '\\hide_on_screen', 10 );
 function hide_on_screen() {
 
 	$post_types = [
