@@ -2,27 +2,34 @@
 
 namespace Apollo\Extend\Admin;
 
+// =============================================================================
 // Functions to alter the appearance of admin pages
+// =============================================================================
 
 // Hide Features in Editor
-add_action( 'init', 'hide_on_screen', 10 );
+// =============================================================================
+
+add_action( 'init', __NAMESPACE__ . '\\hide_on_screen', 10 );
 function hide_on_screen() {
 
 	$post_types = [
-	 'page'
+		'page'
 	];
 
-	// FUTURE: ADD SECOND FOREACH TO COVER FEATURES
-	// $features = [
-	//  'editor'
-	// ];
+	$features = [
+	 'editor'
+	];
 
-	foreach ($post_types as $p) {
-		remove_post_type_support( $p, 'editor');
+	foreach ($post_types as $post_type) {
+		foreach ($features as $feature) {
+			remove_post_type_support( $post_type, $feature);
+		}
 	}
 }
 
 // Customize TinyMCE Editor
+// =============================================================================
+
 add_filter( 'tiny_mce_before_init', __NAMESPACE__ . '\\format_TinyMCE' );
 function format_TinyMCE( $in ) {
 
@@ -53,6 +60,8 @@ function format_TinyMCE( $in ) {
 }
 
 // Remove Media Buttons
+// =============================================================================
+
 add_action('admin_head', __NAMESPACE__ . '\\remove_media_controls');
 
 function remove_media_controls() {
@@ -60,6 +69,8 @@ function remove_media_controls() {
 }
 
 // Hide the Admin Bar in in dev
+// =============================================================================
+
 if(WP_ENV === 'development' || WP_ENV === 'staging') :
   add_filter('show_admin_bar', '__return_false');
 endif;
