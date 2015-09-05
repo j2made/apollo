@@ -27,38 +27,6 @@ function hide_on_screen() {
 	}
 }
 
-// Customize TinyMCE Editor
-// =============================================================================
-
-add_filter( 'tiny_mce_before_init', __NAMESPACE__ . '\\format_TinyMCE' );
-function format_TinyMCE( $in ) {
-
-	// FUTURE: APPLY THESE SETTINGS TO ACF WYSIWYG
-
-	$in['remove_linebreaks'] = false;
-	$in['gecko_spellcheck'] = true;
-	$in['keep_styles'] = false;
-	$in['accessibility_focus'] = true;
-	$in['tabfocus_elements'] = 'major-publishing-actions';
-	$in['media_strict'] = false;
-	$in['paste_remove_styles'] = true;
-	$in['paste_remove_spans'] = true;
-	$in['paste_strip_class_attributes'] = true;
-	$in['paste_remove_styles_if_webkit'] = true;
-	$in['paste_text_use_dialog'] = true;
-	$in['wpeditimage_disable_captions'] = true;
-	$in['plugins'] = 'tabfocus,paste,media,fullscreen,wordpress,wpeditimage,wpgallery,wplink,wpdialogs,wpfullscreen';
-	$in['wpautop'] = true;
-	$in['apply_source_formatting'] = false;
-	$in['paste_auto_cleanup_on_paste'] = true;
-	$in['toolbar1'] = 'bold, italic, undo, redo, link, unlink, removeformat, fullscreen, bullist, numlist';
-	$in['toolbar2'] = '';
-	$in['toolbar3'] = '';
-	$in['toolbar4'] = '';
-
-	return $in;
-}
-
 // Hide the Admin Bar in in dev
 // =============================================================================
 
