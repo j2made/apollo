@@ -2,23 +2,25 @@
 
 namespace Apollo\Config\Settings;
 
+// =============================================================================
+// Global Theme Settings
+// =============================================================================
+
 // If enviornment is not defined, set production as default
 if (!defined('WP_ENV')) {
   define('WP_ENV', 'production');
 }
 
-
 // VARIABLE DEFINITIONS
-// ============================================================
+// =============================================================================
 
 define('TYPEKIT_ID', false);              // Typekit                Kit ID
 define('FONTAWESOME', false);             // Include FontAwesome    Boolean, if true, will be loaded from CDN
 define('CONTENT_WIDTH', '1140');          // Content Width          https://codex.wordpress.org/Content_Width
 define('CLEAN_THEME_WP_HEAD', true);      // Clean up wp head       Boolean. Function found in lib/theme-structure (Clean wp_head)
 
-
 // THEME DEFINITIONS
-// ============================================================
+// =============================================================================
 
 define('SIDEBAR_LAYOUT_RIGHT', true);     // Sidebar Layout         Boolean. Setting to false produces left layout
 
@@ -28,9 +30,8 @@ if (WP_ENV == 'production' || WP_ENV == 'staging') {
  define('DIST_DIR', '/dist-dev/');
 }
 
-
 // THEME SUPPORT
-// ============================================================
+// =============================================================================
 
 function theme_setup() {
   // Register Nav Menus:                                                  // (1)
@@ -59,9 +60,9 @@ function theme_setup() {
 
 add_action('after_setup_theme', __NAMESPACE__ . '\\theme_setup');
 
-
 // WIDGETS
-// ============================================================
+// =============================================================================
+
 // If you want these cursed things, uncomment them.
 
 // function widgets_init() {
