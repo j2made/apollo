@@ -45,6 +45,11 @@ function add_custom_body_classes( $classes ) {
     $classes[] = 'development-env';
   }
 
+  // Front Page
+  if(is_front_page()) {
+    $classes[] = 'front-page';
+  }
+
   return $classes;
 }
 add_filter( 'body_class', __NAMESPACE__ . '\\add_custom_body_classes' );
