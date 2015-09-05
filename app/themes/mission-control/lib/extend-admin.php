@@ -59,15 +59,6 @@ function format_TinyMCE( $in ) {
 	return $in;
 }
 
-// Remove Media Buttons
-// =============================================================================
-
-add_action('admin_head', __NAMESPACE__ . '\\remove_media_controls');
-
-function remove_media_controls() {
-	remove_action( 'media_buttons', 'media_buttons' );
-}
-
 // Hide the Admin Bar in in dev
 // =============================================================================
 
