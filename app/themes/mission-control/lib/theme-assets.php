@@ -79,7 +79,7 @@ function bower_map_to_cdn($dependency, $fallback) {
   }
 
   $templates = [
-    'google' => '//ajax.googleapis.com/ajax/libs/%name%/%version%/%file%'
+    'google' => '//ajax.googleapis.com/ajax/libs/%name%/%version%/%file%?ver=%version%'
   ];
 
   $version = $bower->getPath('dependencies.' . $dependency['name']);
@@ -108,9 +108,9 @@ function assets() {
     wp_deregister_script('jquery');
 
     wp_register_script('jquery', bower_map_to_cdn([
-      'name' => 'jquery',
-      'cdn' => 'google',
-      'file' => 'jquery.min.js'
+      'name'  => 'jquery',
+      'cdn'   => 'google',
+      'file'  => 'jquery.min.js'
     ], asset_path('scripts/jquery.js', DIST_DIR)), [], null, true);
 
     add_filter('script_loader_src', __NAMESPACE__ . '\\jquery_local_fallback', 10, 2);
@@ -121,13 +121,11 @@ function assets() {
     wp_enqueue_script('comment-reply');
   }
 
-
   // PATTERN LIB SCRIPTS
   if( is_page_template('pattern-lib/pattern-lib-template.php') ) {
     wp_enqueue_style( 'pattern-lib-styles', asset_path('styles/pattern-lib.css', DIST_DIR), array('apollo-css') );
     wp_enqueue_script( 'pattern-lib-scripts', asset_path('scripts/pattern-lib.js', DIST_DIR), array('jquery'), true );
   }
-
 
   // BASIC SITE SCRIPTS
   wp_enqueue_script('modernizr', asset_path('scripts/modernizr.js', DIST_DIR), [], null, true);
@@ -211,8 +209,3 @@ function google_analytics() {
 if (get_option('ga_id') && WP_ENV === 'production') {
   add_action('wp_footer', __NAMESPACE__ . '\\google_analytics', 20);
 }
-
-
-
-
-
