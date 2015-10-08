@@ -17,6 +17,7 @@ wp/*
 # Vendor (e.g. Composer)
 lib/vendor/*
 !vendor/.gitkeep
+composer.lock
 
 # Apollo Config
 env.php
