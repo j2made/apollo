@@ -2,10 +2,10 @@
 // ---------------------
 
 // Fonts
-$serif:							      $helvetica;
-$sans-serif:						  $georgia;
+$serif:							      $georgia;
+$sans-serif:						  $helvetica;
 $alt-font:						    $lucida-grande;
-$base-font-family:        $serif;
+$base-font-family:        $sans-serif;
 $title-font:              $alt-font;
 
 // Font Sizes
@@ -20,4 +20,3 @@ $body-line-height: golden-ratio(1em, 1);
 $header-line-height: 1.25;
 
 $base-z-index: 0;
-
