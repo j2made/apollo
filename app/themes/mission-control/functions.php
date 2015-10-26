@@ -6,8 +6,8 @@ $function_includes = [
   'lib/theme-structure.php',        // Build Theme Layouts
   'lib/theme-wrapper.php',          // Theme wrapper class
   'lib/theme-assets.php',           // Scripts and stylesheets
-  'lib/extend-core.php',            // Additions and Changes to Core
-  'lib/extend-utilities.php',       // Custom Functions for Practical Purposes
+  'lib/extend--core.php',           // Additions and Changes to Core
+  'lib/extend--utilities.php',      // Custom Functions for Practical Purposes
 
   /* Uncomment as needed */
   // 'lib/extend-post-types.php',     // Custom Post Types
