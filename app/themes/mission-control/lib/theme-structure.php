@@ -5,34 +5,25 @@ use Apollo\Config\Condition;
 use Apollo\Theme\Wrapper;
 
 
-// CONTENT WIDTH
-// ============================================================
-// Defined in config-settings
-
-if (!isset($content_width)) {
-  $content_width = CONTENT_WIDTH;
-}
-
-
-// SIDEBAR
+// SIDEBAR LOGIC
 // ============================================================
 
-// Determine sidebar layout
+// // Determine sidebar layout
 function sidebar_orientation() {
   // Determine layout orientation
-  $sidebar_direction = SIDEBAR_LAYOUT_RIGHT === true ? 'R' : 'L';
+  $sidebar_direction = SIDEBAR_LAYOUT_RIGHT === true ? 'right' : 'left';
   if( Condition\sidebar_switch() )
-    $sidebar_direction = $sidebar_direction === 'R' ? 'L' : 'R';
+    $sidebar_direction = $sidebar_direction === 'right' ? 'left' : 'right';
 
   return $sidebar_direction;
 }
 
 // Add Sidebar class to body
-function sidebar_body_class($boolean) {
-  if($boolean) {
-    $classes[] = 'sidebar-primary';
-
+function sidebar_body_class() {
+  if ( !Condition\hide_sidebar() ) {
     $sidebar_direction = sidebar_orientation();
+
+    $classes[] = 'sidebar-primary';
     $classes[] = ($sidebar_direction === 'R') ? 'sidebar-right' : 'sidebar-left';
 
     return $classes;
@@ -57,7 +48,7 @@ function base_structure($main_class = 'main_content', $sidebar_class = 'sidebar'
     $sidebar_close     = '</aside>';
 
     // Left Sidebar
-    if( $sidebar_direction === 'L' ) {
+    if( $sidebar_direction === 'left' ) {
       echo $sidebar_open;
       include Wrapper\sidebar_path();
       echo $sidebar_close;
@@ -69,7 +60,7 @@ function base_structure($main_class = 'main_content', $sidebar_class = 'sidebar'
     echo '</section>';
 
     // Right Sidebar
-    if( $sidebar_direction === 'R' ) {
+    if( $sidebar_direction === 'right' ) {
       echo $sidebar_open;
       include Wrapper\sidebar_path();
       echo $sidebar_close;
@@ -88,11 +79,11 @@ function base_structure($main_class = 'main_content', $sidebar_class = 'sidebar'
 
 function custom_wp_nav_menu_classes($classes, $item) {
 
-  $shrunken_classes = array_intersect($classes, array(
+  $shrunken_classes = array_intersect($classes, [
     // List of allowed menu classes
       'current_page_item',
       'current_page_ancestor',
-    )
+    ]
   );
   // Replace all classes with new jams
   $classes = $shrunken_classes;
@@ -109,6 +100,7 @@ function custom_wp_nav_menu_classes($classes, $item) {
 add_filter('nav_menu_css_class', __NAMESPACE__ . '\\custom_wp_nav_menu_classes', 10, 2);
 
 function strip_wp_nav_menu($var) {
+  // Return to nothing
   return '';
 }
 add_filter('nav_menu_item_id', __NAMESPACE__ . '\\strip_wp_nav_menu');
@@ -151,6 +143,15 @@ if(CLEAN_THEME_WP_HEAD) {
   remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
   remove_action( 'wp_print_styles', 'print_emoji_styles' );
   remove_action( 'admin_print_styles', 'print_emoji_styles' );
+}
+
+
+// CONTENT WIDTH
+// ============================================================
+// Defined in config-settings
+
+if (!isset($content_width)) {
+  $content_width = CONTENT_WIDTH;
 }
 
 
