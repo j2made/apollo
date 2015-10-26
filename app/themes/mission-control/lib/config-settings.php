@@ -60,6 +60,11 @@ function theme_setup() {
 
 add_action('after_setup_theme', __NAMESPACE__ . '\\theme_setup');
 
+
+// Disable XML-RPC
+add_filter('xmlrpc_enabled', '__return_false');
+
+
 // WIDGETS
 // =============================================================================
 
