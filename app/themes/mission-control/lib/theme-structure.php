@@ -19,7 +19,7 @@ function sidebar_orientation() {
 }
 
 // Add Sidebar class to body
-function sidebar_body_class() {
+function sidebar_body_class($classes) {
   if ( !Condition\hide_sidebar() ) {
     $sidebar_direction = sidebar_orientation();
 
@@ -81,11 +81,13 @@ function custom_wp_nav_menu_classes($classes, $item) {
 
   $shrunken_classes = array_intersect($classes, [
     // List of allowed menu classes
-      'current_page_item',
-      'current_page_ancestor',
-    ]
-  );
-  // Replace all classes with new jams
+    'current-page-item',
+    'current-page-ancestor',
+    'current-menu-parent',
+    'current-menu-ancestor',
+  ] );
+
+  // Replace existing classes with new ones
   $classes = $shrunken_classes;
 
   $menu_title = strtolower($item->title);
@@ -97,6 +99,7 @@ function custom_wp_nav_menu_classes($classes, $item) {
 
   return $classes;
 }
+
 add_filter('nav_menu_css_class', __NAMESPACE__ . '\\custom_wp_nav_menu_classes', 10, 2);
 
 function strip_wp_nav_menu($var) {
@@ -106,52 +109,32 @@ function strip_wp_nav_menu($var) {
 add_filter('nav_menu_item_id', __NAMESPACE__ . '\\strip_wp_nav_menu');
 add_filter('page_css_class', __NAMESPACE__ . '\\strip_wp_nav_menu');
 
-//Replaces "current-menu-item" with "active"
+
+// Replace class names with shorter ones
 function current_to_active($text){
   $replace = array(
     //List of menu item classes that should be changed to "active"
-    'current_page_item' => 'active',
-    'current_page_ancestor' => 'active-ancestor',
+    'current-page-item' => 'active',
+    'current-menu-parent'   => 'active',
+    'current-page-ancestor' => 'ancestor',
+    'current-menu-ancestor' => 'ancestor',
   );
 
-  $text = str_replace(array_keys($replace), $replace, $text);
-    return $text;
-  }
+  $text = str_replace( array_keys($replace), $replace, $text );
+
+  return $text;
+
+}
+
 add_filter ('wp_nav_menu', __NAMESPACE__ . '\\current_to_active');
 
-// Deletes empty classes
+
+// Delete empty classes
 function strip_empty_classes($menu) {
     $menu = preg_replace('/ class=""/','',$menu);
     return $menu;
 }
 add_filter ('wp_nav_menu', __NAMESPACE__ . '\\strip_empty_classes');
 
-
-// CLEAN WP_HEAD
-// ============================================================
-if(CLEAN_THEME_WP_HEAD) {
-  remove_action( 'wp_head', 'rsd_link' );
-  remove_action( 'wp_head', 'wlwmanifest_link' );
-  remove_action( 'wp_head', 'wp_generator' );
-  remove_action( 'wp_head', 'start_post_rel_link' );
-  remove_action( 'wp_head', 'index_rel_link' );
-  remove_action( 'wp_head', 'adjacent_posts_rel_link' );
-  remove_action( 'wp_head', 'wp_shortlink_wp_head' );
-
-  // REMOVE EMOJI SCRIPTS
-  remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
-  remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
-  remove_action( 'wp_print_styles', 'print_emoji_styles' );
-  remove_action( 'admin_print_styles', 'print_emoji_styles' );
-}
-
-
-// CONTENT WIDTH
-// ============================================================
-// Defined in config-settings
-
-if (!isset($content_width)) {
-  $content_width = CONTENT_WIDTH;
-}
 
 
