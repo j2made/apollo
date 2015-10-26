@@ -39,7 +39,7 @@
 ## ============================================================
 "paths":
   "source":   "assets/"                 # Default source: `assets/`
-  "dist":     "dist-dev/"               # Default source: `dist/`
+  "dist":     "src/"                    # Default source: `dist/`
 
 # CONFIG
 ## ============================================================

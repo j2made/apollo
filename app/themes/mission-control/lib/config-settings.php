@@ -27,7 +27,7 @@ define('SIDEBAR_LAYOUT_RIGHT', true);     // Sidebar Layout         Boolean. Set
 if (WP_ENV == 'production' || WP_ENV == 'staging') {
  define('DIST_DIR', '/dist/');
 } else {
- define('DIST_DIR', '/dist-dev/');
+ define('DIST_DIR', '/src/');
 }
 
 // THEME SUPPORT
