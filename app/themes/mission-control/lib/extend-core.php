@@ -31,28 +31,6 @@ function fix_svg_thumb_display() {
 }
 add_action('admin_head',  __NAMESPACE__ . '\\fix_svg_thumb_display');
 
-// Change excerpt
-function excerpt_more() {
-  return '<a href="' . get_permalink() . '" class="read-more-link">Read More</a>';
-}
-add_filter('excerpt_more', __NAMESPACE__ . '\\excerpt_more');
-
-// Add Classes to Body Class
-function add_custom_body_classes( $classes ) {
-
-  // Add Non-Development Env Class
-  if(WP_ENV === 'development') {
-    $classes[] = 'development-env';
-  }
-
-  // Front Page
-  if(is_front_page()) {
-    $classes[] = 'front-page';
-  }
-
-  return $classes;
-}
-add_filter( 'body_class', __NAMESPACE__ . '\\add_custom_body_classes' );
 
 
 // WP HEAD FUNCTIONS

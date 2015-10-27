@@ -5,34 +5,25 @@ use Apollo\Config\Condition;
 use Apollo\Theme\Wrapper;
 
 
-// CONTENT WIDTH
-// ============================================================
-// Defined in config-settings
-
-if (!isset($content_width)) {
-  $content_width = CONTENT_WIDTH;
-}
-
-
-// SIDEBAR
+// SIDEBAR LOGIC
 // ============================================================
 
-// Determine sidebar layout
+// // Determine sidebar layout
 function sidebar_orientation() {
   // Determine layout orientation
-  $sidebar_direction = SIDEBAR_LAYOUT_RIGHT === true ? 'R' : 'L';
+  $sidebar_direction = SIDEBAR_LAYOUT_RIGHT === true ? 'right' : 'left';
   if( Condition\sidebar_switch() )
-    $sidebar_direction = $sidebar_direction === 'R' ? 'L' : 'R';
+    $sidebar_direction = $sidebar_direction === 'right' ? 'left' : 'right';
 
   return $sidebar_direction;
 }
 
 // Add Sidebar class to body
-function sidebar_body_class($boolean) {
-  if($boolean) {
-    $classes[] = 'sidebar-primary';
-
+function sidebar_body_class($classes) {
+  if ( !Condition\hide_sidebar() ) {
     $sidebar_direction = sidebar_orientation();
+
+    $classes[] = 'sidebar-primary';
     $classes[] = ($sidebar_direction === 'R') ? 'sidebar-right' : 'sidebar-left';
 
     return $classes;
@@ -57,7 +48,7 @@ function base_structure($main_class = 'main_content', $sidebar_class = 'sidebar'
     $sidebar_close     = '</aside>';
 
     // Left Sidebar
-    if( $sidebar_direction === 'L' ) {
+    if( $sidebar_direction === 'left' ) {
       echo $sidebar_open;
       include Wrapper\sidebar_path();
       echo $sidebar_close;
@@ -69,7 +60,7 @@ function base_structure($main_class = 'main_content', $sidebar_class = 'sidebar'
     echo '</section>';
 
     // Right Sidebar
-    if( $sidebar_direction === 'R' ) {
+    if( $sidebar_direction === 'right' ) {
       echo $sidebar_open;
       include Wrapper\sidebar_path();
       echo $sidebar_close;
@@ -88,13 +79,15 @@ function base_structure($main_class = 'main_content', $sidebar_class = 'sidebar'
 
 function custom_wp_nav_menu_classes($classes, $item) {
 
-  $shrunken_classes = array_intersect($classes, array(
+  $shrunken_classes = array_intersect($classes, [
     // List of allowed menu classes
-      'current_page_item',
-      'current_page_ancestor',
-    )
-  );
-  // Replace all classes with new jams
+    'current-page-item',
+    'current-page-ancestor',
+    'current-menu-parent',
+    'current-menu-ancestor',
+  ] );
+
+  // Replace existing classes with new ones
   $classes = $shrunken_classes;
 
   $menu_title = strtolower($item->title);
@@ -106,51 +99,42 @@ function custom_wp_nav_menu_classes($classes, $item) {
 
   return $classes;
 }
+
 add_filter('nav_menu_css_class', __NAMESPACE__ . '\\custom_wp_nav_menu_classes', 10, 2);
 
 function strip_wp_nav_menu($var) {
+  // Return to nothing
   return '';
 }
 add_filter('nav_menu_item_id', __NAMESPACE__ . '\\strip_wp_nav_menu');
 add_filter('page_css_class', __NAMESPACE__ . '\\strip_wp_nav_menu');
 
-//Replaces "current-menu-item" with "active"
+
+// Replace class names with shorter ones
 function current_to_active($text){
   $replace = array(
     //List of menu item classes that should be changed to "active"
-    'current_page_item' => 'active',
-    'current_page_ancestor' => 'active-ancestor',
+    'current-page-item' => 'active',
+    'current-menu-parent'   => 'active',
+    'current-page-ancestor' => 'ancestor',
+    'current-menu-ancestor' => 'ancestor',
   );
 
-  $text = str_replace(array_keys($replace), $replace, $text);
-    return $text;
-  }
+  $text = str_replace( array_keys($replace), $replace, $text );
+
+  return $text;
+
+}
+
 add_filter ('wp_nav_menu', __NAMESPACE__ . '\\current_to_active');
 
-// Deletes empty classes
+
+// Delete empty classes
 function strip_empty_classes($menu) {
     $menu = preg_replace('/ class=""/','',$menu);
     return $menu;
 }
 add_filter ('wp_nav_menu', __NAMESPACE__ . '\\strip_empty_classes');
 
-
-// CLEAN WP_HEAD
-// ============================================================
-if(CLEAN_THEME_WP_HEAD) {
-  remove_action( 'wp_head', 'rsd_link' );
-  remove_action( 'wp_head', 'wlwmanifest_link' );
-  remove_action( 'wp_head', 'wp_generator' );
-  remove_action( 'wp_head', 'start_post_rel_link' );
-  remove_action( 'wp_head', 'index_rel_link' );
-  remove_action( 'wp_head', 'adjacent_posts_rel_link' );
-  remove_action( 'wp_head', 'wp_shortlink_wp_head' );
-
-  // REMOVE EMOJI SCRIPTS
-  remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
-  remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
-  remove_action( 'wp_print_styles', 'print_emoji_styles' );
-  remove_action( 'admin_print_styles', 'print_emoji_styles' );
-}
 
 

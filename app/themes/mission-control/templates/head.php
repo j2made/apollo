@@ -2,7 +2,7 @@
 <html class="no-js" <?php language_attributes(); ?>>
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!--[if IE]><link rel="shortcut icon" href="<?= TEMPLATEPATH ?>/favicon.ico"><![endif]-->

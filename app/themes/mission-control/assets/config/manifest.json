@@ -31,16 +31,11 @@
       "files": [
         "styles/editor-style.scss"
       ]
-    },
-    "pattern-lib.css": {
-      "files": [
-        "pattern-lib/styles/pattern-lib.scss"
-      ]
     }
   },
   "paths": {
     "source": "assets/",
-    "dist": "dist-dev/"
+    "dist": "src/"
   },
   "config": {
     "devUrl": "apollo.dev",

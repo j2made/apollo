@@ -5,6 +5,7 @@ node_modules
 npm-debug.log
 
 # Assets
-dist-dev
 src
+dist-dev
 assets/config/mainfest.json
+mainfest.json

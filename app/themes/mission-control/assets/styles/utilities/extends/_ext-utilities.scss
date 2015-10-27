@@ -5,11 +5,11 @@
 // ============================================================
 
 %cover {
-  position: absolute;
-  top: 0;
   bottom: 0;
   left: 0;
+  position: absolute;
   right: 0;
+  top: 0;
 }
 
 %hidden {
@@ -17,6 +17,24 @@
   visibility: hidden;
 }
 
+%visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+%img-responsive {
+  display: block;
+  height: auto;
+  max-width: 100%;
+  width: 100% \9;
+  @include image-rendering(optimizeSpeed);
+}
 
 // SPACING (SPACING VARS IN VARIABLES/_VAR-UTILITIES)
 // ============================================================
@@ -68,10 +86,9 @@
 // ============================================================
 
 %standard-trans {
-  transition: all 0.35s;
+  transition: all.35s;
 }
 
 %long-trans {
-  transition: all 0.5s;
+  transition: all .5s;
 }
-

@@ -13,8 +13,8 @@
 "dependencies":
 
   ## JS FILES
-  "main.js":                          # Concatenated js file
-    "files":  ["scripts/main.js"]     # Add additional files or globs in `files:` array
+  "main.js":                            # Concatenated js file
+    "files":  [ "scripts/main.js" ]     # Add additional files or globs in `files:` array
     "main":   true
 
   "jquery.js":
@@ -35,18 +35,15 @@
   "editor-style.css":
     "files":  [ "styles/editor-style.scss" ]
 
-  "pattern-lib.css":
-    "files":  ["pattern-lib/styles/pattern-lib.scss"]
-
 # PATHS
 ## ============================================================
 "paths":
-  "source":   "assets/"    # Default source: `assets/`
-  "dist":     "dist-dev/"  # Default source: `dist/`
+  "source":   "assets/"                 # Default source: `assets/`
+  "dist":     "src/"                    # Default source: `dist/`
 
 # CONFIG
 ## ============================================================
 # Need to add things to the gulpfile? add them here!
 "config":
-  "devUrl":   "apollo.dev"      # Local dev url for browsersync
+  "devUrl":   "apollo.dev"              # Local dev url for browsersync
   "shipDest": "dist/"
