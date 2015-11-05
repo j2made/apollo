@@ -43,7 +43,6 @@ function base_structure($main_class = 'main_content', $sidebar_class = 'sidebar'
     $sidebar_direction = sidebar_orientation();
 
     // Create classes for sidebar
-    sidebar_body_class(true);
     $sidebar_open      = '<aside class="' . $sidebar_class . '" role="complementary">';
     $sidebar_close     = '</aside>';
 
