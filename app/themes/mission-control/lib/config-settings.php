@@ -20,6 +20,16 @@ define('TYPEKIT_ID', false);              // Typekit                Kit ID
 define('FONTAWESOME', false);             // Include FontAwesome    Boolean, if true, will be loaded from CDN
 define('CONTENT_WIDTH', '1140');          // Content Width          https://codex.wordpress.org/Content_Width
 define('CLEAN_THEME_WP_HEAD', true);      // Clean up wp head       Boolean. See CLEAN WP_HEAD below
+define('GOOGLE_FONTS', false);            // Google Fonts           False or Font Family
+
+/**
+ * To define Google Fonts, set definition name to font name.
+ *
+ * Example Google stylesheet link:
+ *   <link href='https://fonts.googleapis.com/css?family=Dosis:400,300' ... >
+ * Resulting definition:
+ *   define('GOOGLE_FONTS', 'Dosis:400,300');
+ */
 
 
 

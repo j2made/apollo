@@ -121,10 +121,10 @@ function assets() {
     wp_enqueue_script('comment-reply');
   }
 
-  // PATTERN LIB SCRIPTS
-  if( is_page_template('pattern-lib/pattern-lib-template.php') ) {
-    wp_enqueue_style( 'pattern-lib-styles', asset_path('styles/pattern-lib.css', DIST_DIR), array('apollo-css') );
-    wp_enqueue_script( 'pattern-lib-scripts', asset_path('scripts/pattern-lib.js', DIST_DIR), array('jquery'), true );
+  // GOOGLE FONTS
+  if ( GOOGLE_FONTS !== false ) {
+    $google_url = 'https://fonts.googleapis.com/css?family=' . GOOGLE_FONTS;
+    wp_enqueue_style( 'google-fonts', $google_url );
   }
 
   // BASIC SITE SCRIPTS
