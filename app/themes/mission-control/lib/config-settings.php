@@ -72,11 +72,16 @@ function theme_setup() {
 add_action('after_setup_theme', __NAMESPACE__ . '\\theme_setup');
 
 
-
 // Disable XML-RPC
 // ============================================================
+
 add_filter('xmlrpc_enabled', '__return_false');
 
+function remove_x_pingback($headers) {
+    unset($headers['X-Pingback']);
+    return $headers;
+}
+add_filter('wp_headers', 'remove_x_pingback');
 
 
 // CLEAN WP_HEAD
@@ -142,7 +147,3 @@ if (!isset($content_width)) {
 // 2. http://codex.wordpress.org/Function_Reference/add_theme_support#Title_Tag
 // 3. https://codex.wordpress.org/Function_Reference/add_theme_support#Post_Thumbnails
 // 4. https://codex.wordpress.org/Function_Reference/add_theme_support#HTML5
-
-
-
-
