@@ -27,13 +27,3 @@
     }
   }
 }
-
-// 10 Column container
-.column-container {
-  @include span-columns(10);
-  @include shift(1);
-}
-
-.content-column img, .column-container img, .sidebar img {
-  @include img-responsive();
-}

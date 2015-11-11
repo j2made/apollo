@@ -20,16 +20,18 @@ function sidebar_orientation() {
 
 // Add Sidebar class to body
 function sidebar_body_class($classes) {
-  if ( !Condition\hide_sidebar() ) {
-    $sidebar_direction = sidebar_orientation();
+  $sidebar_direction = sidebar_orientation();
+  $classes[] = 'front-page';
 
+  if ( !Condition\hide_sidebar() ) {
     $classes[] = 'sidebar-primary';
     $classes[] = ($sidebar_direction === 'R') ? 'sidebar-right' : 'sidebar-left';
 
-    return $classes;
   }
+
+  return $classes;
 }
-add_filter('body_class', __NAMESPACE__ . '\\sidebar_body_class');
+add_filter( 'body_class', __NAMESPACE__ . '\\sidebar_body_class' );
 
 
 // BASE STRUCTURE
@@ -37,6 +39,7 @@ add_filter('body_class', __NAMESPACE__ . '\\sidebar_body_class');
 // Create the base layout structure, based on sidebar settings
 
 function base_structure($main_class = 'main_content', $sidebar_class = 'sidebar') {
+
   if ( !Condition\hide_sidebar() ) {
 
     // Determine layout orientation
