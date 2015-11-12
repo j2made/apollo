@@ -46,15 +46,6 @@ if (TYPEKIT_ID) {
   add_action('wp_head', __NAMESPACE__ . '\\typekit', 1);
 }
 
-// FontAwesome from CDN
-if (FONTAWESOME == 'true') {
-  function fontawesome() { ?>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-  <?php }
-
-  add_action('wp_head', __NAMESPACE__ . '\\fontawesome', 1);
-}
-
 
 // CREDITS:
 // (1) https://css-tricks.com/snippets/wordpress/allow-svg-through-wordpress-media-uploader/

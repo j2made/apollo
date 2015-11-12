@@ -127,6 +127,11 @@ function assets() {
     wp_enqueue_style( 'google-fonts', $google_url );
   }
 
+  // FONT AWESOME ICONS
+  if ( FONTAWESOME ) {
+    wp_enqueue_style( 'font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css' );
+  }
+
   // BASIC SITE SCRIPTS
   wp_enqueue_script('modernizr', asset_path('scripts/modernizr.js', DIST_DIR), [], null, true);
   wp_enqueue_script('jquery');
