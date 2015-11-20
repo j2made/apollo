@@ -20,6 +20,7 @@ define('TYPEKIT_ID', false);              // Typekit                Kit ID
 define('FONTAWESOME', false);             // Include FontAwesome    Boolean, if true, will be loaded from CDN
 define('CONTENT_WIDTH', '1140');          // Content Width          https://codex.wordpress.org/Content_Width
 define('CLEAN_THEME_WP_HEAD', true);      // Clean up wp head       Boolean. See CLEAN WP_HEAD below
+define('REMOVE_EMOJI', true);             // Clean up wp head       Boolean. See CLEAN WP_HEAD below
 define('GOOGLE_FONTS', false);            // Google Fonts           False or Font Family
 
 /**
@@ -87,6 +88,8 @@ add_filter('wp_headers', __NAMESPACE__ . '\\remove_x_pingback');
 // CLEAN WP_HEAD
 // ============================================================
 if(CLEAN_THEME_WP_HEAD) {
+
+  // Strip out unnecessary wp_head items
   remove_action( 'wp_head', 'rsd_link' );
   remove_action( 'wp_head', 'wlwmanifest_link' );
   remove_action( 'wp_head', 'wp_generator' );
@@ -95,11 +98,35 @@ if(CLEAN_THEME_WP_HEAD) {
   remove_action( 'wp_head', 'adjacent_posts_rel_link' );
   remove_action( 'wp_head', 'wp_shortlink_wp_head' );
 
-  // REMOVE EMOJI SCRIPTS
-  remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
-  remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
-  remove_action( 'wp_print_styles', 'print_emoji_styles' );
-  remove_action( 'admin_print_styles', 'print_emoji_styles' );
+}
+
+if(REMOVE_EMOJI) {
+
+  // Strip out emoji stuff in wp_head
+  function disable_emojicons_tinymce( $plugins ) {
+    if ( is_array( $plugins ) ) {
+      return array_diff( $plugins, array( 'wpemoji' ) );
+    } else {
+      return array();
+    }
+  }
+
+  function disable_wp_emojicons() {
+
+    // all actions related to emojis
+    remove_action( 'admin_print_styles', 'print_emoji_styles' );
+    remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+    remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+    remove_action( 'wp_print_styles', 'print_emoji_styles' );
+    remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
+    remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+    remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
+
+    // filter to remove TinyMCE emojis
+    add_filter( 'tiny_mce_plugins', __NAMESPACE__ . '\\disable_emojicons_tinymce' );
+  }
+
+  add_action( 'init', __NAMESPACE__ . '\\disable_wp_emojicons' );
 }
 
 

@@ -16,11 +16,6 @@
         "modernizr"
       ]
     },
-    "pattern-lib.js": {
-      "files": [
-        "pattern-lib/scripts/pattern-lib.js"
-      ]
-    },
     "main.css": {
       "files": [
         "styles/main.scss"

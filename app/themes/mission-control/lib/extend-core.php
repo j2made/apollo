@@ -35,13 +35,13 @@ add_action('admin_head',  __NAMESPACE__ . '\\fix_svg_thumb_display');
 
 // WP HEAD FUNCTIONS
 // ============================================================
-// *FUTURE*: WE SHOULD ADD THESE AS ENQUEUE SCRIPT AND STYLES /////////////////////////////////////
 
 // Typekit
-function typekit() { ?>
-  <script type="text/javascript" src="//use.typekit.net/<?= TYPEKIT_ID; ?>.js"></script>
-  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-<?php }
+function typekit() {
+  echo '<script type="text/javascript" src="//use.typekit.net/' . TYPEKIT_ID . '.js"></script>';
+  echo '<script type="text/javascript">try{Typekit.load();}catch(e){}</script>';
+}
+
 if (TYPEKIT_ID) {
   add_action('wp_head', __NAMESPACE__ . '\\typekit', 1);
 }
