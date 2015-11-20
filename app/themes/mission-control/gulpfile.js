@@ -11,6 +11,7 @@ var gulp        = require('gulp');
 var lazypipe    = require('lazypipe');
 var merge       = require('merge-stream');
 var runSequence = require('run-sequence');
+var mediaQuery  = require('gulp-group-css-media-queries');
 
 
 // MANIFEST VARS
@@ -65,6 +66,7 @@ var cssTasks = function(filename) {
           'last 2 versions', 'ie 8', 'ie 9', 'android 2.3', 'android 4', 'opera 12'
         ]
       })
+      .pipe( function() { return $.if( enabled.rev, mediaQuery() ); } )
       .pipe($.minifyCss)
     .pipe(function() {return $.if(enabled.rev, $.rev());})
     .pipe(function() {return $.if(enabled.maps, $.sourcemaps.write('.'));})();
