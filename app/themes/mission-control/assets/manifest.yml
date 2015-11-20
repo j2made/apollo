@@ -21,7 +21,7 @@
     "bower":  [ "jquery" ]
 
   "modernizr.js":
-    "bower":  [ "modernizr" ]
+    "files":  [ "vendor/modernizr" ]
 
   ## SASS AND CSS
   "main.css":                           # Primary concatenated css file
@@ -35,12 +35,13 @@
 # PATHS
 ## ============================================================
 "paths":
-  "source":   "assets/"                 # Default source: `assets/`
-  "dist":     "src/"                    # Default source: `dist/`
+  "source":     "assets/"                 # Default source: `assets/`
+  "dist":       "src/"                    # Default source: `dist/`
+  "modernizr":  "deps/modernizr/"
 
 # CONFIG
 ## ============================================================
 # Need to add things to the gulpfile? add them here!
 "config":
-  "devUrl":   "apollo.dev"              # Local dev url for browsersync
-  "shipDest": "dist/"
+  "devUrl":         "apollo.dev"              # Local dev url for browsersync
+  "shipDest":       "dist/"

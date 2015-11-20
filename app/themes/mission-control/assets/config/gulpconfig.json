@@ -1,0 +1,43 @@
+[
+  {
+    "dependencies": {
+      "css" : {
+        "main.css": {
+          "files": [
+            "styles/main.scss"
+          ]
+        }
+      },
+      "js" : {
+        "main.js": {
+          "files": [
+            "scripts/main.js"
+          ],
+          "main": true
+        },
+        "jquery.js": {
+          "bower": [
+            "jquery"
+          ]
+        },
+        "modernizr.js": {
+          "files": [
+            "deps/modernizr/modernizr.js"
+          ]
+        }
+      }
+    },
+
+    "paths": {
+      "main": "assets/",
+      "src": "src/",
+      "dist": "dist/",
+      "modernizr": "deps/modernizr",
+      "bower": "deps/bower_components"
+    },
+
+    "config": {
+      "devURL": "apollo.dev"
+    }
+  }
+]

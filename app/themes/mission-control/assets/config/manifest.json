@@ -12,8 +12,8 @@
       ]
     },
     "modernizr.js": {
-      "bower": [
-        "modernizr"
+      "files": [
+        "vendor/modernizr"
       ]
     },
     "main.css": {
@@ -30,7 +30,8 @@
   },
   "paths": {
     "source": "assets/",
-    "dist": "src/"
+    "dist": "src/",
+    "modernizr": "deps/modernizr/"
   },
   "config": {
     "devUrl": "apollo.dev",

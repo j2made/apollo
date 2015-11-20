@@ -8,3 +8,5 @@ npm-debug.log
 src
 assets/config/mainfest.json
 mainfest.json
+deps/*
+!deps/.gitkeep
