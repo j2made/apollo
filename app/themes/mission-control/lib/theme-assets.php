@@ -79,7 +79,7 @@ function bower_map_to_cdn($dependency, $fallback) {
   }
 
   $templates = [
-    'google' => '//ajax.googleapis.com/ajax/libs/%name%/%version%/%file%?ver=%version%'
+    'google' => '//ajax.googleapis.com/ajax/libs/%name%/%version%/%file%'
   ];
 
   $version = $bower->getPath('dependencies.' . $dependency['name']);
