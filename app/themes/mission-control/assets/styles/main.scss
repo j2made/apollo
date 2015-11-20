@@ -4,7 +4,7 @@
 // VENDOR STYLES
 // ============================================================
 @charset 'UTF-8';
-@import '../../bower_components/normalize-scss/normalize';                    // Normalize
+@import 'utilities/resets/_normalize';                    // Normalize
 @import '../../bower_components/bourbon/app/assets/stylesheets/bourbon';      // Bourbon
 @import '../../bower_components/neat/app/assets/stylesheets/neat';            // Bourbon Neat
 
