@@ -18,7 +18,7 @@
 
 // Use this variable to set up the common and page specific functions. If you
 // rename this variable, you will also need to rename the namespace below.
-var Sage = {
+var Apollo = {
   // All pages
   common: {
     init: function() {
@@ -48,7 +48,7 @@ var Sage = {
 // Add additional events for more control over timing e.g. a finalize event
 var UTIL = {
   fire: function(func, funcname, args) {
-    var namespace = Sage;
+    var namespace = Apollo;
     funcname = (funcname === undefined) ? 'init' : funcname;
     if (func !== '' && namespace[func] && typeof namespace[func][funcname] === 'function') {
       namespace[func][funcname](args);
