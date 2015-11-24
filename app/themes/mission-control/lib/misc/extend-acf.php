@@ -21,6 +21,7 @@ if(function_exists("register_options_page")) {
 // CUSTOM ADMIN DISPLAY
 // ============================================================
 
+// Remove Basic WYSIWYG & Refine Options on Full
 add_filter( 'acf/fields/wysiwyg/toolbars', __NAMESPACE__ . '\\my_toolbars' );
 function my_toolbars( $toolbars ) {
 
@@ -43,3 +44,21 @@ function my_toolbars( $toolbars ) {
   return $toolbars;
 }
 
+// Group ACF Tabs
+add_action('admin_footer', function() {
+	$screen = get_current_screen();
+	if ( $screen->base == 'post' ) {
+		echo '
+		<!-- ACF Merge Tabs -->
+		<script>
+		var $boxes = jQuery("#postbox-container-2 .postbox .field_type-tab, #postbox-container-2 .postbox .acf-field-tab").parent(".inside");
+		if ($boxes.length > 1) {
+		  var $firstBox = $boxes.first();
+		  $boxes.not($firstBox).each(function() {
+		    jQuery(this).children().appendTo($firstBox);
+		    jQuery(this).parent(".postbox").remove();
+		  });
+		}
+		</script>';
+	}
+});

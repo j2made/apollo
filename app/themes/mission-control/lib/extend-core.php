@@ -32,7 +32,6 @@ function fix_svg_thumb_display() {
 add_action('admin_head',  __NAMESPACE__ . '\\fix_svg_thumb_display');
 
 
-
 // WP HEAD FUNCTIONS
 // ============================================================
 
