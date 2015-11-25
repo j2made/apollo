@@ -24,5 +24,14 @@
 // Omega Reset (http://www.joshfry.me/blog/2013/05/13/omega-reset-for-bourbon-neat)
 @mixin omega-reset($nth) {
   &:nth-child(#{$nth}) { margin-right: flex-gutter(); }
-  &:nth-child(#{$nth}+1) { clear: none }
+  &:nth-child(#{$nth}+1) { clear: none; }
+}
+
+// Center Column
+@mixin center-column($span) {
+  // Calc Shift
+  $shift: (($grid-columns - $span) / 2);
+
+  @include span-columns($span);
+  @include shift($shift);
 }
