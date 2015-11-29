@@ -10,18 +10,3 @@ b,
 strong {
   font-weight: 600;
 }
-
-
-// Headings
-h1, h2, h3, h4, h5, h6 {
-  margin: 0;
-  padding: 0;
-}
-
-h1 { @extend %head-1; }
-h2 { @extend %head-2; }
-h3 { @extend %head-3; }
-h4 { @extend %head-4; }
-h5 { @extend %head-5; }
-h6 { @extend %head-6; }
-
