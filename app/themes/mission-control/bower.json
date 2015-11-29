@@ -17,9 +17,11 @@
     "modernizr": "2.8.2",
     "jquery": "1.11.1",
     "respond": "1.4.2",
-    "bourbon": "~4.2.0",
-    "neat": "~1.7.1",
-    "normalize-scss": "latest"
+    "bourbon": "~4.2",
+    "neat": "~1.7",
+    "normalize-scss": "latest",
+    "meyer-reset": "latest",
+    "sanitize-css": "latest"
   },
   "overrides": {
     "modernizr": {

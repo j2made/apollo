@@ -4,10 +4,11 @@
 // VENDOR STYLES
 // ============================================================
 @charset 'UTF-8';
-@import 'utilities/resets/_normalize';                    // Normalize
+@import '../../bower_components/normalize-scss/_normalize.scss';              // Normalize
+@import '../../bower_components/meyer-reset/stylesheets/_meyer-reset.scss';   // Meyer Reset
+@import '../../bower_components/sanitize-css/sanitize.scss';                  // Sanitize
 @import '../../bower_components/bourbon/app/assets/stylesheets/bourbon';      // Bourbon
 @import '../../bower_components/neat/app/assets/stylesheets/neat';            // Bourbon Neat
-
 
 // THEME STYLES
 // ============================================================
