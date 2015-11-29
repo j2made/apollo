@@ -2,19 +2,29 @@
 // -----------------
 
 // MONOTONE
-// ============================================================
+// =============================================================================
 $white: #fff;
-$gray-mid: darken($white, 50%);
 $black: darken($white, 95%);
+
+// Grayscale
+$black-10: darken(#fff, 10%);
+$black-20: darken(#fff, 20%);
+$black-30: darken(#fff, 30%);
+$black-40: darken(#fff, 40%);
+$black-50: darken(#fff, 50%);
+$black-60: darken(#fff, 60%);
+$black-70: darken(#fff, 70%);
+$black-80: darken(#fff, 80%);
+$black-90: darken(#fff, 90%);
 
 
 // BRAND COLORS
-// ============================================================
+// =============================================================================
 $brand-color: #23cbd9;
 
 
 // ELEMENT COLORS
-// ============================================================
+// =============================================================================
 
 // Background Color
 $base-background-color: $white;
@@ -28,4 +38,3 @@ $base-link-color:     $base-accent-color;
 $hover-link-color:    $base-font-color;
 $base-button-color:   $base-link-color;
 $hover-button-color:  $hover-link-color;
-
