@@ -37,12 +37,3 @@ body {
 h1, h2, h3, h4, h5, h6 {
 	@extend %header-reset;  // Keeps things organized for header @extends
 }
-
-
-// UTILITY CLASSES
-// ============================================================
-
-.cover {
-	@extend %cover;
-}
-
