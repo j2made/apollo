@@ -31,7 +31,6 @@
 @mixin center-column($span) {
   // Calc Shift
   $shift: (($grid-columns - $span) / 2);
-
   @include span-columns($span);
   @include shift($shift);
 }
