@@ -98,7 +98,8 @@ Apollo's composer.json is setup to connect with the [WordPress Packagist] (http:
 Example:
     `"wpackagist-plugin/duplicate-post": "~2.6",`
 
-#### Theme: Mission Control
+## Theme:
+#### Mission Control
 
 Theme docs are maintained [here](app/themes/mission-control/README.md).
 
