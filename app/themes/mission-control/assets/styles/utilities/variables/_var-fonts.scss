@@ -1,27 +1,31 @@
 // Variables: Typography
 // ---------------------
 
-// Font-Face
-// Format via Bourbon.io
-// http://bourbon.io/docs/#font-face
+// Font-Face: http://bourbon.io/docs/#font-face
 // =============================================================================
 
 // @include font-face("source-sans-pro", "/app/themes/mission-control/dist/fonts/source-sans-pro-regular");
 
 // Fonts
+// =============================================================================
+
 $serif:							      $georgia;
 $sans-serif:						  $helvetica;
-$alt-font:						    $lucida-grande;
+$serif-alt:               $serif;
+$sans-serif-alt:          $sans-serif;
 $base-font-family:        $sans-serif;
-$title-font:              $alt-font;
 
 // Font Sizes
+// =============================================================================
+
 $em-base: 22px !default;
 $base-font-size: 22px;
 $base-font-size-rem: rem(22);
 
 // Line Height
-$base-line-height: 1.5;
+// =============================================================================
+
+$base-line-height: 1.4;
 $base-spacing: $base-line-height * 1em;
 $body-line-height: golden-ratio(1em, 1);
 $header-line-height: 1.25;
