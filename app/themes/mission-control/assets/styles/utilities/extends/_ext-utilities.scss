@@ -77,9 +77,9 @@
 // ============================================================
 
 %background-cover {
-  background-size: cover;
-  background-repeat: no-repeat;
   background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 
@@ -87,9 +87,9 @@
 // ============================================================
 
 %standard-trans {
-  transition: all.35s;
+  @include transition(all .35s ease-in-out);
 }
 
 %long-trans {
-  transition: all .5s;
+  @include transition(all .5s ease-in-out);
 }
