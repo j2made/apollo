@@ -29,12 +29,12 @@
 }
 
 %img-responsive {
+  @include image-rendering(optimizeSpeed);
   display: block;
   height: auto;
   max-width: 100%;
   width: 100% \9;
   width: 100%;
-  @include image-rendering(optimizeSpeed);
 }
 
 // SPACING (SPACING VARS IN VARIABLES/_VAR-UTILITIES)
