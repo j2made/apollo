@@ -96,7 +96,9 @@ var writeToManifest = function(directory) {
   return lazypipe()
     .pipe(gulp.dest, path.dist + directory)
     .pipe(function() {
-      return $.if('**/*.{js,css}', browserSync.reload({stream:true}));
+      return $.if('**/*.{js,css}', browserSync.reload({
+        stream:true
+      }));
     })
     .pipe($.rev.manifest, revManifest, {
       base: path.dist,
