@@ -31,6 +31,7 @@ function sidebar_body_class($classes) {
 
   return $classes;
 }
+
 add_filter( 'body_class', __NAMESPACE__ . '\\sidebar_body_class' );
 
 
@@ -137,6 +138,3 @@ function strip_empty_classes($menu) {
     return $menu;
 }
 add_filter ('wp_nav_menu', __NAMESPACE__ . '\\strip_empty_classes');
-
-
-
