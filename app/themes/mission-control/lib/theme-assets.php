@@ -158,7 +158,7 @@ add_action('wp_head', __NAMESPACE__ . '\\jquery_local_fallback');
 
 
 // GOOGLE ANALYTICS
-// ============================================================
+// =============================================================================
 
 // Add Google Analytics ID to general settings page in admin
 add_action('admin_init', __NAMESPACE__ . '\\j2_fb_api_settings_section');

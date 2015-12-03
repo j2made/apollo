@@ -6,7 +6,7 @@ use Apollo\Theme\Wrapper;
 
 
 // SIDEBAR LOGIC
-// ============================================================
+// =============================================================================
 
 // // Determine sidebar layout
 function sidebar_orientation() {
@@ -36,7 +36,7 @@ add_filter( 'body_class', __NAMESPACE__ . '\\sidebar_body_class' );
 
 
 // BASE STRUCTURE
-// ============================================================
+// =============================================================================
 // Create the base layout structure, based on sidebar settings
 
 function base_structure($main_class = 'main_content', $sidebar_class = 'sidebar') {
@@ -76,7 +76,7 @@ function base_structure($main_class = 'main_content', $sidebar_class = 'sidebar'
 
 
 // NAV
-// ============================================================
+// =============================================================================
 // Create a nav menu with very basic markup.
 // Deletes all CSS classes and id's, except for those listed in the array below
 
