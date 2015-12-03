@@ -8,7 +8,8 @@ namespace Apollo\Extend\TribeEvents;
 
 
 // Replace Default Tribe Events Stylesheets with main
-// --------------------------------------------------
+// =============================================================================
+
 // This will completely remove the Tribe stylesheet
 
 // function replace_tribe_events_calendar_stylesheet() {
@@ -19,7 +20,8 @@ namespace Apollo\Extend\TribeEvents;
 
 
 // Reverse Past Events
-// -------------------
+// =============================================================================
+
 // https://gist.github.com/elimn/0be6c4cbcf80b3721c81
 
 function reverse_event_order ($post_object) {
@@ -34,13 +36,14 @@ function reverse_event_order ($post_object) {
 add_filter('the_posts', __NAMESPACE__ . '\\reverse_event_order', 100);
 
 // Hide iCal/Export Listed Events links
-// ------------------------------------
+// =============================================================================
+
 // https://theeventscalendar.com/knowledgebase/remove-export-link-from-views/?source=tri.be
 remove_filter('tribe_events_after_footer', array('TribeiCal', 'maybe_add_link'), 10, 1);
 
 
 // Calendar Grid View Link Content
-// -------------------------------
+// =============================================================================
 
 // PREV LINKS
 function change_prev_link($html) {
@@ -65,7 +68,7 @@ add_filter('tribe_events_the_next_month_link', __NAMESPACE__ . '\\change_next_li
 
 
 // Days of Week (Grid View)
-// ------------------------
+// =============================================================================
 
 // Change the Day Format in the Grid View Calendar
 add_filter('tribe_events_get_days_of_week', __NAMESPACE__ . '\\change_days_of_week');
@@ -74,10 +77,19 @@ function change_days_of_week($days) {
   return $days;
 }
 
+// CONDITIONALS
+// =============================================================================
 
+// function is_tribe() {
+  // if(function_exists('tribe_is_event')) {
+  //   if(tribe_is_event())
+  //     return true;
+  // }
+// }
 
 // FUTURE: TEST AND REMOVE IF NEEDED
-// --------------------------------------------------------------------------------------------------------------
+// =============================================================================
+
 // // Hide Google Links
 // add_filter( 'tribe_event_meta_gmap_link', '__return_empty_string' );
 
@@ -108,4 +120,3 @@ function change_days_of_week($days) {
 // function tribe_remove_single_event_links () {
 //   remove_action( 'tribe_events_single_event_after_the_content', array( 'TribeiCal', 'single_event_links' ) );
 // }
-// --------------------------------------------------------------------------------------------------------------
