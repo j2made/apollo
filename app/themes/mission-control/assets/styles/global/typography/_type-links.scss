@@ -2,16 +2,17 @@
 // ============================================================
 
 a {
+  @extend %standard-trans;
   color: $base-link-color;
   text-decoration: none;
-  @extend %standard-trans;
 
   &:hover {
     color: $hover-link-color;
     text-decoration: none;
   }
 
-  &:active, &:focus {
+  &:active,
+  &:focus {
     color: $hover-link-color;
     outline: none;
   }

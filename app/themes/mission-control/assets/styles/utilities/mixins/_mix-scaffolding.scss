@@ -27,7 +27,6 @@
   &:nth-child(#{$nth}+1) { clear: none; }
 }
 
-// Center Column
 @mixin center-column($span) {
   // Calc Shift
   $shift: (($grid-columns - $span) / 2);

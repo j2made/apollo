@@ -18,78 +18,21 @@
   text-transform: uppercase;
 }
 
-// LINKS
-// ============================================================
-
-
-
 // LISTS
 // ============================================================
 
 %list-unstyled {
-  padding: 0;
-  margin: 0;
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 %list-inline {
-  padding: 0;
-  margin: 0;
   list-style: none;
+  margin: 0;
+  padding: 0;
 
   > li {
     display: inline-block;
   }
 }
-
-
-// HEADINGS
-// ============================================================
-
-%page-title {
-  @extend %bold;
-  font-size: rem(36);
-}
-
-%large-title {
-  @extend %bold;
-  font-size: rem(22);
-
-  @include media($small) {
-    font-size: rem(32);
-  }
-
-  @include media($primary-breakpoint) {
-    font-size: rem(46);
-  }
-}
-
-%copy-bold {
-  @extend %bold;
-  font-size: rem(22);
-}
-
-%copy-bold-small {
-  @extend %semi-bold;
-  font-size: rem(18);
-}
-
-// SUBHEADS
-// ============================================================
-
-%subhead-1 {
-  color: $brand-color;
-  font-size: rem(12);
-  margin: 0;
-}
-
-%subhead-2 {
-  font-size: rem(14);
-  font-weight: 600;
-  margin: 0 0 10px;
-
-  @include media($small) {
-    font-size: rem(18);
-  }
-}
-

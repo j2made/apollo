@@ -29,7 +29,7 @@ Make sure you have everything listed in the above requirements installed, and th
 
 - Open your terminal, and `cd` into the directory you just cloned.
 - Run `composer create-project`
-- A series of prompts will collect information based on your enviornment, which will be used to generate a config file. See Prompts below for more information.
+- A series of prompts will collect information based on your environment, which will be used to generate a config file. See Prompts below for more information.
 - If you choose not to run NPM from the composer prompt, cd to the theme and run `npm install`
 - Run `bower update` and `gulp build` to complete theme initialization.
 - Point local hosts to the directory you created (the folder should now have a file name `env.php` inside of it.
@@ -42,10 +42,10 @@ Make sure you have everything listed in the above requirements installed, and th
 #### Site Configuration
 Apollo only uses `wp-config.php` as an initializer file. The information that is typically configured in `wp-config.php` is instead spread throughout the stack. As such, you should never alter `wp-config.php` with site confing information.
 
-All neccessary config information, such as database info, salts, theme enviornment, host url, etc., is stored in the generated `env.php` file. This should file should be ignored in git, because you should keep your creds to your own damn self.
+All necessary config information, such as database info, salts, theme environment, host url, etc., is stored in the generated `env.php` file. This should file should be ignored in git, because you should keep your creds to your own damn self.
 
-#### Theme Enviornment Configuration
-Theme enviornments are controlled via the `WP_ENV` definition in `eng-config.php` and should be one of the following options:
+#### Theme eEnvironment Configuration
+Theme environments are controlled via the `WP_ENV` definition in `eng-config.php` and should be one of the following options:
 
 - `development`
 - `staging`
@@ -53,7 +53,7 @@ Theme enviornments are controlled via the `WP_ENV` definition in `eng-config.php
 
 This definition controls how errors are output and whether or not certain functions should be ran. Local development? Use `development`. Site running live? Use `production`. Testing on a staging server?...I think you get it.
 
-#### Want to change enviornmental attributes?
+#### Want to change environmental attributes?
 See `lib/config/application.php`.
 
 ### Composer
@@ -63,12 +63,12 @@ Running `create-project` will use prompts to setup your config files. If you jus
 
 | Prompt | Info | Default |
 | ------ | ---- | ------- |
-| `WP Enviornment:` | Enviornment definition for project | `development` |
+| `WP Environment:` | Environment definition for project | `development` |
 | `DB_NAME:` | Name of your database | `db_name` |
 | `DB_USER:` | Database user name | `db_user` |
 | `DB_PASSWORD:` | Database password | `db_pass` |
 | `DB_HOST:` | Database host | `localhost` |
-| `HOME_URL:` | Host url for project. **Do not** include `http://` as it will be appended programatically. | `example.com` |
+| `HOME_URL:` | Host url for project. **Do not** include `http://` as it will be appended programmatically. | `example.com` |
 
 If this is the first time the project is being initialized, such as a clean clone from this repo, you will also see the following prompts:
 
@@ -93,80 +93,15 @@ If you have an issue with the prompts, or a `env.php` cannot be created, open an
 Apollo uses [John Bloch Composer Repo] (https://github.com/johnpbloch/wordpress-core-installer) to install WordPress. To update WP, simply update the version of `"johnpbloch/wordpress"` to match the version of WordPress you would like.
 
 #### Plugins
-Apollo's composer.json is setup to connect with the [WordPress Packagist] (http://wpackagist.org/) library. If you want to use a plugin, find it in the WordPress plugin repo, and copy the slug. In `composer.json`, add the plugin slug prepended by `wpackagist-plugin/` and its verion in the `require` array.
+Apollo's composer.json is setup to connect with the [WordPress Packagist] (http://wpackagist.org/) library. If you want to use a plugin, find it in the WordPress plugin repo, and copy the slug. In `composer.json`, add the plugin slug prepended by `wpackagist-plugin/` and its version in the `require` array.
 
 Example:
     `"wpackagist-plugin/duplicate-post": "~2.6",`
 
+## Theme:
+#### Mission Control
 
-## Theme Configuration
-### Functions
-TK
-
-### Styles
-
-#### Basic Concepts
-Unlike most frameworks, there are no set styles. For starters each configurable element will give you the bare necessities to build upon.
-
-For Example: The `.btn` class will give you all the basic properities of a button. Adding the `@include btn-styler()` mixin to any custom button class will give you full range to build your own as-needed.
-
-#### Buttons
-Just the basics for starters but get as fancy as you'd like with the `.btn-styler` mixin.
-
-```html
-<a class="btn" href="#">OG Button Link</a>
-<a class="btn btn-default" href="#">Default</a>
-<a class="btn btn-simple" href="#">Simple</a>
-<a class="btn btn-kitchen-sink" href="#">Kitchen Sink</a>
-```
-
-```scss
-// Base
-.btn {
-  @extend %btn;
-}
-
-// Most Basic
-.btn-default {
-  @include button-styler;
-}
-
-// Simple Variation
-.btn-simple {
-  @include button-styler($background: orange);
-}
-
-// Kitchen Sink Example
-.btn-kitchen-sink {
-  @include button-styler(
-    $padding: 20px 30px,
-    $color: white,
-    $background: crimson,
-    $border: 2px dashed black,
-
-    // Hover
-    $hover-color: maroon,
-    $hover-background: lightblue,
-    $hover-border: 4px dotted crimson,
-    $font-weight: 900,
-
-    // Focus
-    $focus-color: red,
-    $focus-background: yellow,
-    $focus-border: 4px dotted beige,
-
-    // Active
-    $active-color: green,
-    $active-background: blue,
-    $active-border: 4px dotted purple,
-
-    // Visited
-    $visited-color: brown,
-    $visited-background: gold,
-    $visited-border: 4px dotted dodgerblue
-  );
-}
-```
+Theme docs are maintained [here](app/themes/mission-control/README.md).
 
 ## Contributing:
 #### Issues
@@ -180,4 +115,4 @@ The Apollo repo workflow utilizes Git Flow. Features branches should be named wi
 
 
 ## Credits:
-This project is heavily influenced by [Bedrock] (https://github.com/roots/bedrock) and [Sage] (https://github.com/roots/sage) by the [Roots] (https://roots.io/) team. A lot of the code here has been adoted from or inspired by those projects, including the gulpfile and [the wrapper] (https://roots.io/sage/docs/theme-wrapper/).
+This project is heavily influenced by [Bedrock] (https://github.com/roots/bedrock) and [Sage] (https://github.com/roots/sage) by the [Roots] (https://roots.io/) team. A lot of the code here has been adopted from or inspired by those projects, including the gulp file and [the wrapper] (https://roots.io/sage/docs/theme-wrapper/).

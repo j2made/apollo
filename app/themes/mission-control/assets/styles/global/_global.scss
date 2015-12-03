@@ -1,0 +1,33 @@
+// Global Styles
+// -------------
+
+// SCAFFOLDING
+// ============================================================
+
+* {
+  border: 0;
+  box-sizing: border-box;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+  vertical-align: baseline;
+}
+
+
+body,
+html {
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+}
+
+body {
+  @include font-feature-settings('kern', 'liga', "frac", 'pnum');
+  background-color: $base-background-color;
+  color: $base-font-color;
+  font-family: $base-font-family;
+  font-size: $base-font-size;
+  -webkit-font-smoothing: antialiased;
+  line-height: $base-line-height;
+  overflow: hidden;
+}

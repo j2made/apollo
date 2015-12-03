@@ -1,0 +1,123 @@
+// Type Styles
+// -----------
+
+// GLOBAL
+// =============================================================================
+
+p + p {
+  margin: ($base-spacing / 2) 0 0;
+}
+
+b,
+strong {
+  @extend %semi-bold;
+}
+
+// TYPE CLASSES
+// =============================================================================
+
+// Serif
+
+.xl-serif {
+  font-family: $serif;
+  font-size: rem(75);
+}
+
+.lg-serif {
+  font-family: $serif;
+  font-size: rem(50);
+}
+
+.md-serif {
+  font-family: $serif;
+  font-size: rem(25);
+}
+
+.sm-serif {
+  font-family: $serif;
+  font-size: rem(10);
+}
+
+// Sans Serif
+
+.xl-sans-serif {
+  font-family: $sans-serif;
+  font-size: rem(75);
+}
+
+.lg-sans-serif {
+  font-family: $sans-serif;
+  font-size: rem(50);
+}
+
+.md-sans-serif {
+  font-family: $sans-serif;
+  font-size: rem(25);
+}
+
+.sm-sans-serif {
+  font-family: $sans-serif;
+  font-size: rem(10);
+}
+
+// Serif Alt
+
+.xl-serif-alt {
+  font-family: $serif-alt;
+  font-size: rem(75);
+}
+
+.lg-serif-alt {
+  font-family: $serif-alt;
+  font-size: rem(50);
+}
+
+.md-serif-alt {
+  font-family: $serif-alt;
+  font-size: rem(25);
+}
+
+.sm-serif-alt {
+  font-family: $serif-alt;
+  font-size: rem(10);
+}
+
+// Sans Serif Alt
+
+.xl-sans-serif-alt {
+  font-family: $sans-serif-alt;
+  font-size: rem(75);
+}
+
+.lg-sans-serif-alt {
+  font-family: $sans-serif-alt;
+  font-size: rem(50);
+}
+
+.md-sans-serif-alt {
+  font-family: $sans-serif-alt;
+  font-size: rem(25);
+}
+
+.sm-sans-serif-alt {
+  font-family: $sans-serif-alt;
+  font-size: rem(10);
+}
+
+// TITLES
+// =============================================================================
+
+
+
+// POST ELEMENTS
+// =============================================================================
+
+
+
+// PAGE ELEMENTS
+// =============================================================================
+
+
+
+// LIST ELEMENTS
+// =============================================================================
