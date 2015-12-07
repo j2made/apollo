@@ -6,7 +6,7 @@ app/uploads/*
 !app/uploads/.gitkeep
 app/mu-plugins/*
 !app/mu-plugins/.gitkeep
-!app/mu-plugins/disallow-indexing.php
+!app/mu-plugins/config-blog-public.php
 !app/mu-plugins/register-theme-directory.php
 !app/mu-plugins/bedrock-autouploader.php
 
