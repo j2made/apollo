@@ -40,14 +40,3 @@ function sidebar_switch() {
   // }
 
 }
-
-// THEME SPECIFIC CUSTOM CONDITIONALS
-// ============================================================
-
-// If the event is a Tribe Event
-// function is_tribe() {
-  // if(function_exists('tribe_is_event')) {
-  //   if(tribe_is_event())
-  //     return true;
-  // }
-// }
