@@ -93,3 +93,18 @@
 %long-trans {
   @include transition(all .5s ease-in-out);
 }
+
+// BUTTONS
+// =============================================================================
+
+%btn-reset {
+  background-clip: padding-box;
+  background-image: none;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  touch-action: manipulation;
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+}

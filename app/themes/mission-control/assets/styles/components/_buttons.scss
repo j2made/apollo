@@ -2,10 +2,10 @@
 // -------------
 
 .btn {
-  @extend %btn;
+  @extend %btn-reset;
 }
 
 #{$all-buttons},
 .btn-default {
-  @extend %btn;
+  @extend %btn-reset;
 }
