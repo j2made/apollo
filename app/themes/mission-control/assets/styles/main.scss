@@ -2,17 +2,19 @@
 // ---------
 
 // VENDOR STYLES
-// ============================================================
+// =============================================================================
+
 @charset 'UTF-8';
-@import '../../bower_components/normalize-scss/_normalize.scss';                   // Normalize
-@import '../../bower_components/meyer-reset/stylesheets/meyer-reset';        // Meyer Reset
-@import '../../bower_components/sanitize-css/sanitize.scss';                       // Sanitize
-@import '../../bower_components/bourbon/app/assets/stylesheets/bourbon';      // Bourbon
-@import '../../bower_components/neat/app/assets/stylesheets/neat';            // Bourbon Neat
+@import '../../bower_components/normalize-scss/_normalize.scss';          // Normalize
+@import '../../bower_components/meyer-reset/stylesheets/meyer-reset';     // Meyer Reset
+@import '../../bower_components/sanitize-css/sanitize.scss';              // Sanitize
+@import '../../bower_components/bourbon/app/assets/stylesheets/bourbon';  // Bourbon
+@import '../../bower_components/neat/app/assets/stylesheets/neat';        // Bourbon Neat
 
 // THEME STYLES
-// ============================================================
-@import 'utilities/utilities';          // Utilities
-@import 'global/base';                 // Globals Base
-@import 'components/components';        // Components Base
-@import 'layouts/layouts';              // Layouts Base
+// =============================================================================
+
+@import 'utilities/utilities';    // Utilities
+@import 'global/base';            // Globals Base
+@import 'components/components';  // Components Base
+@import 'layouts/layouts';        // Layouts Base
