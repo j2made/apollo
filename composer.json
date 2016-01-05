@@ -36,11 +36,27 @@
     {
       "type": "composer",
       "url": "http://wpackagist.org"
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "j2made/wp-indexing",
+        "version": "1.0.0",
+        "type": "wordpress-muplugin",
+        "dist": {
+          "type": "zip",
+          "url": "https://github.com/j2made/wp-indexing/archive/master.zip"
+        },
+        "require" : {
+          "fancyguy/webroot-installer": "1.1.0"
+        }
+      }
     }
   ],
   "require": {
     "php": ">=5.4",
     "johnpbloch/wordpress": "4.4",
+    "j2made/wp-indexing": "1.0.0",
     "composer/installers": "v1.0.21"
   },
   "extra": {
