@@ -1,19 +1,67 @@
 <?php
+/*
+Plugin Name:  EVA
+Plugin URI:   https://github.com/j2made/eva
+Description:  Extravehicular Activites for Apollo. Conditional indexing, MU-Plugin Autoloading, Default Themes.
+Version:      1.0.0
+Author:       J2Made
+Author URI:   http://github.com/emaildano
+License:      MIT License
+*/
+
+
 /**
- * Plugin Name: Bedrock Autoloader
- * Plugin URI: https://github.com/roots/bedrock/
- * Description: An autoloader that enables standard plugins to be required just like must-use plugins. The autoloaded plugins are included after all mu-plugins and standard plugins have been loaded. An asterisk (*) next to the name of the plugin designates the plugins that have been autoloaded.
- * Version: 1.0.0
- * Author: Roots
- * Author URI: http://roots.io/
- * License: MIT License
+ * It's a Trap
+ * -----------
+ * Abort if called directly or by a script
+ *
+ * @since  1.0.0
  */
+if ( ! defined( 'ABSPATH' ) ) {
+  die( '-1' );
+}
 
-namespace Roots\Bedrock;
 
-if (!is_blog_installed()) { return; }
+/**
+ * Configure privacy settings conditionally
+ * ----------------------------------------
+ * Prevents search engine indexing in `development` and `staging` enviornments
+ *
+ * @since  1.0.0
+ */
+if( !function_exists( 'J2made_wp_indexing' ) ) {
+  add_action( 'wp_loaded', 'J2made_wp_indexing' );
+  function J2made_wp_indexing() {
+    if (WP_ENV !== 'production') {
+      update_option( 'blog_public', '0' );
+    }
+  }
+}
 
-class Autoloader {
+
+/**
+ * Register Default Theme Directory
+ * --------------------------------
+ * Add default WP themes directory so default themes are available
+ *
+ * @since  1.0.0
+ */
+register_theme_directory(ABSPATH . 'wp-content/themes');
+
+
+/**
+ * Autoload MU-Plugins
+ * -------------------
+ * Brilliant plugin by the roots.io team. Autoloads MU-plugins
+ * that are loaded in directories.
+ *
+ * Original plugin: Bedrock Autoloader v1.0.0
+ * @link (https://github.com/roots/bedrock/)
+ * @link (https://github.com/roots/bedrock/blob/master/web/app/mu-plugins/bedrock-autoloader.php)
+ *
+ * @since  1.0.0
+ */
+class Bedrock_Autoloader {
   private static $cache; // Stores our plugin cache and site option.
   private static $auto_plugins; // Contains the autoloaded plugins (only when needed).
   private static $mu_plugins; // Contains the mu plugins (only when needed).
@@ -147,4 +195,7 @@ class Autoloader {
   }
 }
 
-new Autoloader();
+new Bedrock_Autoloader();
+
+
+
