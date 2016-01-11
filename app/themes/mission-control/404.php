@@ -7,5 +7,3 @@
   <li>a mistyped address</li>
   <li>an out-of-date link</li>
 </ul>
-
-<?php Apollo\Extend\Util\get_search_form(); ?>
