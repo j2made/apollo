@@ -4,8 +4,8 @@ Plugin Name:  EVA
 Plugin URI:   https://github.com/j2made/eva
 Description:  Extravehicular Activites for Apollo. Conditional indexing, MU-Plugin Autoloading, Default Themes.
 Version:      1.0.0
-Author:       J2Made
-Author URI:   http://github.com/emaildano
+Author:       J2 Design Partnership
+Author URI:   http://github.com/j2made
 License:      MIT License
 */
 
@@ -21,6 +21,25 @@ if ( ! defined( 'ABSPATH' ) ) {
   die( '-1' );
 }
 
+/**
+ * Update Password Hash
+ * ----------------------------------------
+ * Opt for sha256 over the WordPress default MD5
+ *
+ * @since  1.1.0
+*/
+
+if(!function_exists('wp_hash_password')) {
+  function wp_hash_password($password){
+    return hash('sha256', $password);
+  }
+}
+
+if (!function_exists('wp_check_password')) {
+  function wp_check_password($password, $hash, $user_id = '') {
+    return wp_hash_password($password) == $hash;
+  }
+}
 
 /**
  * Configure privacy settings conditionally
@@ -28,10 +47,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Prevents search engine indexing in `development` and `staging` enviornments
  *
  * @since  1.0.0
- */
-if( !function_exists( 'J2made_wp_indexing' ) ) {
-  add_action( 'wp_loaded', 'J2made_wp_indexing' );
-  function J2made_wp_indexing() {
+*/
+if( !function_exists( 'J2_wp_indexing' ) ) {
+  add_action( 'wp_loaded', 'J2_wp_indexing' );
+  function J2_wp_indexing() {
     if (WP_ENV !== 'production') {
       update_option( 'blog_public', '0' );
     }
@@ -196,6 +215,3 @@ class Bedrock_Autoloader {
 }
 
 new Bedrock_Autoloader();
-
-
-
