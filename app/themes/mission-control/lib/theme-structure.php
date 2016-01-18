@@ -88,6 +88,7 @@ function custom_wp_nav_menu_classes($classes, $item) {
     'current-page-ancestor',
     'current-menu-parent',
     'current-menu-ancestor',
+    'current-menu-item'
   ] );
 
   // Replace existing classes with new ones
@@ -117,6 +118,7 @@ add_filter('page_css_class', __NAMESPACE__ . '\\strip_wp_nav_menu');
 function current_to_active($text){
   $replace = array(
     //List of menu item classes that should be changed to "active"
+    'current-menu-item' => 'active',
     'current-page-item' => 'active',
     'current-menu-parent'   => 'active',
     'current-page-ancestor' => 'ancestor',
@@ -124,6 +126,8 @@ function current_to_active($text){
   );
 
   $text = str_replace( array_keys($replace), $replace, $text );
+
+
 
   return $text;
 
