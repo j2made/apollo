@@ -22,3 +22,5 @@ composer.lock
 # Apollo Config
 env.php
 wp-config.php
+
+deps
