@@ -2,7 +2,7 @@
 // ---------------
 
 // LAYOUT EXTENDS
-// ============================================================
+// =============================================================================
 
 %cover {
   bottom: 0;
@@ -38,7 +38,7 @@
 }
 
 // SPACING (SPACING VARS IN VARIABLES/_VAR-UTILITIES)
-// ============================================================
+// =============================================================================
 
 %space-before-sm {
   margin-top: $space-sm;
@@ -74,7 +74,7 @@
 
 
 // CSS3 EXTENDS
-// ============================================================
+// =============================================================================
 
 %background-cover {
   background-position: center;
@@ -84,7 +84,7 @@
 
 
 // TRANSITIONS
-// ============================================================
+// =============================================================================
 
 %standard-trans {
   @include transition(all .35s ease-in-out);
@@ -92,4 +92,19 @@
 
 %long-trans {
   @include transition(all .5s ease-in-out);
+}
+
+// BUTTONS
+// =============================================================================
+
+%btn-reset {
+  background-clip: padding-box;
+  background-image: none;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  touch-action: manipulation;
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
 }

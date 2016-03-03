@@ -19,8 +19,6 @@
     "respond": "1.4.2",
     "bourbon": "~4.2",
     "neat": "~1.7",
-    "normalize-scss": "latest",
-    "meyer-reset": "latest",
     "sanitize-css": "latest"
   },
   "overrides": {

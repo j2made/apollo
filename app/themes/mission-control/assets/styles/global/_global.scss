@@ -2,17 +2,20 @@
 // -------------
 
 // SCAFFOLDING
-// ============================================================
+// =============================================================================
 
-* {
-  border: 0;
+html {
   box-sizing: border-box;
-  margin: 0;
-  outline: 0;
-  padding: 0;
-  vertical-align: baseline;
 }
 
+*,
+*:before,
+*:after {
+  border: 0;
+  box-sizing: inherit;
+  outline: 0;
+  vertical-align: baseline;
+}
 
 body,
 html {
@@ -29,5 +32,4 @@ body {
   font-size: $base-font-size;
   -webkit-font-smoothing: antialiased;
   line-height: $base-line-height;
-  overflow: hidden;
 }

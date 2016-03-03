@@ -4,11 +4,9 @@
 // HEADER RESETS
 // ============================================================
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  @extend %header-reset;  // Keeps things organized for header @extends
+// Loop through h1 - h6
+@for $i from 1 through 6 {
+  h#{$i} {
+    @extend %header-reset;
+  }
 }
