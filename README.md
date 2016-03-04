@@ -28,11 +28,11 @@ Versions listed are required to be equal to or greater than.
 Make sure you have everything listed in the above requirements installed, and then clone this repo on your machine.
 
 - Open your terminal, and `cd` into the directory you just cloned.
-- Run `composer create-project`
+- Run `composer install`
 - A series of prompts will collect information based on your environment, which will be used to generate a config file. See Prompts below for more information.
 - If you choose not to run NPM from the composer prompt, cd to the theme and run `npm install`
 - Run `bower update` and `gulp build` to complete theme initialization.
-- Point local hosts to the directory you created (the folder should now have a file name `env.php` inside of it.
+- Point local hosts to the directory you created (the folder should now have a file name `wp-config.php` inside of it.
 - Change the remote repo location to your own damn repo.
 - Start coding. Shoot for the moon.
 
@@ -45,7 +45,7 @@ Apollo only uses `wp-config.php` as an initializer file. The information that is
 All necessary config information, such as database info, salts, theme environment, host url, etc., is stored in the generated `env.php` file. This should file should be ignored in git, because you should keep your creds to your own damn self.
 
 #### Theme eEnvironment Configuration
-Theme environments are controlled via the `WP_ENV` definition in `eng-config.php` and should be one of the following options:
+Theme environments are controlled via the `WP_ENV` definition in `wp-config.php` and should be one of the following options:
 
 - `development`
 - `staging`
@@ -54,40 +54,7 @@ Theme environments are controlled via the `WP_ENV` definition in `eng-config.php
 This definition controls how errors are output and whether or not certain functions should be ran. Local development? Use `development`. Site running live? Use `production`. Testing on a staging server?...I think you get it.
 
 #### Want to change environmental attributes?
-See `lib/config/application.php`.
-
-### Composer
-
-#### Prompts
-Running `create-project` will use prompts to setup your config files. If you just press enter, the default value for each will be rendered in the file(s).
-
-| Prompt | Info | Default |
-| ------ | ---- | ------- |
-| `WP Environment:` | Environment definition for project | `development` |
-| `DB_NAME:` | Name of your database | `db_name` |
-| `DB_USER:` | Database user name | `db_user` |
-| `DB_PASSWORD:` | Database password | `db_pass` |
-| `DB_HOST:` | Database host | `localhost` |
-| `HOME_URL:` | Host url for project. **Do not** include `http://` as it will be appended programmatically. | `example.com` |
-
-If this is the first time the project is being initialized, such as a clean clone from this repo, you will also see the following prompts:
-
-| Prompt | Info | Default |
-| ------ | ---- | ------- |
-| `THEME_NAME:` | Enter a new theme name. | `mission-control` |
-
-This will change the name of the theme directory, as well as values in other config files.
-
-If you or another developer has already ran create-project or changed the default name, this prompt will not be present, as the theme name has already been defined.
-
-You will also be asked some boolean questions:
-
-| Prompt | Info | Default |
-| ------ | ---- | ------- |
-| `Run NPM after dependencies have been installed?` | Enter `Y` or `N` | `N` |
-| `Generate salts and append to the env.php file?` | Enter `Y` or `N` | `N` |
-
-If you have an issue with the prompts, or a `env.php` cannot be created, open an issue on the [project repo] (http://github.com/j2made/apollo/issues). You can copy the file `lib/config/env-default.php` to the root of the project and rename it `env.php`. Then change the values of the definitions.
+See `lib/config/apollo-config.php`.
 
 #### WordPress Versions
 Apollo uses [John Bloch Composer Repo] (https://github.com/johnpbloch/wordpress-core-installer) to install WordPress. To update WP, simply update the version of `"johnpbloch/wordpress"` to match the version of WordPress you would like.
