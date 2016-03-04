@@ -2,7 +2,7 @@
 // ---------------
 
 // LAYOUT EXTENDS
-// ============================================================
+// =============================================================================
 
 %cover {
   bottom: 0;
@@ -29,15 +29,16 @@
 }
 
 %img-responsive {
+  @include image-rendering(optimizeSpeed);
   display: block;
   height: auto;
   max-width: 100%;
   width: 100% \9;
-  @include image-rendering(optimizeSpeed);
+  width: 100%;
 }
 
 // SPACING (SPACING VARS IN VARIABLES/_VAR-UTILITIES)
-// ============================================================
+// =============================================================================
 
 %space-before-sm {
   margin-top: $space-sm;
@@ -73,22 +74,37 @@
 
 
 // CSS3 EXTENDS
-// ============================================================
+// =============================================================================
 
 %background-cover {
-  background-size: cover;
-  background-repeat: no-repeat;
   background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 
 // TRANSITIONS
-// ============================================================
+// =============================================================================
 
 %standard-trans {
-  transition: all.35s;
+  @include transition(all .35s ease-in-out);
 }
 
 %long-trans {
-  transition: all .5s;
+  @include transition(all .5s ease-in-out);
+}
+
+// BUTTONS
+// =============================================================================
+
+%btn-reset {
+  background-clip: padding-box;
+  background-image: none;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  touch-action: manipulation;
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
 }

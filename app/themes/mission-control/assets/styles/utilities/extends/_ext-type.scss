@@ -1,0 +1,47 @@
+// Typography Extends
+// ------------------
+
+// BASICS
+// =============================================================================
+
+%semi-bold {
+  font-weight: 600;
+}
+
+%bold {
+  font-weight: 700;
+}
+
+%bold-caps {
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+// LISTS
+// =============================================================================
+
+%list-unstyled {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+%list-inline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  > li {
+    display: inline-block;
+  }
+}
+
+// HEADERS
+// =============================================================================
+
+%header-reset {
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+}

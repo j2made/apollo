@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // All them Vars
 var gulp          = require('gulp');
 var browserSync  = require('browser-sync');
@@ -29,6 +30,23 @@ var proBuild = yargs.production;
 var args = {
   maps: !proBuild
 };
+=======
+// The Gulpfile
+// -----------------------------------------------------------
+// Slightly altered version of the Sage gulpfile.
+
+// GULP VARS
+// -----------------------------------------------------------
+var $           = require('gulp-load-plugins')();
+var argv        = require('minimist')(process.argv.slice(2));
+var browserSync = require('browser-sync');
+var gulp        = require('gulp');
+var lazypipe    = require('lazypipe');
+var merge       = require('merge-stream');
+var runSequence = require('run-sequence');
+var cssnano     = require('gulp-cssnano');
+var mediaQuery  = require('gulp-group-css-media-queries');
+>>>>>>> develop
 
 
 
@@ -39,7 +57,30 @@ var globs = manifest.globs;                       ///////// CPD
 var project = manifest.getProjectGlobs();         ///////// CPD
 var buildSrc = proBuild ? manifest.config.shipDest : path.dist;
 
+<<<<<<< HEAD
 gutil.log(proBuild);
+=======
+// CSS
+// --------------------------------------------------
+var cssTasks = function(filename) {
+  return lazypipe()
+    .pipe( function() { return $.if(!enabled.failStyleTask, $.plumber()); } )
+    .pipe( function() { return $.if(enabled.maps, $.sourcemaps.init()); } )
+      .pipe(function() {
+        return $.if('*.scss', $.sass({
+          outputStyle: 'nested', // libsass doesn't support expanded yet
+          precision: 10,
+          includePaths: ['.'],
+          errLogToConsole: !enabled.failStyleTask
+        }));
+      })
+      .pipe($.concat, filename)
+      .pipe( function() { return $.if( enabled.rev, mediaQuery() ); } )
+      .pipe($.cssnano)
+    .pipe(function() {return $.if(enabled.rev, $.rev());})
+    .pipe(function() {return $.if(enabled.maps, $.sourcemaps.write('.'));})();
+};
+>>>>>>> develop
 
 
 // Theme assets file
@@ -71,6 +112,7 @@ gulp.task('modernizr', function() {
     .pipe(modernizr('modernizr-custom.js'))
     .pipe(gulp.dest(path.modernizr));
 });
+<<<<<<< HEAD
 
 
 /**
@@ -107,3 +149,5 @@ var lazypipe_styles = lazypipe()
 
 
 
+=======
+>>>>>>> develop

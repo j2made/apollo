@@ -3,7 +3,7 @@
 namespace Apollo\Extend\Util;
 
 // BODY CLASSES
-// ============================================================
+// =============================================================================
 
 function add_custom_body_classes( $classes ) {
 
@@ -24,7 +24,7 @@ add_filter( 'body_class', __NAMESPACE__ . '\\add_custom_body_classes' );
 
 
 // TRUNCATION
-// ============================================================
+// =============================================================================
 
 // function truncate_words($phrase, $max_words) {
 //    $phrase_array = explode(' ',$phrase);
