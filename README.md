@@ -40,9 +40,7 @@ Make sure you have everything listed in the above requirements installed, and th
 ### Configuration
 
 #### Site Configuration
-Apollo only uses `wp-config.php` as an initializer file. The information that is typically configured in `wp-config.php` is instead spread throughout the stack. As such, you should never alter `wp-config.php` with site confing information.
-
-All necessary config information, such as database info, salts, theme environment, host url, etc., is stored in the generated `env.php` file. This should file should be ignored in git, because you should keep your creds to your own damn self.
+Apollo only uses `wp-config.php` as an initializer file. The information that is typically configured in `wp-config.php` is instead spread throughout the stack. As such, you should never alter `wp-config.php` with site config information.
 
 #### Theme eEnvironment Configuration
 Theme environments are controlled via the `WP_ENV` definition in `wp-config.php` and should be one of the following options:
