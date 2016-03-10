@@ -55,7 +55,6 @@ function Listless_WP_Nav($menu_position) {
       $html .= '<a' . $item . '</a>';
     }
 
+    return $html;
   }
-
-  return $html;
 }

@@ -207,7 +207,7 @@ function Google_Analytics_Script() {
       ga('create', '<?= get_option('ga_id') ?>', 'auto');
       ga('send', 'pageview');
     </script>
-  <?php
+  <?php endif;
 }
 
 if (get_option('ga_id') && WP_ENV === 'production') {
