@@ -8,25 +8,42 @@ use Apollo\Theme\Wrapper;
 // SIDEBAR LOGIC
 // =============================================================================
 
-// // Determine sidebar layout
+
+/**
+ * Determine sidebar layout
+ *
+ * @return string `right` or `left`
+ */
 function sidebar_orientation() {
   // Determine layout orientation
-  $sidebar_direction = SIDEBAR_LAYOUT_RIGHT === true ? 'right' : 'left';
-  if( Condition\sidebar_switch() )
+  $sidebar_direction = SIDEBAR_DEFAULT_LAYOUT;
+
+  if( Condition\sidebar_switch() ) {
     $sidebar_direction = $sidebar_direction === 'right' ? 'left' : 'right';
+  }
 
   return $sidebar_direction;
 }
 
-// Add Sidebar class to body
+
+/**
+ * Add Sidebar Class to <body>
+ *
+ * @param  array $classes inherited classes from WP
+ * @return [type]          [description]
+ */
 function sidebar_body_class($classes) {
+
+  // Do not add any classes if value is false
+  if(!SIDEBAR_DEFAULT_LAYOUT) {
+    return $classes;
+  }
+
   $sidebar_direction = sidebar_orientation();
-  $classes[] = 'front-page';
 
   if ( !Condition\hide_sidebar() ) {
     $classes[] = 'sidebar-primary';
-    $classes[] = ($sidebar_direction === 'R') ? 'sidebar-right' : 'sidebar-left';
-
+    $classes[] = 'sidebar-' . $sidebar_direction;
   }
 
   return $classes;
@@ -35,11 +52,17 @@ function sidebar_body_class($classes) {
 add_filter( 'body_class', __NAMESPACE__ . '\\sidebar_body_class' );
 
 
-// BASE STRUCTURE
-// =============================================================================
-// Create the base layout structure, based on sidebar settings
+/**
+ * BASE STRUCTURE
+ * ============================================================================
+ */
 
-function base_structure($main_class = 'main_content', $sidebar_class = 'sidebar') {
+/**
+ * Create the base layout structure, based on sidebar settings
+ *
+ * @since 1.0.0
+ */
+function base_structure($main_class = 'main-content', $sidebar_class = 'sidebar') {
 
   if ( !Condition\hide_sidebar() ) {
 
@@ -75,15 +98,24 @@ function base_structure($main_class = 'main_content', $sidebar_class = 'sidebar'
 }
 
 
-// NAV
-// =============================================================================
-// Create a nav menu with very basic markup.
-// Deletes all CSS classes and id's, except for those listed in the array below
 
+
+
+/**
+ * NAVIGATION
+ * ============================================================================
+ */
+
+/**
+ * Create a nav menu with very basic markup.
+ * Deletes all CSS classes and id's, except for those listed in the array below
+ *
+ * @since 1.0.0
+ */
 function custom_wp_nav_menu_classes($classes, $item) {
 
+  // List of allowed WP menu item class names
   $shrunken_classes = array_intersect($classes, [
-    // List of allowed menu classes
     'current-page-item',
     'current-page-ancestor',
     'current-menu-parent',
@@ -93,28 +125,34 @@ function custom_wp_nav_menu_classes($classes, $item) {
 
   // Replace existing classes with new ones
   $classes = $shrunken_classes;
-
   $menu_title = strtolower($item->title);
   $menu_title = preg_replace("/[^a-z0-9_\s-]/", "", $menu_title); // Make alphanumeric
   $menu_title = preg_replace("/[\s-]+/", " ", $menu_title);       // Clean up multiple dashes or whitespaces
   $menu_title = preg_replace("/[\s_]/", "-", $menu_title);        // Convert whitespaces and underscore to dash
-
   $classes[] = 'menu-' . $menu_title;
 
   return $classes;
 }
-
 add_filter('nav_menu_css_class', __NAMESPACE__ . '\\custom_wp_nav_menu_classes', 10, 2);
 
+
+/**
+ * Empty out id's and classes
+ *
+ * @since 1.0.0
+ */
 function strip_wp_nav_menu($var) {
-  // Return to nothing
-  return '';
+  return ''; // Return to nothing
 }
 add_filter('nav_menu_item_id', __NAMESPACE__ . '\\strip_wp_nav_menu');
 add_filter('page_css_class', __NAMESPACE__ . '\\strip_wp_nav_menu');
 
 
-// Replace class names with shorter ones
+/**
+ * Replace class names with shorter ones
+ *
+ * @since  1.0.0 [<description>]
+ */
 function current_to_active($text){
   $replace = array(
     //List of menu item classes that should be changed to "active"
@@ -127,18 +165,20 @@ function current_to_active($text){
 
   $text = str_replace( array_keys($replace), $replace, $text );
 
-
-
   return $text;
 
 }
-
 add_filter ('wp_nav_menu', __NAMESPACE__ . '\\current_to_active');
 
 
-// Delete empty classes
+/**
+ * Delete empty classes
+ *
+ * @since  1.0.0
+ */
 function strip_empty_classes($menu) {
-    $menu = preg_replace('/ class=""/','',$menu);
-    return $menu;
+  $menu = preg_replace('/ class=""/','',$menu);
+  return $menu;
 }
 add_filter ('wp_nav_menu', __NAMESPACE__ . '\\strip_empty_classes');
+

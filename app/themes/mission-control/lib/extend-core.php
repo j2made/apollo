@@ -11,14 +11,25 @@ namespace Apollo\Extend\Core;
 // WP CORE
 // =============================================================================
 
-// Allow SVG uploads (1)
+/**
+ * Allow SVG uploads (1)
+ *
+ * @since  1.0.0
+ */
 function mime_types($mimes) {
   $mimes['svg'] = 'image/svg+xml';
   return $mimes;
 }
 add_filter('upload_mimes',  __NAMESPACE__ . '\\mime_types');
 
-// Fix SVG Thumb Display (1)
+
+
+
+/**
+ * Fix SVG Thumb Display (1)
+ *
+ * @since  1.0.0
+ */
 function fix_svg_thumb_display() {
   echo '
     <style type="text/css">
@@ -30,6 +41,8 @@ function fix_svg_thumb_display() {
   ';
 }
 add_action('admin_head',  __NAMESPACE__ . '\\fix_svg_thumb_display');
+
+
 
 
 // WP HEAD FUNCTIONS
