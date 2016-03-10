@@ -44,41 +44,24 @@ function label_factory($name, $singular, $plural) {
  *
  * To customize further, refer to: http://generatewp.com/post-type/
  */
-// function projects_cpt() {
 
-//   $labels = label_factory('Basic', 'Basic', 'Basics');
+function projects_cpt() {
 
-//   $args = array(
-//     'label'                 => 'Basic',
-//     'labels'                => $labels,
-//     'supports'              => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' ),
-//     'taxonomies'            => array( 'basic_tax' ),
-//     'hierarchical'          => true,
-//     'public'                => true,
-//     'show_ui'               => true,
-//     'show_in_menu'          => true,
-//     'menu_position'         => 20,
-//     'menu_icon'             => 'dashicons-admin-page',
-//     'show_in_admin_bar'     => true,
-//     'show_in_nav_menus'     => true,
-//     'can_export'            => true,
-//     'has_archive'           => true,
-//     'exclude_from_search'   => false,
-//     'publicly_queryable'    => true,
-//     'capability_type'       => 'page',
-//   );
-//   register_post_type( 'projects', $args );
+  $labels = label_factory('Singular', 'Singular', 'Plural');
 
-// }
-// add_action( 'init', __NAMESPACE__ . '\\projects_cpt', 0 );
+  $args = array(
+    'label'                 => $labels['name'],
+    'labels'                => $labels,
+    'supports'              => array( 'title' ),
+    'taxonomies'            => array(),
+    'hierarchical'          => true,
+    'public'                => true,
+    'menu_position'         => 20,
+    'menu_icon'             => 'dashicons-admin-page'
+  );
 
+  register_post_type( 'projects', $args );
 
+}
 
-
-
-
-
-
-
-
-?>
+add_action( 'init', __NAMESPACE__ . '\\projects_cpt', 0 );
