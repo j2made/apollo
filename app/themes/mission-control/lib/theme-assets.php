@@ -197,7 +197,7 @@ function ga_id_textbox_callback($args) {
  * @since 1.0.0
  *
  */
-function google_analytics() {
+function Google_Analytics_Script() {
   if ( !current_user_can('manage_options') ) : ?>
     <script>
       !function(F,A,L,C,O,N){F.GoogleAnalyticsObject=L;F[L]||(F[L]=function(){
@@ -211,5 +211,5 @@ function google_analytics() {
 }
 
 if (get_option('ga_id') && WP_ENV === 'production') {
-  add_action('wp_head', 'your_function');
+  add_action('wp_head', __NAMESPACE__ . '\\Google_Analytics_Script');
 }
