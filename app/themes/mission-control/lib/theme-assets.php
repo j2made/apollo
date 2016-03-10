@@ -161,10 +161,10 @@ add_action('wp_head', __NAMESPACE__ . '\\jquery_local_fallback');
 // =============================================================================
 
 // Add Google Analytics ID to general settings page in admin
-add_action('admin_init', __NAMESPACE__ . '\\j2_fb_api_settings_section');
+add_action('admin_init', __NAMESPACE__ . '\\j2_ga_api_settings_section');
 
 // Add a new section to the General Settings Page
-function j2_fb_api_settings_section() {
+function j2_ga_api_settings_section() {
   add_settings_section('ga_id_section', 'Google Analytics', __NAMESPACE__ . '\\ga_id_callback', 'general');
 
   // Add an analytics Form Field
@@ -188,29 +188,28 @@ function ga_id_textbox_callback($args) {
   echo '<input type="text" id="'. $args[0] .'" name="'. $args[0] .'" value="' . $option . '" />';
 }
 
-// Add Google Analytics to the head
-// Cookie domain is 'auto' configured: http://goo.gl/VUCHKM
+/**
+ * Add Google Analytics
+ *
+ * Returns analytics in wp_head if enviornment is production
+ * and user is not admin AND Google Analytics is setup in options
+ *
+ * @since 1.0.0
+ *
+ */
 function google_analytics() {
-  ?>
-  <script>
-    <?php if (WP_ENV === 'production' && !current_user_can('manage_options')) : ?>
-      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-      e.src='//www.google-analytics.com/analytics.js';
-      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-    <?php else : ?>
-      function ga() {
-        if (window.console) {
-          console.log('Google Analytics: ' + [].slice.call(arguments));
-        }
-      }
-    <?php endif; ?>
-    ga('create','<?= get_option('ga_id') ?>','auto');ga('send','pageview');
-  </script>
+  if ( !current_user_can('manage_options') ) : ?>
+    <script>
+      !function(F,A,L,C,O,N){F.GoogleAnalyticsObject=L;F[L]||(F[L]=function(){
+      (F[L].q=F[L].q||[]).push(arguments)});F[L].l=+new Date;O=A.createElement(C);
+      N=A.getElementsByTagName(C)[0];O.src='//www.google-analytics.com/analytics.js';
+      N.parentNode.insertBefore(O,N)}(window,document,'ga','script');
+      ga('create', '<?= get_option('ga_id') ?>', 'auto');
+      ga('send', 'pageview');
+    </script>
   <?php
 }
 
 if (get_option('ga_id') && WP_ENV === 'production') {
-  add_action('wp_footer', __NAMESPACE__ . '\\google_analytics', 20);
+  add_action('wp_head', 'your_function');
 }
