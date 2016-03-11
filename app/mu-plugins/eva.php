@@ -29,6 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since  1.1.0
 */
 
+
 if(!function_exists('wp_hash_password')) {
   function wp_hash_password($password){
     return hash('sha256', $password);
@@ -39,6 +40,17 @@ if (!function_exists('wp_check_password')) {
   function wp_check_password($password, $hash, $user_id = '') {
     return wp_hash_password($password) == $hash;
   }
+}
+
+
+/**
+ * Return if blog is not installed
+ * Prevents errors from displaying on install page.
+ *
+ * @since  1.0.0 [<description>]
+ */
+if (!is_blog_installed()) {
+  return;
 }
 
 
@@ -73,7 +85,7 @@ register_theme_directory(ABSPATH . 'wp-content/themes');
 /**
  * Evac if installation
  */
-if (!is_blog_installed()) { return; }
+
 
 
 /**
@@ -100,22 +112,29 @@ class Bedrock_Autoloader {
   private static $_single; // Let's make this a singleton.
 
   public function __construct() {
+
     if (isset(self::$_single)) { return; }
 
     self::$_single       = $this; // Singleton set.
     self::$relative_path = '/../' . basename(__DIR__); // Rel path set.
 
-    if (is_admin()) {
-      add_filter('show_advanced_plugins', array($this, 'showInAdmin'), 0, 2); // Admin only filter.
-    }
+    $this->checkInstall();
+  }
 
-    $this->loadPlugins();
+  public function checkInstall() {
+
+      if ( is_admin() ) {
+        add_filter('show_advanced_plugins', array($this, 'showInAdmin'), 0, 2); // Admin only filter.
+      }
+
+      $this->loadPlugins();
   }
 
   /**
    * Run some checks then autoload our plugins.
    */
   public function loadPlugins() {
+
     $this->checkCache();
     $this->validatePlugins();
     $this->countPlugins();
@@ -131,6 +150,7 @@ class Bedrock_Autoloader {
    * Filter show_advanced_plugins to display the autoloaded plugins.
    */
   public function showInAdmin($bool, $type) {
+
     $screen = get_current_screen();
     $current = is_multisite() ? 'plugins-network' : 'plugins';
 
@@ -224,4 +244,6 @@ class Bedrock_Autoloader {
   }
 }
 
-new Bedrock_Autoloader();
+if (is_blog_installed()) {
+  new Bedrock_Autoloader();
+}
