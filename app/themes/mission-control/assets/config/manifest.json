@@ -11,11 +11,6 @@
         "jquery"
       ]
     },
-    "modernizr.js": {
-      "bower": [
-        "modernizr"
-      ]
-    },
     "main.css": {
       "files": [
         "styles/main.scss"

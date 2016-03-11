@@ -20,9 +20,6 @@
   "jquery.js":
     "bower":  [ "jquery" ]
 
-  "modernizr.js":
-    "bower":  [ "modernizr" ]
-
   ## SASS AND CSS
   "main.css":                           # Primary concatenated css file
     "files":  [ "styles/main.scss" ]    # Add additional files or globs in `files:` array

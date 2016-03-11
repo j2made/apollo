@@ -134,7 +134,6 @@ function assets() {
   }
 
   // BASIC SITE SCRIPTS
-  wp_enqueue_script('modernizr', asset_path('scripts/modernizr.js', DIST_DIR), [], null, true);
   wp_enqueue_script('jquery');
   wp_enqueue_script('apollo-js', asset_path('scripts/main.js', DIST_DIR), [], null, true);
 }
