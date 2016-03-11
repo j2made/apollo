@@ -5,17 +5,7 @@ namespace Apollo\Assets;
 /**
  * Scripts and stylesheets
  *
- * Enqueue stylesheets in the following order:
- * 1. /theme/dist/styles/main.css
- *
- * Enqueue scripts in the following order:
- * 1. Latest jQuery via Google CDN (if enabled in config.php)
- * 2. /theme/dist/scripts/modernizr.js
- * 3. /theme/dist/scripts/main.js
- *
- * Google Analytics is loaded after enqueued scripts if:
- * - An ID has been defined in config.php
- * - You're not logged in as an administrator
+ * @since  1.0.0
  */
 
 class JsonManifest {
@@ -94,6 +84,12 @@ function bower_map_to_cdn($dependency, $fallback) {
 
 }
 
+
+/**
+ * Register and Enqueue Assets
+ *
+ * @since 1.0.0
+ */
 function assets() {
 
   wp_enqueue_style('apollo-css', asset_path('styles/main.css', DIST_DIR), false, null);
@@ -132,6 +128,11 @@ function assets() {
     wp_enqueue_style( 'font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css' );
   }
 
+  // TYPEKIT
+  if (TYPEKIT_ID) {
+    wp_enqueue_style( 'typekit', '//use.typekit.net/' . TYPEKIT_ID . '.js' );
+  }
+
   // BASIC SITE SCRIPTS
   wp_enqueue_script('modernizr', asset_path('scripts/modernizr.js', DIST_DIR), [], null, true);
   wp_enqueue_script('jquery');
@@ -139,7 +140,28 @@ function assets() {
 }
 add_action('wp_enqueue_scripts', __NAMESPACE__ . '\\assets', 100);
 
-// http://wordpress.stackexchange.com/a/12450
+
+/**
+ * Add Typekit to head if ID is added
+ *
+ * @since 1.0.0
+ */
+function typekit() {
+  echo '<script type="text/javascript" src="//use.typekit.net/' . TYPEKIT_ID . '.js"></script>';
+  echo '<script type="text/javascript">try{Typekit.load();}catch(e){}</script>';
+}
+
+if (TYPEKIT_ID) {
+  add_action('wp_head', __NAMESPACE__ . '\\typekit', 1);
+}
+
+
+
+/**
+ * Add local jQuery fallback
+ *
+ * @since  1.0.0
+ */
 function jquery_local_fallback($src, $handle = null) {
   static $add_jquery_fallback = false;
 
@@ -157,13 +179,23 @@ function jquery_local_fallback($src, $handle = null) {
 add_action('wp_head', __NAMESPACE__ . '\\jquery_local_fallback');
 
 
-// GOOGLE ANALYTICS
-// =============================================================================
 
-// Add Google Analytics ID to general settings page in admin
+
+/**
+ * Add Google Analytics ID Field to WP Settings
+ * Uses WP Settings API
+ *
+ * @since  1.0.0
+ */
+
+
+/**
+ * Add a new section to the General Settings Page
+ *
+ * @since  1.0.0
+ */
 add_action('admin_init', __NAMESPACE__ . '\\j2_ga_api_settings_section');
 
-// Add a new section to the General Settings Page
 function j2_ga_api_settings_section() {
   add_settings_section('ga_id_section', 'Google Analytics', __NAMESPACE__ . '\\ga_id_callback', 'general');
 
@@ -174,7 +206,12 @@ function j2_ga_api_settings_section() {
   register_setting('general','ga_id', 'esc_attr');
 }
 
-// GA ID Callback - add descriptive message
+
+/**
+ * Callback for Google Analytics ID field
+ *
+ * @since  1.0.0
+ */
 function ga_id_callback() {
   echo '<p>Enter your '.
         '<a href="https://support.google.com/analytics/answer/1032385?hl=en" target="blank">' .
@@ -182,14 +219,21 @@ function ga_id_callback() {
         '</a> number to allow tracking.</p>';
 }
 
-// Save Analytics Field
+
+/**
+ * Save Analytics Field
+ *
+ * @since 1.0.0
+ */
 function ga_id_textbox_callback($args) {
   $option = get_option($args[0]);
   echo '<input type="text" id="'. $args[0] .'" name="'. $args[0] .'" value="' . $option . '" />';
 }
 
+
+
 /**
- * Add Google Analytics
+ * Add Google Analytics to Site Footer
  *
  * Returns analytics in wp_head if enviornment is production
  * and user is not admin AND Google Analytics is setup in options
