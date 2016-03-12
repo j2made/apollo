@@ -23,19 +23,38 @@ add_filter( 'body_class', __NAMESPACE__ . '\\add_custom_body_classes' );
 
 
 
-// TRUNCATION
+// WP NAV AS LINKS
 // =============================================================================
 
-// function truncate_words($phrase, $max_words) {
-//    $phrase_array = explode(' ',$phrase);
-//    if(count($phrase_array) > $max_words && $max_words > 0)
-//       $phrase = implode(' ',array_slice($phrase_array, 0, $max_words)).'...';
-//    return $phrase;
-// }
+function Listless_WP_Nav($menu_position) {
 
-// function truncate_chars($phrase, $max_chars) {
-//   if (strlen($phrase) > $max_chars) {
-//     $phrase = substr($phrase, 0, $max_chars) . '...';
-//   }
-//   return $phrase;
-// }
+  if (has_nav_menu($menu_position)) {
+    $html = '';
+
+    // Get the menu
+    $primary_nav = wp_nav_menu( array(
+      'theme_location' => $menu_position,
+      'depth' => 3,
+      'menu_class' => '',
+      'items_wrap'=>'%3$s',
+      'container' => false,
+      'echo' => false
+    ) );
+
+    // Replace li elements with links
+    $find = array('><a','<li');
+    $replace = array('','<a');
+    $primary_nav = str_replace( $find, $replace, $primary_nav );
+
+    // Tear list apart, get rid of empty items
+    $nav = array_filter( explode('<a', $primary_nav) );
+    $count = 1;
+
+    // Build output
+    foreach($nav as $item) {
+      $html .= '<a' . $item . '</a>';
+    }
+
+    return $html;
+  }
+}

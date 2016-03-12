@@ -18,8 +18,5 @@
     "jquery": "1.11.1"
   },
   "overrides": {
-    "modernizr": {
-      "main": "./modernizr.js"
-    }
   }
 }

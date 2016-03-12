@@ -37,12 +37,19 @@ define('GOOGLE_FONTS', false);            // Google Fonts           False or Fon
 // THEME DEFINITIONS
 // =============================================================================
 
-define('SIDEBAR_LAYOUT_RIGHT', true);     // Sidebar Layout           . Setting to false produces left layout
+/**
+ * Define Sidebar layout: 'right' (str), 'left' (str) or false (bool)
+ *
+ */
+define('SIDEBAR_DEFAULT_LAYOUT', 'right');
 
-if (WP_ENV == 'production' || WP_ENV == 'staging') {
- define('DIST_DIR', '/dist/');
+/**
+ * Define build directory
+ */
+if (WP_ENV == 'development') {
+  define('DIST_DIR', '/src/');
 } else {
- define('DIST_DIR', '/src/');
+  define('DIST_DIR', '/dist/');
 }
 
 
@@ -89,7 +96,6 @@ add_filter('wp_headers', __NAMESPACE__ . '\\remove_x_pingback');
 // CLEAN WP_HEAD
 // ============================================================
 if(CLEAN_THEME_WP_HEAD) {
-
   // Strip out unnecessary wp_head items
   remove_action( 'wp_head', 'rsd_link' );
   remove_action( 'wp_head', 'wlwmanifest_link' );
@@ -98,7 +104,6 @@ if(CLEAN_THEME_WP_HEAD) {
   remove_action( 'wp_head', 'index_rel_link' );
   remove_action( 'wp_head', 'adjacent_posts_rel_link' );
   remove_action( 'wp_head', 'wp_shortlink_wp_head' );
-
 }
 
 if(REMOVE_EMOJI) {
@@ -112,9 +117,8 @@ if(REMOVE_EMOJI) {
     }
   }
 
+  // Remove all actions related to emojis
   function disable_wp_emojicons() {
-
-    // all actions related to emojis
     remove_action( 'admin_print_styles', 'print_emoji_styles' );
     remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
     remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
@@ -126,7 +130,6 @@ if(REMOVE_EMOJI) {
     // filter to remove TinyMCE emojis
     add_filter( 'tiny_mce_plugins', __NAMESPACE__ . '\\disable_emojicons_tinymce' );
   }
-
   add_action( 'init', __NAMESPACE__ . '\\disable_wp_emojicons' );
 }
 

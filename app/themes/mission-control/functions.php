@@ -1,47 +1,58 @@
 <?php
 
-$function_includes[] = array(
-  'lib/config-settings.php',          // Variables and Theme Support
-  'lib/config-conditionals.php',      // Config Conditionals
-  'lib/theme-structure.php',          // Build Theme Layouts
-  'lib/theme-wrapper.php',            // Theme wrapper class
-  'lib/theme-assets.php',             // Scripts and stylesheets
-  'lib/extend-core.php',              // Additions and Changes to Core
-  'lib/extend-utilities.php',         // Custom Functions for Practical Purposes
+/**
+ * List function files by name to be included
+ *
+ * @var   array List of function file names
+ * @since 1.0.0
+ */
+$function_includes = [
+  'config-settings',          // Variables and Theme Support
+  'config-conditionals',      // Config Conditionals
+  'theme-structure',          // Build Theme Layouts
+  'theme-wrapper',            // Theme wrapper class
+  'theme-assets',             // Scripts and stylesheets
+  'extend-core',              // Additions and Changes to Core
+  'extend-utilities',         // Custom Functions for Practical Purposes
 
   /* Uncomment as needed */
-  // 'lib/misc/extend-post-types.php',      // Custom Post Types
-  // 'lib/misc/extend-taxonomy.php',        // Custom Taxonomies
-  // 'lib/misc/extend-admin.php',           // Customize WP Admin
-  // 'lib/misc/extend-queries.php',         // Alterations to queries via hooks
-);
+  // 'misc/extend-post-types',      // Custom Post Types
+  // 'misc/extend-taxonomy',        // Custom Taxonomies
+  // 'misc/extend-admin',           // Customize WP Admin
+  // 'misc/extend-queries',         // Alterations to queries via hooks
+];
+
+
+/**
+ * Add plugin specific files
+ *
+ * @since  1.0.0
+ */
 
 // Advanced Custom Field Functions
 if(class_exists('acf')) {
-  $function_includes[] = array(
-    'lib/misc/extend-acf.php'
-  );
+  $function_includes[] = 'misc/extend-acf';
 }
 
 // Gravity Form Functions
 if(class_exists('GFCommon')) {
-  $function_includes[] = array(
-    'lib/misc/extend-gforms.php'
-  );
+  $function_includes[] = 'misc/extend-gforms';
 }
 
 // Gravity Form Functions
 if(class_exists('Tribe__Events__Main')) {
-  $function_includes[] = array(
-    'lib/misc/extend-events.php'
-  );
+  $function_includes[] = 'misc/extend-events';
 }
 
-foreach ($function_includes as $file) {
-  if (!$filepath = locate_template($file)) {
-    trigger_error(sprintf('%s cannot be found', $file), E_USER_ERROR);
-  }
-  require_once $filepath;
+
+/**
+ * Loop through files and require them
+ *
+ * @since  1.0.0
+ */
+foreach ($function_includes as $filename) {
+  $filepath = 'lib/' . $filename . '.php';
+  require_once locate_template($filepath);
 }
 
-unset($file, $filepath);
+unset($filename, $filepath);

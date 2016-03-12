@@ -41,6 +41,7 @@ if (!function_exists('wp_check_password')) {
   }
 }
 
+
 /**
  * Configure privacy settings conditionally
  * ----------------------------------------
@@ -50,6 +51,7 @@ if (!function_exists('wp_check_password')) {
 */
 if( !function_exists( 'J2_wp_indexing' ) ) {
   add_action( 'wp_loaded', 'J2_wp_indexing' );
+
   function J2_wp_indexing() {
     if (WP_ENV !== 'production') {
       update_option( 'blog_public', '0' );
@@ -69,6 +71,12 @@ register_theme_directory(ABSPATH . 'wp-content/themes');
 
 
 /**
+ * Evac if installation
+ */
+if (!is_blog_installed()) { return; }
+
+
+/**
  * Autoload MU-Plugins
  * -------------------
  * Brilliant plugin by the roots.io team. Autoloads MU-plugins
@@ -80,6 +88,8 @@ register_theme_directory(ABSPATH . 'wp-content/themes');
  *
  * @since  1.0.0
  */
+
+
 class Bedrock_Autoloader {
   private static $cache; // Stores our plugin cache and site option.
   private static $auto_plugins; // Contains the autoloaded plugins (only when needed).

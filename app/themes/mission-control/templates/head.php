@@ -1,3 +1,6 @@
+<?php
+  $icon_path = get_bloginfo('template_url');
+?>
 <!doctype html>
 <html class="no-js" <?php language_attributes(); ?>>
 <head>
@@ -5,9 +8,9 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!--[if IE]><link rel="shortcut icon" href="<?= TEMPLATEPATH ?>/favicon.ico"><![endif]-->
-  <link rel="apple-touch-icon-precomposed" href="<?= TEMPLATEPATH ?>/favicon.icns">
-  <link rel="icon" href="<?= TEMPLATEPATH ?>/favicon.png">
+  <!--[if IE]><link rel="shortcut icon" href="<?= $icon_path ?>/favicon.ico"><![endif]-->
+  <link rel="apple-touch-icon-precomposed" href="<?= $icon_path ?>/favicon.icns">
+  <link rel="icon" href="<?= $icon_path ?>/favicon.png">
 
   <link rel="alternate" type="application/rss+xml" title="<?= get_bloginfo('name'); ?> Feed" href="<?= esc_url(get_feed_link()); ?>">
 

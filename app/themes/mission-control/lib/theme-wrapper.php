@@ -12,19 +12,25 @@ namespace Apollo\Theme\Wrapper;
  */
 
 function template_path() {
-  return Sage_Wrapping::$main_template;
+  return SageWrapping::$main_template;
 }
 
 function sidebar_path() {
-  return new Sage_Wrapping('templates/sidebar/_sidebar-main.php');
+  return new SageWrapping('templates/sidebar/_sidebar-main.php');
 }
 
-class Sage_Wrapping {
-  public static $main_template; // Stores the full path to the main template file
-  public $slug;                 // Basename of template file
-  public $templates;            // Array of templates
+class SageWrapping {
+  // Stores the full path to the main template file
+  public static $main_template;
 
-  static $base;                 // Stores the base name of the template file; e.g. 'page' for 'page.php' etc.
+  // Basename of template file
+  public $slug;
+
+  // Array of templates
+  public $templates;
+
+  // Stores the base name of the template file; e.g. 'page' for 'page.php' etc.
+  public static $base;
 
   public function __construct($template = 'base.php') {
     $this->slug = basename($template, '.php');
@@ -41,7 +47,7 @@ class Sage_Wrapping {
     return locate_template($this->templates);
   }
 
-  static function wrap($main) {
+  public static function wrap($main) {
     // Check for other filters returning null
     if (!is_string($main)) {
       return $main;
@@ -54,7 +60,7 @@ class Sage_Wrapping {
       self::$base = false;
     }
 
-    return new Sage_Wrapping();
+    return new SageWrapping();
   }
 }
-add_filter('template_include', [__NAMESPACE__ . '\\Sage_Wrapping', 'wrap'], 99);
+add_filter('template_include', [__NAMESPACE__ . '\\SageWrapping', 'wrap'], 109);

@@ -34,9 +34,10 @@ function hide_page_header() {
 
 function sidebar_switch() {
 
-  // if( is_page('blog') ) {
+  // if( is_page('sample-page') ) {
   //   // Return the opposite of existing default
   //   return true;
   // }
 
 }
+
