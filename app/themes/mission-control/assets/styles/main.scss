@@ -6,8 +6,8 @@
 
 @charset 'UTF-8';
 @import '../../bower_components/sanitize-css/lib/sanitize.scss';              // Sanitize
-@import '../../bower_components/bourbon/app/assets/stylesheets/bourbon';  // Bourbon
-@import '../../bower_components/neat/app/assets/stylesheets/neat';        // Bourbon Neat
+@import 'bourbon';    // Bourbon
+@import 'neat';       // Neat
 
 // THEME STYLES
 // =============================================================================
