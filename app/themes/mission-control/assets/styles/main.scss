@@ -16,3 +16,7 @@
 @import 'global/base';            // Globals Base
 @import 'components/components';  // Components Base
 @import 'layouts/layouts';        // Layouts Base
+
+.test {
+  content: '';
+}
