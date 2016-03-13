@@ -96,7 +96,7 @@ function assets() {
 
   /**
    * Grab Google CDN's latest jQuery with a protocol relative URL; fallback to local if offline
-   * jQuery & Modernizr load in the footer per HTML5 Boilerplate's recommendation: http://goo.gl/nMGR7P
+   * jQuery load in the footer per HTML5 Boilerplate's recommendation: http://goo.gl/nMGR7P
    * If a plugin enqueues jQuery-dependent scripts in the head, jQuery will load in the head to meet the plugin's dependencies
    * To explicitly load jQuery in the head, change the last wp_enqueue_script parameter to false
    */
