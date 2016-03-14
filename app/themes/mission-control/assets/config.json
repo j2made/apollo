@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "main.js": {
+      "browserify": true
+    }
+  },
+  "paths": {
+    "enter": "./assets/",
+    "src": "./src/",
+    "dist": "./dist/"
+  }
+}
