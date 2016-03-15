@@ -36,7 +36,7 @@ if(production) {
 gulp.task('build_sass', function() {
   gulp.src(base + 'sass/main/*.scss')
     .pipe(foreach( function(stream, file) {
-      var name = node_path.basename(file.path, '.scss') + '.min';
+      var name = node_path.basename(file.path, '.scss') + '.min.css';
 
       return stream
         .pipe( $if( !production, plumber() ) )
