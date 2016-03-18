@@ -8,5 +8,8 @@
     "enter": "./assets/",
     "src": "./src/",
     "dist": "./dist/"
+  },
+  "opts": {
+    "build_jquery": true
   }
 }
