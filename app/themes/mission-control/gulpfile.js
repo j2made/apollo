@@ -8,6 +8,7 @@ var plumber = require('gulp-plumber');
 var $if  = require('gulp-if');
 var argv = require('yargs').argv;
 var rename = require('gulp-rename');
+var del = require('del');
 
 var maps = require('gulp-sourcemaps');
 var changed = require('gulp-changed');
@@ -17,7 +18,14 @@ var sass = require('gulp-sass');
 var mediaQuery  = require('gulp-group-css-media-queries');
 var nano = require('gulp-cssnano');
 
+var jshint = require('gulp-jshint');
 var uglify = require('gulp-uglify');
+var buffer = require('vinyl-buffer');
+var source = require('vinyl-source-stream');
+var assign = require('lodash.assign');
+var watchify = require('watchify');
+var browserify = require('browserify');
+var browsersync = require('browsersync');
 
 
 
@@ -47,6 +55,23 @@ var dest = {
 
 
 
+
+/**
+ * CLEAN TASKS
+ *
+ * Remove css files in distribution directory
+ * Remove js files in distribution directory
+ */
+ gulp.task('clean_css', function () {
+   del(dest.css);
+ });
+
+ gulp.task('clean_js', function () {
+   del(dest.js);
+ });
+
+/****************** SASS AND CSS ******************/
+
 /**
  * SASS TASK
  *
@@ -55,8 +80,9 @@ var dest = {
 gulp.task('build_sass', function() {
   gulp.src( base.sass )
     .pipe(foreach( function(stream, file) {
-      // Get base file name, rename it to `.min.css`
-      var name = node_path.basename(file.path, '.scss') + '.min.css';
+      // Get base file name, rename it based on argv
+      var namebase = node_path.basename(file.path, '.scss');
+      var name = production ? namebase + '.min.css' : namebase + '.css';
 
       return stream
         .pipe( $if( !production, plumber() ) )
@@ -74,32 +100,42 @@ gulp.task('build_sass', function() {
 
 
 
+/****************** JS ******************/
+
 
 /**
- * LINT TASK
+ * LINT TASKS
  *
- * Run js through the linter
+ * Run single js through the linter
+ * Run main browserify file through the linter
  */
+gulp.task('lint_single', function(){
+  return gulp.src( base.js.single )
+    .pipe( jshint() )
+    .pipe( jshint.reporter('jshint-stylish-source') );
+});
+
+gulp.task('lint_main', function(){
+  return gulp.src( base.js.single )
+    .pipe( jshint() )
+    .pipe( jshint.reporter('jshint-stylish-source') );
+});
+
+
 
 
 
 /**
- * BROWSERIFY TASK
- *
- *
- */
-
-
-/**
- * JS TASK
+ * SINGLE JS TASK
  *
  * For non browserified files saved in `single`
  */
-gulp.task('build_single_js', function(){
+gulp.task('build_single_js', ['lint_single'], function(){
   gulp.src( base.js.single )
     .pipe(foreach( function(stream, file) {
-      // Get base file name, rename it to `.min.css`
-      var name = node_path.basename(file.path, '.js') + '.min.js';
+      // Get base file name, rename it based on argv
+      var namebase = node_path.basename(file.path, '.js');
+      var name = production ? namebase + '.min.js' : namebase + '.js';
 
       return stream
         .pipe( $if( !production, plumber() ) )
@@ -109,9 +145,70 @@ gulp.task('build_single_js', function(){
         .pipe( $if( !production, maps.write('.') ) );   // If no production flag, write maps
 
     }) )
-  .pipe( gulp.dest( dest.css ) );                     // Ship it
+  .pipe( gulp.dest( dest.js ) );                     // Ship it
 });
 
+
+
+
+
+/**
+ * BROWSERIFY TASK
+ *
+ *
+ */
+var customOpts = {
+ entries: [base.js.main],
+ paths: ['./node_modules', base.js.modules],
+ debug: true
+};
+var opts = assign({}, watchify.args, customOpts);
+var bundler = watchify(browserify(opts));
+
+// Babel transform
+bundler.transform(babelify.configure({
+    sourceMapRelative: 'base.js.main'
+}));
+
+// function bundle() {
+
+//   gutil.log('Compiling JS...');
+
+//   return bundler.bundle()
+//     .on('error', function (err) {
+//         gutil.log(err.message);
+//         browserSync.notify("Browserify Error!");
+//         this.emit("end");
+//     })
+//     .pipe(source('bundle.js'))
+//     .pipe(gulp.dest('./app/js/dist'))
+//     .pipe(browserSync.stream({once: true}));
+// }
+
+function bundle() {
+  gutil.log('Compiling JS...');
+
+  return bundler.bundle()
+    // log errors if they happen
+    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+    .pipe(source('bundle.js'))
+    // optional, remove if you don't need to buffer file contents
+    .pipe( buffer() )
+    // optional, remove if you dont want sourcemaps
+    .pipe(maps.init({loadMaps: true})) // loads map from browserify file
+       // Transforms go here
+       .pipe( uglify() )
+    .pipe(maps.write('.')) // writes .map file
+    .pipe(gulp.dest(dest.js));
+}
+
+
+/**
+ * Browserify Gulp Task (Alias)
+ */
+gulp.task('build_bundle', function () {
+  return bundle();
+});
 
 
 
@@ -135,10 +232,10 @@ gulp.task('copy_jquery', function() {
  *
  * Start the whole show. Run to start a project up.
  */
-gulp.task('build', sequence(
-  'copy_jquery',
-  'build_sass',
+// gulp.task('build', sequence(
+//   'copy_jquery',
+//   'build_sass',
 
-);
+// );
 
 
