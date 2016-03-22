@@ -24,7 +24,6 @@ var buffer = require('vinyl-buffer');
 var source = require('vinyl-source-stream');
 var assign = require('lodash.assign');
 var watchify = require('watchify');
-var babelify = require('babelify');
 var browserify = require('browserify');
 var browsersync = require('browser-sync');
 
@@ -158,28 +157,30 @@ gulp.task('build_single_js', ['lint_single'], function(){
  *
  *
  */
+// Browserify options
 var customOpts = {
  entries: [base.js.main],
  paths: ['./node_modules', base.js.modules],
  debug: true
 };
 var opts = assign({}, watchify.args, customOpts);
+
+// Browserify objects
 var bundler = browserify(customOpts)
 var watchBundler = watchify(browserify(opts));
 
-
-
+// The main Brwoserify function, task sends bundler from above
 function runBundle(bundleType, sync) {
   gutil.log('Compiling JS...');
 
   return bundleType.bundle()
-    .on('error', gutil.log.bind(gutil, 'Browserify Error'))   // Log errors as they occur
+    .on('error', gutil.log.bind(gutil, 'Browserify Error'))     // Log errors as they occur
     .pipe(source('bundle.js'))
     .pipe( buffer() )
     .pipe( $if( !production, maps.init( {loadMaps: true} ) ) )  // Loads map from browserify file
        // Transforms go here
        .pipe( $if( production, uglify() ) )
-    .pipe( $if( !production, maps.write('.') ) )              // Writes the map file
+    .pipe( $if( !production, maps.write('.') ) )                // Writes the map file
     .pipe(gulp.dest(dest.js))
     .pipe( $if( sync, browsersync.stream( {once: true} ) ) );
 }
@@ -212,6 +213,11 @@ gulp.task('copy_jquery', function() {
 
 
 
+/****************** BROWSERSYNC ******************/
+
+// Watchify, single.js, css, php, html
+
+
 /**
  * BUILD TASK
  *
@@ -225,3 +231,15 @@ gulp.task('build', sequence(
 ));
 
 
+
+/**
+ * TK TODO:
+ *
+ * Browsersync
+ * Build
+ * Default
+ * Images/SVG
+ * Fonts
+ *
+ * Improve Comments
+ */
