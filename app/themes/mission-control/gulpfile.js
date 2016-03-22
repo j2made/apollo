@@ -24,8 +24,9 @@ var buffer = require('vinyl-buffer');
 var source = require('vinyl-source-stream');
 var assign = require('lodash.assign');
 var watchify = require('watchify');
+var babelify = require('babelify');
 var browserify = require('browserify');
-var browsersync = require('browsersync');
+var browsersync = require('browser-sync');
 
 
 
@@ -163,10 +164,15 @@ var customOpts = {
  debug: true
 };
 var opts = assign({}, watchify.args, customOpts);
-var bundler = watchify(browserify(opts));
+var bundler = browserify(customOpts)
+var watchBundler = watchify(browserify(opts));
 
 // Babel transform
 bundler.transform(babelify.configure({
+    sourceMapRelative: 'base.js.main'
+}));
+
+watchBundler.transform(babelify.configure({
     sourceMapRelative: 'base.js.main'
 }));
 
@@ -197,7 +203,24 @@ function bundle() {
     // optional, remove if you dont want sourcemaps
     .pipe(maps.init({loadMaps: true})) // loads map from browserify file
        // Transforms go here
-       .pipe( uglify() )
+       // .pipe( uglify() )
+    .pipe(maps.write('.')) // writes .map file
+    .pipe(gulp.dest(dest.js));
+}
+
+function watchBundle() {
+  gutil.log('Compiling JS...');
+
+  return watchBundler.bundle()
+    // log errors if they happen
+    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+    .pipe(source('bundle.js'))
+    // optional, remove if you don't need to buffer file contents
+    .pipe( buffer() )
+    // optional, remove if you dont want sourcemaps
+    .pipe(maps.init({loadMaps: true})) // loads map from browserify file
+       // Transforms go here
+       // .pipe( uglify() )
     .pipe(maps.write('.')) // writes .map file
     .pipe(gulp.dest(dest.js));
 }
@@ -207,6 +230,10 @@ function bundle() {
  * Browserify Gulp Task (Alias)
  */
 gulp.task('build_bundle', function () {
+  return bundle();
+});
+
+gulp.task('watch_bundle', function () {
   return bundle();
 });
 
