@@ -6,4 +6,3 @@
   </div>
 </footer>
 
-<script src="<?= get_bloginfo( 'stylesheet_directory' ) ?>/src/js/bundle.js"

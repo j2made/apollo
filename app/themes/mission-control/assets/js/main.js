@@ -1,7 +1,6 @@
-// var $ = require('jquery');
+var commonScripts = require('common.js');
 
-
-// (function($) {
+(function($) {
 
 // Use this variable to set up the common and page specific functions. If you
 // rename this variable, you will also need to rename the namespace below.
@@ -10,7 +9,6 @@ var Apollo = {
   common: {
     init: function() {
       // JavaScript to be fired on all pages
-      $('body').css('background-color', '#bada55');
     },
     finalize: function() {
       // JavaScript to be fired on all pages, after page specific JS is fired
@@ -20,6 +18,16 @@ var Apollo = {
   home: {
     init: function() {
       // JavaScript to be fired on the home page
+    },
+    finalize: function() {
+      // JavaScript to be fired on the home page, after the init JS
+    }
+  },
+  page_id_2: {
+    init: function() {
+      // JavaScript to be fired on the home page
+      $('body').css('background-color', '#000');
+      commonScripts();
     },
     finalize: function() {
       // JavaScript to be fired on the home page, after the init JS
@@ -60,4 +68,4 @@ var UTIL = {
 // Load Events
 $(document).ready(UTIL.loadEvents);
 
-// })(jQuery); // Fully reference jQuery after this point.
+})(jQuery); // Fully reference jQuery after this point.

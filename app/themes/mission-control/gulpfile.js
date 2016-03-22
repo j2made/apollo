@@ -63,13 +63,12 @@ var dest = {
  * Remove css files in distribution directory
  * Remove js files in distribution directory
  */
- gulp.task('clean_css', function () {
-   del(dest.css);
- });
+gulp.task('clean_css', function () { del(dest.css); });
+gulp.task('clean_js', function () { del(dest.js); });
 
- gulp.task('clean_js', function () {
-   del(dest.js);
- });
+
+
+
 
 /****************** SASS AND CSS ******************/
 
@@ -116,8 +115,10 @@ gulp.task('lint_single', function(){
     .pipe( jshint.reporter('jshint-stylish-source') );
 });
 
-gulp.task('lint_main', function(){
-  return gulp.src( base.js.single )
+gulp.task('lint_bundle', function(){
+  return gulp.src([
+    base.js.main, base.js.modules + '/**/*.js'
+  ])
     .pipe( jshint() )
     .pipe( jshint.reporter('jshint-stylish-source') );
 });
@@ -144,7 +145,6 @@ gulp.task('build_single_js', ['lint_single'], function(){
           .pipe( changed( dest.js) )                  // Only run on changed files
           .pipe( uglify() )
         .pipe( $if( !production, maps.write('.') ) );   // If no production flag, write maps
-
     }) )
   .pipe( gulp.dest( dest.js ) );                     // Ship it
 });
@@ -167,74 +167,32 @@ var opts = assign({}, watchify.args, customOpts);
 var bundler = browserify(customOpts)
 var watchBundler = watchify(browserify(opts));
 
-// Babel transform
-bundler.transform(babelify.configure({
-    sourceMapRelative: 'base.js.main'
-}));
 
-watchBundler.transform(babelify.configure({
-    sourceMapRelative: 'base.js.main'
-}));
 
-// function bundle() {
-
-//   gutil.log('Compiling JS...');
-
-//   return bundler.bundle()
-//     .on('error', function (err) {
-//         gutil.log(err.message);
-//         browserSync.notify("Browserify Error!");
-//         this.emit("end");
-//     })
-//     .pipe(source('bundle.js'))
-//     .pipe(gulp.dest('./app/js/dist'))
-//     .pipe(browserSync.stream({once: true}));
-// }
-
-function bundle() {
+function runBundle(bundleType, sync) {
   gutil.log('Compiling JS...');
 
-  return bundler.bundle()
-    // log errors if they happen
-    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+  return bundleType.bundle()
+    .on('error', gutil.log.bind(gutil, 'Browserify Error'))   // Log errors as they occur
     .pipe(source('bundle.js'))
-    // optional, remove if you don't need to buffer file contents
     .pipe( buffer() )
-    // optional, remove if you dont want sourcemaps
-    .pipe(maps.init({loadMaps: true})) // loads map from browserify file
+    .pipe( $if( !production, maps.init( {loadMaps: true} ) ) )  // Loads map from browserify file
        // Transforms go here
-       // .pipe( uglify() )
-    .pipe(maps.write('.')) // writes .map file
-    .pipe(gulp.dest(dest.js));
-}
-
-function watchBundle() {
-  gutil.log('Compiling JS...');
-
-  return watchBundler.bundle()
-    // log errors if they happen
-    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
-    .pipe(source('bundle.js'))
-    // optional, remove if you don't need to buffer file contents
-    .pipe( buffer() )
-    // optional, remove if you dont want sourcemaps
-    .pipe(maps.init({loadMaps: true})) // loads map from browserify file
-       // Transforms go here
-       // .pipe( uglify() )
-    .pipe(maps.write('.')) // writes .map file
-    .pipe(gulp.dest(dest.js));
+       .pipe( $if( production, uglify() ) )
+    .pipe( $if( !production, maps.write('.') ) )              // Writes the map file
+    .pipe(gulp.dest(dest.js))
+    .pipe( $if( sync, browsersync.stream( {once: true} ) ) );
 }
 
 
 /**
  * Browserify Gulp Task (Alias)
  */
-gulp.task('build_bundle', function () {
-  return bundle();
+gulp.task('build_bundle', ['lint_bundle'], function () {
+  return runBundle(bundler, false);
 });
-
-gulp.task('watch_bundle', function () {
-  return bundle();
+gulp.task('watch_bundle', ['lint_bundle'], function () {
+  return runBundle(watchBundler, true);
 });
 
 
@@ -247,7 +205,7 @@ gulp.task('watch_bundle', function () {
  */
 gulp.task('copy_jquery', function() {
   return gulp.src('./node_modules/jquery/dist/jquery.min.js')
-    .pipe( gulp.dest( dest.js ) );
+    .pipe( gulp.dest( config.paths.dist + 'js/' ) );
 });
 
 
@@ -259,10 +217,11 @@ gulp.task('copy_jquery', function() {
  *
  * Start the whole show. Run to start a project up.
  */
-// gulp.task('build', sequence(
-//   'copy_jquery',
-//   'build_sass',
-
-// );
+gulp.task('build', sequence(
+  'copy_jquery',
+  'build_sass',
+  'build_bundle',
+  'build_single_js'
+));
 
 
