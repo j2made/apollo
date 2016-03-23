@@ -1,3 +1,12 @@
+/**
+ * Install Watchify globally:
+ * npm install -g watchify         ????????
+ *
+ *
+ */
+
+
+
 /** NPM Modules */
 var gulp = require('gulp');
 var gutil = require('gulp-util');
@@ -13,6 +22,7 @@ var del = require('del');
 var maps = require('gulp-sourcemaps');
 var changed = require('gulp-changed');
 var sequence = require('gulp-sequence');
+var rev = require('gulp-rev');
 
 var sass = require('gulp-sass');
 var mediaQuery  = require('gulp-group-css-media-queries');
@@ -28,8 +38,6 @@ var browserify = require('browserify');
 var browsersync = require('browser-sync');
 
 
-
-
 // Production flag
 var production = argv.production;
 
@@ -39,10 +47,13 @@ var dest_base = production ? config.paths.dist : config.paths.src;
 
 // Enter paths for file types
 var base = {
-  'sass': enter + 'sass/main/*.scss',
+  'img':      enter + 'images/**/*',
+  'fonts':    enter + 'fonts/**/*',
+  'sass':     enter + 'sass',
+  'sassMain': enter + 'sass/main/*.scss',
   'js': {
-    'single': enter + 'js/single/*.js',
-    'main': enter + 'js/main.js',
+    'single':  enter + 'js/single/*.js',
+    'main':    enter + 'js/main.js',
     'modules': enter + 'js/modules'
   }
 }
@@ -50,7 +61,9 @@ var base = {
 // Destination paths for file types
 var dest = {
   'css': dest_base + 'css/',
-  'js': dest_base + 'js/'
+  'js': dest_base + 'js/',
+  'img': dest_base + 'images/',
+  'fonts': dest_base + 'fonts/'
 };
 
 
@@ -64,8 +77,9 @@ var dest = {
  */
 gulp.task('clean_css', function () { del(dest.css); });
 gulp.task('clean_js', function () { del(dest.js); });
-
-
+gulp.task('clean_img', function () { del(dest.img); });
+gulp.task('clean_fonts', function () { del(dest.img); });
+gulp.task('clean_dest', function () { del(dest_base); });
 
 
 
@@ -77,7 +91,7 @@ gulp.task('clean_js', function () { del(dest.js); });
  * Runs foreach on every file in 'sass/main'
  */
 gulp.task('build_sass', function() {
-  gulp.src( base.sass )
+  gulp.src( base.sassMain )
     .pipe(foreach( function(stream, file) {
       // Get base file name, rename it based on argv
       var namebase = node_path.basename(file.path, '.scss');
@@ -93,7 +107,8 @@ gulp.task('build_sass', function() {
           .pipe(rename(name))                           // Rename
         .pipe( $if( !production, maps.write('.') ) );   // If no production flag, write maps
     }) )
-    .pipe( gulp.dest( dest.css ) );                     // Ship it
+    .pipe( gulp.dest( dest.css ) )                      // Ship it
+    .pipe( browsersync.stream() );                      // Beam it to browsersync
 });
 
 
@@ -140,71 +155,75 @@ gulp.task('build_single_js', ['lint_single'], function(){
 
       return stream
         .pipe( $if( !production, plumber() ) )
-        .pipe( $if( !production, maps.init() ) )      // If no production flag, generate maps
-          .pipe( changed( dest.js) )                  // Only run on changed files
-          .pipe( uglify() )
-        .pipe( $if( !production, maps.write('.') ) );   // If no production flag, write maps
+        .pipe( changed( dest.js) )                  // Only run on changed files
+        .pipe( uglify() )
     }) )
-  .pipe( gulp.dest( dest.js ) );                     // Ship it
+  .pipe( gulp.dest( dest.js ) )                      // Ship it
+  .pipe( browsersync.reload({stream: true}) );
 });
 
 
 
 
 
+/****************** JS: BROWSERIFY ******************/
+
+
 /**
- * BROWSERIFY TASK
- *
- *
+ * Browserify Bundler
  */
-// Browserify options
-var customOpts = {
- entries: [base.js.main],
- paths: ['./node_modules', base.js.modules],
- debug: true
+var b = function() {
+  return browserify({
+    entries: base.js.main,
+    debug: true,
+    cache: {},
+    paths: ['./node_modules', base.js.modules]
+  });
 };
-var opts = assign({}, watchify.args, customOpts);
 
-// Browserify objects
-var bundler = browserify(customOpts)
-var watchBundler = watchify(browserify(opts));
+/**
+ * Watchify Bundler
+ */
+var w = watchify(b());
 
-// The main Brwoserify function, task sends bundler from above
-function runBundle(bundleType, sync) {
-  gutil.log('Compiling JS...');
-
-  return bundleType.bundle()
-    .on('error', gutil.log.bind(gutil, 'Browserify Error'))     // Log errors as they occur
-    .pipe(source('bundle.js'))
+/**
+ * Process Bundler
+ */
+function bundle(pkg) {
+  return pkg.bundle()
+    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+    .pipe( source('bundle.js') )
     .pipe( buffer() )
-    .pipe( $if( !production, maps.init( {loadMaps: true} ) ) )  // Loads map from browserify file
-       // Transforms go here
-       .pipe( $if( production, uglify() ) )
-    .pipe( $if( !production, maps.write('.') ) )                // Writes the map file
-    .pipe(gulp.dest(dest.js))
-    .pipe( $if( sync, browsersync.stream( {once: true} ) ) );
+    .pipe( $if( !production, plumber() ) )
+    .pipe( $if( !production, maps.init( {loadMaps: true} ) ) )
+    .pipe( $if( !production, maps.write('.') ) )
+    .pipe( gulp.dest(dest.js) )
+    .pipe( browsersync.stream( {once: true} ) );
 }
 
-
 /**
- * Browserify Gulp Task (Alias)
+ * Bundle Tasks
+ *
+ * Build bundle (once and done)
+ * Watch bundle (enable watchify)
  */
-gulp.task('build_bundle', ['lint_bundle'], function () {
-  return runBundle(bundler, false);
-});
-gulp.task('watch_bundle', ['lint_bundle'], function () {
-  return runBundle(watchBundler, true);
+gulp.task('build_bundle', function() { bundle(b()) });
+
+gulp.task('watch_bundle', function() {
+  bundle(w);
+  w.on('update', bundle.bind(null, w) );
+  w.on('log', gutil.log);
 });
 
 
 
 
 /**
- * COPY JQUERY
+ * COPY STATIC FILES
  *
  * Copy jQuery for local fallback
  */
-gulp.task('copy_jquery', function() {
+gulp.task('copy_static', function() {
   return gulp.src('./node_modules/jquery/dist/jquery.min.js')
     .pipe( gulp.dest( config.paths.dist + 'js/' ) );
 });
@@ -217,14 +236,42 @@ gulp.task('copy_jquery', function() {
 
 // Watchify, single.js, css, php, html
 
+/**
+ * Watch Tasks
+ *
+ */
+gulp.task('watch_js', ['build_single_js'], browsersync.reload);
+gulp.task('watch_reload', function(){ browsersync.reload(); });
+
+/**
+ * SERVE TASK
+ *
+ * Initialize browsersync
+ * Watch for file changes
+ */
+gulp.task('serve', ['watch_bundle'], function(){
+  browsersync({
+    proxy: config.devUrl
+  });
+
+  // Watch tasks
+  gulp.watch([base.sass + '/**/*.scss'], ['build_sass']);
+  gulp.watch([base.js.single], ['build_single_js']);
+  // // gulp.watch([base.fonts], ['fonts']);
+  // // gulp.watch([base.img], ['images']);
+  gulp.watch('**/*.php', ['watch_reload']);
+  gulp.watch('**/*.html', ['watch_reload']);
+});
+
 
 /**
  * BUILD TASK
  *
  * Start the whole show. Run to start a project up.
  */
-gulp.task('build', sequence(
-  'copy_jquery',
+gulp.task('default', sequence(
+  'clean_dest',
+  'copy_static',
   'build_sass',
   'build_bundle',
   'build_single_js'
@@ -235,7 +282,6 @@ gulp.task('build', sequence(
 /**
  * TK TODO:
  *
- * Browsersync
  * Build
  * Default
  * Images/SVG

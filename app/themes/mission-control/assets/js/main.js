@@ -9,6 +9,8 @@ var Apollo = {
   common: {
     init: function() {
       // JavaScript to be fired on all pages
+      // $('body').css('background-color', '#000');
+      commonScripts();
     },
     finalize: function() {
       // JavaScript to be fired on all pages, after page specific JS is fired
@@ -26,8 +28,6 @@ var Apollo = {
   page_id_2: {
     init: function() {
       // JavaScript to be fired on the home page
-      $('body').css('background-color', '#000');
-      commonScripts();
     },
     finalize: function() {
       // JavaScript to be fired on the home page, after the init JS
