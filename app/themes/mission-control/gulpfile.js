@@ -24,6 +24,9 @@ var changed = require('gulp-changed');
 var sequence = require('gulp-sequence');
 var rev = require('gulp-rev');
 
+var imagemin = require('gulp-imagemin');
+var pngquant = require('imagemin-pngquant');
+
 var sass = require('gulp-sass');
 var mediaQuery  = require('gulp-group-css-media-queries');
 var nano = require('gulp-cssnano');
@@ -43,7 +46,9 @@ var production = argv.production;
 
 // Paths
 var enter = config.paths.enter;
-var dest_base = production ? config.paths.dist : config.paths.src;
+var dest_base = config.paths.src;
+var rev_name = './lib/_rev-manifest.json';
+var rev_path = './lib';
 
 // Enter paths for file types
 var base = {
@@ -62,8 +67,10 @@ var base = {
 var dest = {
   'css': dest_base + 'css/',
   'js': dest_base + 'js/',
+  'js_single': dest_base + 'js/single',
+  'js_vendor': dest_base + 'js/vendor',
   'img': dest_base + 'images/',
-  'fonts': dest_base + 'fonts/'
+  'fonts': dest_base + 'fonts/',
 };
 
 
@@ -80,6 +87,7 @@ gulp.task('clean_js', function () { del(dest.js); });
 gulp.task('clean_img', function () { del(dest.img); });
 gulp.task('clean_fonts', function () { del(dest.img); });
 gulp.task('clean_dest', function () { del(dest_base); });
+gulp.task('clean_dist', function () {del(config.paths.dist); });
 
 
 
@@ -158,7 +166,7 @@ gulp.task('build_single_js', ['lint_single'], function(){
         .pipe( changed( dest.js) )                  // Only run on changed files
         .pipe( uglify() )
     }) )
-  .pipe( gulp.dest( dest.js ) )                      // Ship it
+  .pipe( gulp.dest( dest.js_single ) )              // Ship it
   .pipe( browsersync.reload({stream: true}) );
 });
 
@@ -196,6 +204,7 @@ function bundle(pkg) {
     .pipe( buffer() )
     .pipe( $if( !production, plumber() ) )
     .pipe( $if( !production, maps.init( {loadMaps: true} ) ) )
+      .pipe( $if( production, uglify() ) )
     .pipe( $if( !production, maps.write('.') ) )
     .pipe( gulp.dest(dest.js) )
     .pipe( browsersync.stream( {once: true} ) );
@@ -224,17 +233,110 @@ gulp.task('watch_bundle', function() {
  * Copy jQuery for local fallback
  */
 gulp.task('copy_static', function() {
+  var vendor_path = dest_base + 'js/vendor/';
   return gulp.src('./node_modules/jquery/dist/jquery.min.js')
-    .pipe( gulp.dest( config.paths.dist + 'js/' ) );
+    .pipe( gulp.dest( vendor_path ) )
+});
+
+
+
+/****************** REVISIONING ******************/
+
+/**
+ * REVISION CSS AND JS ASSETS
+ *
+ * Clean the distribution folder
+ * Take all css and js files in src, revision
+ * them, send them to the clean dist folder.
+ */
+gulp.task('rev', ['clean_dist'], function () {
+  if(production) {
+    var cssPath = dest_base + '**/*.css';
+    var jsPath = dest_base + '**/*.js';
+
+    return gulp.src([cssPath, jsPath])
+      .pipe(rev())
+      .pipe(gulp.dest(config.paths.dist))
+      .pipe(rev.manifest())
+      .pipe(gulp.dest(config.paths.dist))
+      .pipe;
+  }
+});
+
+
+
+/****************** IMAGES ******************/
+
+/**
+ * IMAGE TASK
+ *
+ * Process images in src folder, move to dist folder
+ */
+gulp.task('build_images', function () {
+  return gulp.src( base.img )
+    .pipe(imagemin({
+      progressive: true,
+      svgoPlugins: [
+          {removeViewBox: false},
+          {cleanupIDs: false}
+      ],
+      use: [pngquant()]
+    }))
+    .pipe(gulp.dest(config.paths.dist + 'images'));
 });
 
 
 
 
 
+/****************** FONTS ******************/
+
+
+/**
+ * FONT TASK
+ *
+ * Copy images to dist folder so the ship
+ */
+gulp.task('copy_fonts', function () {
+  return gulp.src( base.fonts )
+    .pipe(gulp.dest(config.paths.dist + 'fonts/'));
+});
+
+
+
+/****************** BUILD DIST ******************/
+
+/**
+ * BUILD DIST
+ *
+ * Revision assets, then run images and fonts.
+ */
+gulp.task('build_dist', sequence(
+  'rev',
+  'build_images',
+  'build_fonts'
+));
+
+
+/****************** DEFAULTS ******************/
+
+/**
+ * DEFAULT TASK
+ *
+ * Start the whole show. Run to start a project up.
+ */
+gulp.task('default', sequence(
+  'copy_static',
+  'build_sass',
+  'build_bundle',
+  'build_single_js',
+  'build_dist'
+));
+
+
+
 /****************** BROWSERSYNC ******************/
 
-// Watchify, single.js, css, php, html
 
 /**
  * Watch Tasks
@@ -257,35 +359,10 @@ gulp.task('serve', ['watch_bundle'], function(){
   // Watch tasks
   gulp.watch([base.sass + '/**/*.scss'], ['build_sass']);
   gulp.watch([base.js.single], ['build_single_js']);
-  // // gulp.watch([base.fonts], ['fonts']);
-  // // gulp.watch([base.img], ['images']);
+  gulp.watch([base.fonts], ['copy_fonts']);
+  gulp.watch([base.img], ['build_images']);
   gulp.watch('**/*.php', ['watch_reload']);
   gulp.watch('**/*.html', ['watch_reload']);
 });
 
 
-/**
- * BUILD TASK
- *
- * Start the whole show. Run to start a project up.
- */
-gulp.task('default', sequence(
-  'clean_dest',
-  'copy_static',
-  'build_sass',
-  'build_bundle',
-  'build_single_js'
-));
-
-
-
-/**
- * TK TODO:
- *
- * Build
- * Default
- * Images/SVG
- * Fonts
- *
- * Improve Comments
- */
