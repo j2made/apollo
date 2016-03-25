@@ -7,13 +7,22 @@ namespace Apollo\Assets;
  *
  * @since  1.0.0
  */
-// function get_asset($revpath, $dir) {
+function get_asset($revpath) {
 
-//   if(WP_ENV === 'development') {
+  if( $manifest = file_get_contents('_rev-mainfest.json') ) {
+    $json = json_decode($manifest);
 
-//   }
-// }
+    // Print Some Stuff!!
+    echo '<pre>'; print_r($json); echo '</pre>';
 
+    if(WP_ENV === 'development') {
+
+    }
+  }
+
+}
+
+get_asset('js/bundle.js');
 
 /**
  * Register and Enqueue Assets

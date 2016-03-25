@@ -2,27 +2,41 @@
 
 namespace Apollo\Config\Settings;
 
-// =============================================================================
-// THEME SETTINGS
-// =============================================================================
+/**
+ * THEME SETTING CONFIGURATION
+ * Setup theme output, WordPress output and other options
+ *
+ * @since  1.0.0
+ */
 
-// If enviornment is not defined, set production as default
+/**
+ * If enviornment is not defined, set production as default
+ *
+ * @since  1.0.0
+ */
 if (!defined('WP_ENV')) {
   define('WP_ENV', 'production');
 }
 
 
 
-// VARIABLE DEFINITIONS
-// =============================================================================
+/**
+ * Variable Definitions
+ * --------------------
+ * Layout and WordPress output settings
+ * Definitions inline.
+ *
+ * @since  1.0.0
+ */
 
-define('TYPEKIT_ID', false);              // Typekit                Kit ID
-define('FONTAWESOME', false);             // Include FontAwesome    Boolean, if true, will be loaded from CDN
-define('CONTENT_WIDTH', '1140');          // Content Width          https://codex.wordpress.org/Content_Width
-define('CLEAN_THEME_WP_HEAD', true);      // Clean up wp head       Boolean. See CLEAN WP_HEAD below
-define('REMOVE_EMOJI', true);             // Clean up wp head       Boolean. See CLEAN WP_HEAD below
-define('GOOGLE_FONTS', false);            // Google Fonts           False or Font Family
+define('SIDEBAR_DEFAULT_LAYOUT', 'right');  // Default Sidebar layout  'right', 'left' or false
+define('CONTENT_WIDTH', '1140');            // Content Width            https://codex.wordpress.org/Content_Width
+define('CLEAN_THEME_WP_HEAD', true);        // Clean up wp head         Boolean. See 'Clean `wp_head`' below
+define('REMOVE_EMOJI', true);               // Clean up wp head         Boolean. See 'Remove emojis' below
 
+define('TYPEKIT_ID', false);                // Typekit                Kit ID
+define('FONTAWESOME', false);               // Include FontAwesome    Boolean, if true, will be loaded from CDN
+define('GOOGLE_FONTS', false);              // Google Fonts           False or Font Family
 /**
  * To define Google Fonts, set definition name to font name.
  *
@@ -34,17 +48,12 @@ define('GOOGLE_FONTS', false);            // Google Fonts           False or Fon
 
 
 
-// THEME DEFINITIONS
-// =============================================================================
-
-/**
- * Define Sidebar layout: 'right' (str), 'left' (str) or false (bool)
- *
- */
-define('SIDEBAR_DEFAULT_LAYOUT', 'right');
-
 /**
  * Define build directory
+ * ----------------------
+ * Value points to enviornment appropriate assets directory.
+ *
+ * @since  1.0.0
  */
 if (WP_ENV == 'development') {
   define('DIST_DIR', '/src/');
@@ -54,14 +63,18 @@ if (WP_ENV == 'development') {
 
 
 
-// THEME SUPPORT
-// =============================================================================
-
+/**
+ * Define Theme Setup
+ * ------------------
+ * Register nav menus, theme support, control post formats
+ *
+ * @since  1.0.0
+ */
 function theme_setup() {
   // Register Nav Menus:                                                  // (1)
-  // Add any additional menus here!
   register_nav_menus([
-    'primary_navigation' => 'Primary Navigation'
+    'primary_navigation' => 'Primary Navigation',
+    // Add any additional menus here!
   ]);
 
   add_theme_support('title-tag');                                         // (2)
@@ -80,9 +93,13 @@ function theme_setup() {
 add_action('after_setup_theme', __NAMESPACE__ . '\\theme_setup');
 
 
-// Disable XML-RPC
-// ============================================================
 
+/**
+ * Disable XMLRPC
+ * --------------
+ *
+ * @since  1.0.0
+ */
 add_filter('xmlrpc_enabled', '__return_false');
 
 function remove_x_pingback($headers) {
@@ -93,10 +110,15 @@ function remove_x_pingback($headers) {
 add_filter('wp_headers', __NAMESPACE__ . '\\remove_x_pingback');
 
 
-// CLEAN WP_HEAD
-// ============================================================
+
+/**
+ * Clean `wp_head`
+ * ---------------
+ * Strip out unnecessary wp_head items
+ *
+ * @since  1.0.0
+ */
 if(CLEAN_THEME_WP_HEAD) {
-  // Strip out unnecessary wp_head items
   remove_action( 'wp_head', 'rsd_link' );
   remove_action( 'wp_head', 'wlwmanifest_link' );
   remove_action( 'wp_head', 'wp_generator' );
@@ -106,6 +128,15 @@ if(CLEAN_THEME_WP_HEAD) {
   remove_action( 'wp_head', 'wp_shortlink_wp_head' );
 }
 
+
+
+/**
+ * Remove Emojis
+ * -------------
+ * Removes all emoji scripts and styles.
+ *
+ * @since  1.0.0
+ */
 if(REMOVE_EMOJI) {
 
   // Strip out emoji stuff in wp_head
@@ -134,20 +165,27 @@ if(REMOVE_EMOJI) {
 }
 
 
-// CONTENT WIDTH
-// ============================================================
-// Defined in config-settings
 
+/**
+ * Content Width
+ * -------------
+ * Defined above
+ *
+ * @since  1.0.0
+ */
 if (!isset($content_width)) {
   $content_width = CONTENT_WIDTH;
 }
 
 
 
-// WIDGETS
-// =============================================================================
-
-// If you want these things, uncomment here.
+/**
+ * Widgets
+ * -------
+ * If you want these things, uncomment here.
+ *
+ * @since  1.0.0
+ */
 
 // function widgets_init() {
 //   register_sidebar([

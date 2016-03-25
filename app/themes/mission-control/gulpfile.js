@@ -1,12 +1,3 @@
-/**
- * Install Watchify globally:
- * npm install -g watchify         ????????
- *
- *
- */
-
-
-
 /** NPM Modules */
 var gulp = require('gulp');
 var gutil = require('gulp-util');
@@ -28,7 +19,7 @@ var imagemin = require('gulp-imagemin');
 var pngquant = require('imagemin-pngquant');
 
 var sass = require('gulp-sass');
-var mediaQuery  = require('gulp-group-css-media-queries');
+var mediaQuery = require('gulp-group-css-media-queries');
 var nano = require('gulp-cssnano');
 
 var jshint = require('gulp-jshint');
@@ -72,6 +63,7 @@ var dest = {
   'img': dest_base + 'images/',
   'fonts': dest_base + 'fonts/',
 };
+
 
 
 
@@ -247,19 +239,21 @@ gulp.task('copy_static', function() {
  *
  * Clean the distribution folder
  * Take all css and js files in src, revision
- * them, send them to the clean dist folder.
+ * them, send them to a clean dist folder.
+ *
+ * This task should only be used within a `sequence` task.
+ * Run `build_dest` if you need to revision anything.
  */
-gulp.task('rev', ['clean_dist'], function () {
+gulp.task('build_rev', ['clean_dist'], function () {
   if(production) {
-    var cssPath = dest_base + '**/*.css';
-    var jsPath = dest_base + '**/*.js';
+    var cssPath = config.paths.src + '**/*.css';
+    var jsPath = config.paths.src + '**/*.js';
 
     return gulp.src([cssPath, jsPath])
       .pipe(rev())
       .pipe(gulp.dest(config.paths.dist))
-      .pipe(rev.manifest())
-      .pipe(gulp.dest(config.paths.dist))
-      .pipe;
+      .pipe(rev.manifest('_rev-manifest.json'))
+      .pipe(gulp.dest('./lib'));
   }
 });
 
@@ -312,9 +306,9 @@ gulp.task('copy_fonts', function () {
  * Revision assets, then run images and fonts.
  */
 gulp.task('build_dist', sequence(
-  'rev',
+  'build_rev',
   'build_images',
-  'build_fonts'
+  'copy_fonts'
 ));
 
 
