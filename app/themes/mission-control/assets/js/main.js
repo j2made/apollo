@@ -1,15 +1,16 @@
-var commonScripts = require('common.js');
+var commonScripts = require('commonScripts.js');
 
 (function($) {
 
-// Use this variable to set up the common and page specific functions. If you
-// rename this variable, you will also need to rename the namespace below.
+/**
+ * Page Specific Functions
+ * @type {Object}
+ */
 var Apollo = {
   // All pages
   common: {
     init: function() {
       // JavaScript to be fired on all pages
-      // $('body').css('background-color', '#000');
       commonScripts();
     },
     finalize: function() {
@@ -17,31 +18,17 @@ var Apollo = {
     }
   },
   // Home page
-  home: {
+  front_page: {
     init: function() {
-      // JavaScript to be fired on the home page
+
     },
     finalize: function() {
-      // JavaScript to be fired on the home page, after the init JS
-    }
-  },
-  page_id_2: {
-    init: function() {
-      // JavaScript to be fired on the home page
-    },
-    finalize: function() {
-      // JavaScript to be fired on the home page, after the init JS
-    }
-  },
-  sidebar_primary: {
-    init: function() {
 
     }
   }
 };
 
-// The routing fires all common scripts, followed by the page specific scripts.
-// Add additional events for more control over timing e.g. a finalize event
+// Fire page specific events
 var UTIL = {
   fire: function(func, funcname, args) {
     var namespace = Apollo;

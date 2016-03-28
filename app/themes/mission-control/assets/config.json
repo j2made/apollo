@@ -1,8 +1,0 @@
-{
-  "paths": {
-    "enter": "./assets/",
-    "src": "./src/",
-    "dist": "./dist/"
-  },
-  "devUrl": "apollo-rev.dev"
-}
