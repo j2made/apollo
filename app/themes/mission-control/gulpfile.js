@@ -59,7 +59,7 @@ var dest = {
   'css': dest_base + 'css/',
   'js': dest_base + 'js/',
   'js_single': dest_base + 'js/single',
-  'js_vendor': dest_base + 'js/vendor',
+  'jquery': config.paths.dist + 'js/vendor/',
   'img': dest_base + 'images/',
   'fonts': dest_base + 'fonts/',
 };
@@ -166,11 +166,10 @@ gulp.task('build_single_js', ['lint_single'], function(){
 
 
 
-/****************** JS: BROWSERIFY ******************/
-
-
 /**
- * Browserify Bundler
+ * BROWSERIFY
+ *
+ * Browserify bundler
  */
 var b = function() {
   return browserify({
@@ -188,6 +187,8 @@ var w = watchify(b());
 
 /**
  * Process Bundler
+ *
+ * Pass either the a build or watchify bundler
  */
 function bundle(pkg) {
   return pkg.bundle()
@@ -202,6 +203,7 @@ function bundle(pkg) {
     .pipe( browsersync.stream( {once: true} ) );
 }
 
+
 /**
  * Bundle Tasks
  *
@@ -209,7 +211,6 @@ function bundle(pkg) {
  * Watch bundle (enable watchify)
  */
 gulp.task('build_bundle', function() { bundle(b()) });
-
 gulp.task('watch_bundle', function() {
   bundle(w);
   w.on('update', bundle.bind(null, w) );
@@ -217,22 +218,6 @@ gulp.task('watch_bundle', function() {
 });
 
 
-
-
-/**
- * COPY STATIC FILES
- *
- * Copy jQuery for local fallback
- */
-gulp.task('copy_static', function() {
-  var vendor_path = dest_base + 'js/vendor/';
-  return gulp.src('./node_modules/jquery/dist/jquery.min.js')
-    .pipe( gulp.dest( vendor_path ) )
-});
-
-
-
-/****************** REVISIONING ******************/
 
 /**
  * REVISION CSS AND JS ASSETS
@@ -259,8 +244,6 @@ gulp.task('build_rev', ['clean_dist'], function () {
 
 
 
-/****************** IMAGES ******************/
-
 /**
  * IMAGE TASK
  *
@@ -281,11 +264,6 @@ gulp.task('build_images', function () {
 
 
 
-
-
-/****************** FONTS ******************/
-
-
 /**
  * FONT TASK
  *
@@ -298,17 +276,28 @@ gulp.task('copy_fonts', function () {
 
 
 
-/****************** BUILD DIST ******************/
+/**
+ * Copy jQuery for local Fallback
+ *
+ */
+gulp.task('copy_jquery', function() {
+  return gulp.src('./node_modules/jquery/dist/jquery.min.js')
+    .pipe( gulp.dest( dest.jquery ) );
+});
+
+
 
 /**
  * BUILD DIST
  *
+ * Sequence based
  * Revision assets, then run images and fonts.
  */
 gulp.task('build_dist', sequence(
   'build_rev',
   'build_images',
-  'copy_fonts'
+  'copy_fonts',
+  'copy_jquery'
 ));
 
 
@@ -320,7 +309,8 @@ gulp.task('build_dist', sequence(
  * Start the whole show. Run to start a project up.
  */
 gulp.task('default', sequence(
-  'copy_static',
+  'copy_jquery',
+  'copy_fonts',
   'build_sass',
   'build_bundle',
   'build_single_js',
