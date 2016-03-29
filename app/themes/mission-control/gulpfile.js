@@ -1,29 +1,19 @@
-/** NPM Modules */
-var gulp = require('gulp');
-var gutil = require('gulp-util');
-var config = require('./assets/config.json');
+/**
+ * CONFIGURATION VARIABLES
+ *
+ */
+var devUrl = 'apollo-rev.dev';
+
+
+
+/**
+ * NPM MODULES
+ *
+ */
 var node_path = require('path');
-var foreach = require('gulp-foreach');
-var plumber = require('gulp-plumber');
-var $if  = require('gulp-if');
 var argv = require('yargs').argv;
-var rename = require('gulp-rename');
 var del = require('del');
-
-var maps = require('gulp-sourcemaps');
-var changed = require('gulp-changed');
-var sequence = require('gulp-sequence');
-var rev = require('gulp-rev');
-
-var imagemin = require('gulp-imagemin');
 var pngquant = require('imagemin-pngquant');
-
-var sass = require('gulp-sass');
-var mediaQuery = require('gulp-group-css-media-queries');
-var nano = require('gulp-cssnano');
-
-var jshint = require('gulp-jshint');
-var uglify = require('gulp-uglify');
 var buffer = require('vinyl-buffer');
 var source = require('vinyl-source-stream');
 var assign = require('lodash.assign');
@@ -31,22 +21,40 @@ var watchify = require('watchify');
 var browserify = require('browserify');
 var browsersync = require('browser-sync');
 
+var gulp = require('gulp');
+var glp = require('gulp-load-plugins')();
+var gutil = require('gulp-util');
+var $if  = require('gulp-if');
+var maps = require('gulp-sourcemaps');
+var sequence = require('gulp-sequence');
+var rev = require('gulp-rev');
+var mediaQuery = require('gulp-group-css-media-queries');
 
-// Production flag
+
+
+/**
+ * PRODUCTION FLAG
+ *
+ * Run --production after any Gulp task to perform a production build
+ */
 var production = argv.production;
 
-// Paths
-var enter = config.paths.enter;
-var dest_base = config.paths.src;
-var rev_name = './lib/_rev-manifest.json';
-var rev_path = './lib';
+/**
+ * PATH VARIABLES
+ *
+ */
 
-// Enter paths for file types
+/** Paths */
+var enter     = './assets/';
+var src_base  = './src/';
+var dist_base = './dist/';
+
+/** Base (entry) paths */
 var base = {
-  'img':      enter + 'images/**/*',
-  'fonts':    enter + 'fonts/**/*',
-  'sass':     enter + 'sass',
-  'sassMain': enter + 'sass/main/*.scss',
+  'img':       enter + 'images/**/*',
+  'fonts':     enter + 'fonts/**/*',
+  'sass':      enter + 'sass',
+  'sassMain':  enter + 'sass/main/*.scss',
   'js': {
     'single':  enter + 'js/single/*.js',
     'main':    enter + 'js/main.js',
@@ -54,14 +62,16 @@ var base = {
   }
 }
 
-// Destination paths for file types
+/** Destination (to) paths */
 var dest = {
-  'css': dest_base + 'css/',
-  'js': dest_base + 'js/',
-  'js_single': dest_base + 'js/single',
-  'jquery': config.paths.dist + 'js/vendor/',
-  'img': dest_base + 'images/',
-  'fonts': dest_base + 'fonts/',
+  'css':      src_base + 'css/',
+  'js': {
+    'all':    src_base + 'js/',
+    'single': src_base + 'js/single',
+    'vendor': dist_base + 'js/vendor'
+  },
+  'img':      dist_base + 'images/',
+  'fonts':    dist_base + 'fonts/'
 };
 
 
@@ -69,21 +79,17 @@ var dest = {
 
 
 /**
- * CLEAN TASKS
+ * CLEAN TASK
  *
- * Remove css files in distribution directory
- * Remove js files in distribution directory
+ * Remove `./src` & `/dest`
  */
-gulp.task('clean_css', function () { del(dest.css); });
-gulp.task('clean_js', function () { del(dest.js); });
-gulp.task('clean_img', function () { del(dest.img); });
-gulp.task('clean_fonts', function () { del(dest.img); });
-gulp.task('clean_dest', function () { del(dest_base); });
-gulp.task('clean_dist', function () {del(config.paths.dist); });
+gulp.task('clean', function() {
+  del([src_base, dist_base]);
+});
 
 
 
-/****************** SASS AND CSS ******************/
+
 
 /**
  * SASS TASK
@@ -92,29 +98,26 @@ gulp.task('clean_dist', function () {del(config.paths.dist); });
  */
 gulp.task('build_sass', function() {
   gulp.src( base.sassMain )
-    .pipe(foreach( function(stream, file) {
+    .pipe(glp.foreach( function(stream, file) {
       // Get base file name, rename it based on argv
-      var namebase = node_path.basename(file.path, '.scss');
-      var name = production ? namebase + '.min.css' : namebase + '.css';
+      var name = node_path.basename(file.path, '.scss') + '.min.css';
 
       return stream
-        .pipe( $if( !production, plumber() ) )
-        .pipe( changed( dest.css) )                     // Only run on changed files
-        .pipe( $if( !production, maps.init() ) )        // If no production flag, generate maps
-          .pipe(sass().on('error', sass.logError))      // Compile sass
-          .pipe( $if( production, mediaQuery() ) )      // Reorg media queries
-          .pipe(nano({ autoprefixer: { add: true } }))  // Shrink that css
-          .pipe(rename(name))                           // Rename
-        .pipe( $if( !production, maps.write('.') ) );   // If no production flag, write maps
+        .pipe( $if( !production, glp.plumber() ) )
+        .pipe( glp.changed( dest.css) )                       // Only run on changed files
+        .pipe( $if( !production, maps.init() ) )              // If no production flag, generate maps
+          .pipe(glp.sass().on('error', glp.sass.logError))    // Compile sass
+          .pipe( $if( production, mediaQuery() ) )            // Reorg media queries
+          .pipe(glp.cssnano({ autoprefixer: { add: true } })) // Shrink that css
+          .pipe(glp.rename(name))                             // Rename
+        .pipe( $if( !production, maps.write('.') ) );         // If no production flag, write maps
     }) )
-    .pipe( gulp.dest( dest.css ) )                      // Ship it
-    .pipe( browsersync.stream() );                      // Beam it to browsersync
+    .pipe( gulp.dest( dest.css ) )                            // Ship it
+    .pipe( browsersync.stream() );                            // Beam it to browsersync
 });
 
 
 
-
-/****************** JS ******************/
 
 
 /**
@@ -125,16 +128,14 @@ gulp.task('build_sass', function() {
  */
 gulp.task('lint_single', function(){
   return gulp.src( base.js.single )
-    .pipe( jshint() )
-    .pipe( jshint.reporter('jshint-stylish-source') );
+    .pipe( glp.jshint() )
+    .pipe( glp.jshint.reporter('jshint-stylish-source') );
 });
 
 gulp.task('lint_bundle', function(){
-  return gulp.src([
-    base.js.main, base.js.modules + '/**/*.js'
-  ])
-    .pipe( jshint() )
-    .pipe( jshint.reporter('jshint-stylish-source') );
+  return gulp.src([ base.js.main, base.js.modules + '/**/*.js' ])
+    .pipe( glp.jshint() )
+    .pipe( glp.jshint.reporter('jshint-stylish-source') );
 });
 
 
@@ -148,17 +149,17 @@ gulp.task('lint_bundle', function(){
  */
 gulp.task('build_single_js', ['lint_single'], function(){
   gulp.src( base.js.single )
-    .pipe(foreach( function(stream, file) {
+    .pipe(glp.foreach( function(stream, file) {
       // Get base file name, rename it based on argv
-      var namebase = node_path.basename(file.path, '.js');
-      var name = production ? namebase + '.min.js' : namebase + '.js';
+      var name = node_path.basename(file.path, '.js') + '.min.js';
 
       return stream
-        .pipe( $if( !production, plumber() ) )
-        .pipe( changed( dest.js) )                  // Only run on changed files
-        .pipe( uglify() )
+        .pipe( $if( !production, glp.plumber() ) )
+        .pipe( glp.changed( dest.js.all ) )                  // Only run on changed files
+        .pipe( $if( production, glp.uglify() ) )
+        .pipe(glp.rename(name))
     }) )
-  .pipe( gulp.dest( dest.js_single ) )              // Ship it
+  .pipe( gulp.dest( dest.js.single ) )                  // Ship it
   .pipe( browsersync.reload({stream: true}) );
 });
 
@@ -169,8 +170,9 @@ gulp.task('build_single_js', ['lint_single'], function(){
 /**
  * BROWSERIFY
  *
- * Browserify bundler
  */
+
+/** Browserify Bundler */
 var b = function() {
   return browserify({
     entries: base.js.main,
@@ -180,42 +182,48 @@ var b = function() {
   });
 };
 
-/**
- * Watchify Bundler
- */
+/** Watchify Bundler */
 var w = watchify(b());
 
 /**
  * Process Bundler
  *
- * Pass either the a build or watchify bundler
+ * Pass either a build or watchify bundler
  */
 function bundle(pkg) {
   return pkg.bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe( source('bundle.js') )
     .pipe( buffer() )
-    .pipe( $if( !production, plumber() ) )
+    .pipe( $if( !production, glp.plumber() ) )
     .pipe( $if( !production, maps.init( {loadMaps: true} ) ) )
-      .pipe( $if( production, uglify() ) )
+      .pipe( $if( production, glp.uglify() ) )
     .pipe( $if( !production, maps.write('.') ) )
-    .pipe( gulp.dest(dest.js) )
+    .pipe( gulp.dest(dest.js.all) )
     .pipe( browsersync.stream( {once: true} ) );
 }
 
 
+
+
+
 /**
- * Bundle Tasks
+ * BROWSERIFY TASKS
  *
  * Build bundle (once and done)
  * Watch bundle (enable watchify)
  */
-gulp.task('build_bundle', function() { bundle(b()) });
+gulp.task('build_bundle', function() {
+  return bundle(b())
+});
+
 gulp.task('watch_bundle', function() {
   bundle(w);
   w.on('update', bundle.bind(null, w) );
   w.on('log', gutil.log);
 });
+
+
 
 
 
@@ -226,10 +234,12 @@ gulp.task('watch_bundle', function() {
  * Take all css and js files in src, revision
  * them, send them to a clean dist folder.
  *
- * This task should only be used within a `sequence` task.
+ * This task should only be used within a `sequence` task,
+ * otherwise image and font assets will be deleted without
+ * being re-generated.
  * Run `build_dest` if you need to revision anything.
  */
-gulp.task('build_rev', ['clean_dist'], function () {
+gulp.task('build_rev', function () {
   if(production) {
     var cssPath = config.paths.src + '**/*.css';
     var jsPath = config.paths.src + '**/*.js';
@@ -238,9 +248,11 @@ gulp.task('build_rev', ['clean_dist'], function () {
       .pipe(rev())
       .pipe(gulp.dest(config.paths.dist))
       .pipe(rev.manifest('_rev-manifest.json'))
-      .pipe(gulp.dest('./lib'));
+      .pipe(gulp.dest(config.paths.dist));
   }
 });
+
+
 
 
 
@@ -251,7 +263,7 @@ gulp.task('build_rev', ['clean_dist'], function () {
  */
 gulp.task('build_images', function () {
   return gulp.src( base.img )
-    .pipe(imagemin({
+    .pipe(glp.imagemin({
       progressive: true,
       svgoPlugins: [
           {removeViewBox: false},
@@ -259,85 +271,50 @@ gulp.task('build_images', function () {
       ],
       use: [pngquant()]
     }))
-    .pipe(gulp.dest(config.paths.dist + 'images'));
+    .pipe(gulp.dest(dest.img));
 });
 
 
 
-/**
- * FONT TASK
- *
- * Copy images to dist folder so the ship
- */
-gulp.task('copy_fonts', function () {
-  return gulp.src( base.fonts )
-    .pipe(gulp.dest(config.paths.dist + 'fonts/'));
-});
-
 
 
 /**
- * Copy jQuery for local Fallback
+ * COPY STATIC FILES
  *
+ * Copy jQuery for local fallback
+ * Copy Fonts to distribution folder
  */
 gulp.task('copy_jquery', function() {
   return gulp.src('./node_modules/jquery/dist/jquery.min.js')
-    .pipe( gulp.dest( dest.jquery ) );
+    .pipe( gulp.dest( dest.js.vendor ) )
+});
+gulp.task('copy_fonts', function () {
+  return gulp.src( base.fonts ).pipe(gulp.dest(dest.fonts));
 });
 
 
 
-/**
- * BUILD DIST
- *
- * Sequence based
- * Revision assets, then run images and fonts.
- */
-gulp.task('build_dist', sequence(
-  'build_rev',
-  'build_images',
-  'copy_fonts',
-  'copy_jquery'
-));
-
-
-/****************** DEFAULTS ******************/
-
-/**
- * DEFAULT TASK
- *
- * Start the whole show. Run to start a project up.
- */
-gulp.task('default', sequence(
-  'copy_jquery',
-  'copy_fonts',
-  'build_sass',
-  'build_bundle',
-  'build_single_js',
-  'build_dist'
-));
-
-
-
-/****************** BROWSERSYNC ******************/
 
 
 /**
- * Watch Tasks
+ * WATCH RELATED TASKS
  *
  */
 gulp.task('watch_js', ['build_single_js'], browsersync.reload);
 gulp.task('watch_reload', function(){ browsersync.reload(); });
 
+
+
+
+
 /**
  * SERVE TASK
- *
- * Initialize browsersync
- * Watch for file changes
+ * --------------------------------------------------------
+ * Initialize browsersync, watch for file changes
  */
 gulp.task('serve', ['watch_bundle'], function(){
   browsersync({
-    proxy: config.devUrl
+    proxy: devUrl
   });
 
   // Watch tasks
@@ -348,5 +325,28 @@ gulp.task('serve', ['watch_bundle'], function(){
   gulp.watch('**/*.php', ['watch_reload']);
   gulp.watch('**/*.html', ['watch_reload']);
 });
+
+
+
+
+
+/**
+ * DEFAULT TASK
+ * --------------------------------------------------------
+ * Start the whole show. Run to start a project up.
+ */
+var req = production ? ['clean'] : '';
+
+gulp.task('default', sequence(
+  req,
+  'build_sass',
+  'build_bundle',
+  'build_single_js',
+  'build_images',
+  'copy_jquery',
+  'copy_fonts',
+  'build_rev'
+));
+
 
 
