@@ -244,14 +244,14 @@ gulp.task('watch_bundle', function() {
  */
 gulp.task('build_rev', function () {
   if(production) {
-    var cssPath = config.paths.src + '**/*.css';
-    var jsPath = config.paths.src + '**/*.js';
+    var cssPath = src_base + '**/*.css';
+    var jsPath = src_base + '**/*.js';
 
     return gulp.src([cssPath, jsPath])
       .pipe(rev())
-      .pipe(gulp.dest(config.paths.dist))
+      .pipe(gulp.dest(dist_base))
       .pipe(rev.manifest('_rev-manifest.json'))
-      .pipe(gulp.dest(config.paths.dist));
+      .pipe(gulp.dest(dist_base));
   }
 });
 
