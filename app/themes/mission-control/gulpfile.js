@@ -22,8 +22,8 @@ var browserify = require('browserify');
 var browsersync = require('browser-sync');
 
 var gulp = require('gulp');
-var glp = require('gulp-load-plugins')();
 var gutil = require('gulp-util');
+var $p = require('gulp-load-plugins')();
 var $if  = require('gulp-if');
 var maps = require('gulp-sourcemaps');
 var sequence = require('gulp-sequence');
@@ -104,18 +104,18 @@ gulp.task('clean', function() {
  */
 gulp.task('build_sass', function() {
   gulp.src( base.sassMain )
-    .pipe(glp.foreach( function(stream, file) {
+    .pipe($p.foreach( function(stream, file) {
       // Get base file name, rename it based on argv
       var name = node_path.basename(file.path, '.scss') + '.min.css';
 
       return stream
-        .pipe( $if( !production, glp.plumber() ) )
-        .pipe( glp.changed( dest.css) )                       // Only run on changed files
+        .pipe( $if( !production, $p.plumber() ) )
+        .pipe( $p.changed( dest.css) )                       // Only run on changed files
         .pipe( $if( !production, maps.init() ) )              // If no production flag, generate maps
-          .pipe(glp.sass().on('error', glp.sass.logError))    // Compile sass
+          .pipe($p.sass().on('error', $p.sass.logError))    // Compile sass
           .pipe( $if( production, mediaQuery() ) )            // Reorg media queries
-          .pipe(glp.cssnano({ autoprefixer: { add: true } })) // Shrink that css
-          .pipe(glp.rename(name))                             // Rename
+          .pipe($p.cssnano({ autoprefixer: { add: true } })) // Shrink that css
+          .pipe($p.rename(name))                             // Rename
         .pipe( $if( !production, maps.write('.') ) );         // If no production flag, write maps
     }) )
     .pipe( gulp.dest( dest.css ) )                            // Ship it
@@ -134,14 +134,14 @@ gulp.task('build_sass', function() {
  */
 gulp.task('lint_single', function(){
   return gulp.src( base.js.single )
-    .pipe( glp.jshint() )
-    .pipe( glp.jshint.reporter('jshint-stylish-source') );
+    .pipe( $p.jshint() )
+    .pipe( $p.jshint.reporter('jshint-stylish-source') );
 });
 
 gulp.task('lint_bundle', function(){
   return gulp.src([ base.js.main, base.js.modules + '/**/*.js' ])
-    .pipe( glp.jshint() )
-    .pipe( glp.jshint.reporter('jshint-stylish-source') );
+    .pipe( $p.jshint() )
+    .pipe( $p.jshint.reporter('jshint-stylish-source') );
 });
 
 
@@ -153,15 +153,15 @@ gulp.task('lint_bundle', function(){
  */
 gulp.task('build_single_js', ['lint_single'], function(){
   gulp.src( base.js.single )
-    .pipe(glp.foreach( function(stream, file) {
+    .pipe($p.foreach( function(stream, file) {
       // Get base file name, rename it based on argv
       var name = node_path.basename(file.path, '.js') + '.min.js';
 
       return stream
-        .pipe( $if( !production, glp.plumber() ) )
-        .pipe( glp.changed( dest.js.all ) )                  // Only run on changed files
-        .pipe( $if( production, glp.uglify() ) )
-        .pipe(glp.rename(name))
+        .pipe( $if( !production, $p.plumber() ) )
+        .pipe( $p.changed( dest.js.all ) )                  // Only run on changed files
+        .pipe( $if( production, $p.uglify() ) )
+        .pipe($p.rename(name))
     }) )
   .pipe( gulp.dest( dest.js.single ) )                  // Ship it
   .pipe( browsersync.reload({stream: true}) );
@@ -198,9 +198,9 @@ function bundle(pkg) {
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe( source('bundle.js') )
     .pipe( buffer() )
-    .pipe( $if( !production, glp.plumber() ) )
+    .pipe( $if( !production, $p.plumber() ) )
     .pipe( $if( !production, maps.init( {loadMaps: true} ) ) )
-      .pipe( $if( production, glp.uglify() ) )
+      .pipe( $if( production, $p.uglify() ) )
     .pipe( $if( !production, maps.write('.') ) )
     .pipe( gulp.dest(dest.js.all) )
     .pipe( browsersync.stream( {once: true} ) );
@@ -266,7 +266,7 @@ gulp.task('build_rev', function () {
  */
 gulp.task('build_images', function () {
   return gulp.src( base.img )
-    .pipe(glp.imagemin({
+    .pipe($p.imagemin({
       progressive: true,
       svgoPlugins: [
           {removeViewBox: false},
