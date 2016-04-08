@@ -32,8 +32,6 @@ var mediaQuery = require('gulp-group-css-media-queries');
 
 
 
-
-
 /**
  * PRODUCTION FLAG
  *
@@ -42,15 +40,16 @@ var mediaQuery = require('gulp-group-css-media-queries');
 var production = argv.production;
 
 /**
- * Paths
+ * PATH VARIABLES
+ *
  */
+
+/** Paths */
 var enter     = './assets/';
 var src_base  = './src/';
 var dist_base = './dist/';
 
-/**
- * Base (entry) paths
- */
+/** Base (entry) paths */
 var base = {
   'img':       enter + 'images/**/*',
   'fonts':     enter + 'fonts/**/*',
@@ -63,9 +62,7 @@ var base = {
   }
 }
 
-/**
- * Destination (to) paths
- */
+/** Destination (to) paths */
 var dest = {
   'css':      src_base + 'css/',
   'js': {
@@ -82,13 +79,10 @@ var dest = {
 
 
 /**
- * CLEAN TASKS
+ * CLEAN TASK
  *
- * Remove `./src`
- * Remove `/dest`
+ * Remove `./src` & `/dest`
  */
-// gulp.task('clean_src', function () { del(src_base); });
-// gulp.task('clean_dist', function () { del(config.paths.dist); });
 gulp.task('clean', function() {
   del([src_base, dist_base]);
 });
@@ -146,6 +140,8 @@ gulp.task('lint_bundle', function(){
 
 
 
+
+
 /**
  * SINGLE JS TASK
  *
@@ -172,10 +168,11 @@ gulp.task('build_single_js', ['lint_single'], function(){
 
 
 /**
- * BROWSERIFY BUNDLES
+ * BROWSERIFY
  *
- * Browserify Bundler
  */
+
+/** Browserify Bundler */
 var b = function() {
   return browserify({
     entries: base.js.main,
@@ -185,13 +182,13 @@ var b = function() {
   });
 };
 
-/**
- * Watchify Bundler
- */
+/** Watchify Bundler */
 var w = watchify(b());
 
 /**
  * Process Bundler
+ *
+ * Pass either a build or watchify bundler
  */
 function bundle(pkg) {
   return pkg.bundle()

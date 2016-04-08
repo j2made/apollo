@@ -1,16 +1,18 @@
-var commonScripts = require('commonScripts.js');
 
 (function($) {
 
 /**
  * Page Specific Functions
- * @type {Object}
+ *
+ * Fires js based on body class. If body class contains a dash, replace it
+ * with an underscore. So the class `front-page` should be `front_page`
  */
 var Apollo = {
   // All pages
   common: {
     init: function() {
       // JavaScript to be fired on all pages
+      var commonScripts = require('commonScripts.js');
       commonScripts();
     },
     finalize: function() {
