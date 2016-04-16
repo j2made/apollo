@@ -4,7 +4,7 @@
   "description": "Gulpfile for the Apollo boilerplate",
   "main": "gulpfile.js",
   "scripts": {
-    "postinstall": "gulp"
+    "postinstall": "gulp "
   },
   "repository": {
     "type": "git",
