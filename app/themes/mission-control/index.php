@@ -2,7 +2,7 @@
   <div class="alert alert-warning">
     No posts exist.
   </div>
-  <?php Apollo\Extend\Util\get_search_form(); ?>
+  <?php get_search_form(); ?>
 <?php endif; ?>
 
 <?php while (have_posts()) : the_post(); ?>
