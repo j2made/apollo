@@ -27,7 +27,7 @@
     "vendor-dir": "lib/vendor/"
   },
   "scripts": {
-    "pre-install-cmd": [
+    "post-root-package-install": [
       "php -r \"if(!file_exists('wp-config.php')) { copy('lib/config/wp-config-sample.php', 'wp-config.php'); }\""
     ]
   },
