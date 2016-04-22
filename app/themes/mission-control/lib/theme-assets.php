@@ -3,62 +3,32 @@
 namespace Apollo\Assets;
 
 /**
- * Scripts and stylesheets
+ * Get Assets based on enviornment
  *
+ * @param  $revpath  The path of the original file in the rev manifest.
  * @since  1.0.0
  */
+function get_asset($revpath) {
+  $home_path = get_bloginfo( 'stylesheet_directory' );
+  $src_path = $asset_path = $home_path . '/src/' . $revpath;
 
-class JsonManifest {
-  private $manifest;
+  if(WP_ENV === 'development') {
+    $asset_path = $home_path . DIST_DIR . $revpath;
 
-  public function __construct($manifest_path) {
-    if (file_exists($manifest_path)) {
-      $this->manifest = json_decode(file_get_contents($manifest_path), true);
-    } else {
-      $this->manifest = [];
-    }
-  }
-
-  public function get() {
-    return $this->manifest;
-  }
-
-  public function getPath($key = '', $default = null) {
-    $collection = $this->manifest;
-    if (is_null($key)) {
-      return $collection;
-    }
-    if (isset($collection[$key])) {
-      return $collection[$key];
-    }
-    foreach (explode('.', $key) as $segment) {
-      if (!isset($collection[$segment])) {
-        return $default;
-      } else {
-        $collection = $collection[$segment];
-      }
-    }
-    return $collection;
-  }
-}
-
-function asset_path($filename, $dist) {
-  $dist_path = get_template_directory_uri() . $dist;
-  $directory = dirname($filename) . '/';
-  $file = basename($filename);
-  static $manifest;
-
-  if (empty($manifest)) {
-    $manifest_path = get_template_directory() . $dist . 'assets.json';
-    $manifest = new JsonManifest($manifest_path);
-  }
-
-  if (WP_ENV !== 'development' && array_key_exists($file, $manifest->get())) {
-    return $dist_path . $directory . $manifest->get()[$file];
   } else {
-    return $dist_path . $directory . $file;
+    // Get revisioned assets from Rev Manifest
+    if( $manifest = json_decode( file_get_contents( dirname(__DIR__) . '/dist/_rev-manifest.json', 'r' ) ) ) {
+      $asset_path = $manifest->$revpath ? $home_path . DIST_DIR . $manifest->$revpath : $src_path;
+
+    } else {
+      // Use src if manifest is unavailable
+      $asset_path = $src_path;
+    }
   }
+
+  return $asset_path;
 }
+
 
 
 /**
@@ -66,49 +36,51 @@ function asset_path($filename, $dist) {
  *
  * @since 1.0.0
  */
-function assets() {
+function enqueue_assets() {
+
   /**
    * Enqueue jQuery
+   *
    * Get version from jquery dependency in pacakge.json
    * Check for the Google CDN, if available, use.
-   * If unavailable, use native WP fallback.
+   * If unavailable, use local fallback.
    * https://gist.github.com/wpsmith/4083811
    *
    * @since  1.0.0
    */
   if (!is_admin() ) {
-    // $pkg_json   = json_decode( file_get_contents( TEMPLATEPATH . '/package.json', "r" ) );
-    // $jquery_ver = $pkg_json->dependencies->jquery;
-    $jquery_ver = '2.2.0';
-    $url        = 'https://ajax.googleapis.com/ajax/libs/jquery/' . $jquery_ver . '/jquery.min.js';
-    $wp_jquery  = get_bloginfo('wpurl') . '/wp-includes/js/jquery/jquery.js';
+    $pkg_json     = json_decode( file_get_contents( TEMPLATEPATH . '/package.json', "r" ) );
+    $jquery_ver   = str_replace('^', '', $pkg_json->dependencies->jquery);
+    $url          = 'https://ajax.googleapis.com/ajax/libs/jquery/' . $jquery_ver . '/jquery.min.js';
+    $local_jquery = get_bloginfo( 'stylesheet_directory' ) . '/dist/js/vendor/jquery.min.js';
+    // $jquery_ver = '2.2.0';
 
-    // Deregister WordPress default jQuery
     wp_deregister_script( 'jquery' );
-
-    // Check transient, if false, set URI to WordPress URI
     delete_transient( 'google_jquery' );
 
     if ( 'false' == ( $google = get_transient( 'google_jquery' ) ) ) {
       // Transient failed, set to local jquery
-      $url = $wp_jquery;
+      $url = $local_jquery;
+
     } elseif ( false === $google ) {
       // Test for Google url
       $resp = wp_remote_head( $url );
+
       if ( ! is_wp_error( $resp ) && 200 == $resp['response']['code'] ) {
         // Things are good, set transient for 5 minutes
         set_transient( 'google_jquery', 'true', 60 * 5 );
+
       } else {
         // Error, use WP version and set transient for 5 minutes
         set_transient( 'google_jquery', 'false', 60 * 5 );
-        $url = $wp_jquery;
-        // Set jQuery Version, as of 4.3
-        $jquery_ver = '1.11.3';
+        $url = $local_jquery;
+        $jquery_ver = '1.11.3'; // Set jQuery Version, as of 4.3
+
       }
     }
-
     wp_register_script( 'jquery', $url, array(), $jquery_ver, true );
   }
+
 
   /**
    * Enqueue Apollo Scripts
@@ -116,7 +88,7 @@ function assets() {
    * @since  1.0.0
    */
   wp_enqueue_script('jquery');
-  wp_enqueue_script('apollo-js', asset_path('scripts/main.js', DIST_DIR), [], null, true);
+  wp_enqueue_script('apollo-js', get_asset('js/bundle.js'), ['jquery'], null, true);
 
 
   /**
@@ -124,7 +96,8 @@ function assets() {
    *
    * @since  1.0.0
    */
-  wp_enqueue_style('apollo-css', asset_path('styles/main.css', DIST_DIR), false, null);
+  wp_enqueue_style('apollo-css', get_asset('css/main.min.css'), false, null);
+
 
   /**
    * Enqueue Comment Scripts
@@ -134,6 +107,7 @@ function assets() {
   if (is_single() && comments_open() && get_option('thread_comments')) {
     wp_enqueue_script('comment-reply');
   }
+
 
 
   /**
@@ -151,7 +125,7 @@ function assets() {
       'https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css' );
   }
 }
-add_action('wp_enqueue_scripts', __NAMESPACE__ . '\\assets', 100);
+add_action('wp_enqueue_scripts', __NAMESPACE__ . '\\enqueue_assets', 100);
 
 
 

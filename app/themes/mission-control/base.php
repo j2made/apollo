@@ -4,35 +4,47 @@ namespace Apollo\Base;
 use Apollo\Admin\Structure;
 use Apollo\Config\Condition;
 
-?>
+get_template_part('templates/global/head'); ?>
 
-<?php get_template_part('templates/head'); ?>
-<body <?php body_class(); ?>>
+<body <?= body_class() ?>>
 
-  <!--[if lt IE 8]>
+  <!--[if lte IE 8]>
     <div class="alert alert-warning">
-      'You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.
+      <p>You're browser is outdated. We recommend that you update for a better experience.</p>
+      <a href="http://outdatedbrowser.com/en">View your options here.</a>
     </div>
   <![endif]-->
 
-  <?php do_action('get_header');                  // WP Header (ignore)
-  get_template_part( 'templates/header' );        // Theme Wrapper Header
+  <?php
+    // Get the global header
+    get_template_part( 'templates/global/header' );
 
-  if(!Condition\hide_page_header())               // Conditionally get the page header
-    get_template_part( 'templates/page-header/_page-header-main' ); ?>
+    // Make
+    do_action( 'get_header' );
 
-  <main class="main container" role="main">
+    if(!Condition\hide_page_header())               // Conditionally get the page header
+      get_template_part( 'templates/page-header/_page-header-main' );
+  ?>
+
+  <main class="main" role="main">
     <?php
-      // Content layout structure
-      // Refer to `lib/theme-structure.php`
-      // @params: $main_class, $sidebar_class
+      /**
+       * Content Layout Structure
+       * Refer to `lib/theme-structure.php`
+       *
+       * @param string $main_class class for content wrapper
+       * @param string $sidebar_class class for sidebar content
+       */
       Structure\base_structure('main-content', 'sidebar');
     ?>
   </main>
 
   <?php
-    get_template_part( 'templates/footer' );      // Theme Wrapper Footer
-    wp_footer();                                  // WP Footer (ignore)
+    // Theme Wrapper Footer
+    get_template_part( 'templates/global/footer' );
+
+    // WP Footer
+    wp_footer();
   ?>
 
 </body>
