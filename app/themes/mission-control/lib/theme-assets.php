@@ -60,30 +60,6 @@ function asset_path($filename, $dist) {
   }
 }
 
-function bower_map_to_cdn($dependency, $fallback) {
-  static $bower;
-
-  if (empty($bower)) {
-    $bower_path = get_template_directory() . '/bower.json';
-    $bower = new JsonManifest($bower_path);
-  }
-
-  $templates = [
-    'google' => '//ajax.googleapis.com/ajax/libs/%name%/%version%/%file%'
-  ];
-
-  $version = $bower->getPath('dependencies.' . $dependency['name']);
-
-  if (isset($version) && preg_match('/^(\d+\.){2}\d+$/', $version)) {
-    $search = ['%name%', '%version%', '%file%'];
-    $replace = [$dependency['name'], $version, $dependency['file']];
-    return str_replace($search, $replace, $templates[$dependency['cdn']]);
-  } else {
-    return $fallback;
-  }
-
-}
-
 
 /**
  * Register and Enqueue Assets
@@ -91,53 +67,92 @@ function bower_map_to_cdn($dependency, $fallback) {
  * @since 1.0.0
  */
 function assets() {
+  /**
+   * Enqueue jQuery
+   * Get version from jquery dependency in pacakge.json
+   * Check for the Google CDN, if available, use.
+   * If unavailable, use native WP fallback.
+   * https://gist.github.com/wpsmith/4083811
+   *
+   * @since  1.0.0
+   */
+  if (!is_admin() ) {
+    // $pkg_json   = json_decode( file_get_contents( TEMPLATEPATH . '/package.json', "r" ) );
+    // $jquery_ver = $pkg_json->dependencies->jquery;
+    $jquery_ver = '2.2.0';
+    $url        = 'https://ajax.googleapis.com/ajax/libs/jquery/' . $jquery_ver . '/jquery.min.js';
+    $wp_jquery  = get_bloginfo('wpurl') . '/wp-includes/js/jquery/jquery.js';
 
+    // Deregister WordPress default jQuery
+    wp_deregister_script( 'jquery' );
+
+    // Check transient, if false, set URI to WordPress URI
+    delete_transient( 'google_jquery' );
+
+    if ( 'false' == ( $google = get_transient( 'google_jquery' ) ) ) {
+      // Transient failed, set to local jquery
+      $url = $wp_jquery;
+    } elseif ( false === $google ) {
+      // Test for Google url
+      $resp = wp_remote_head( $url );
+      if ( ! is_wp_error( $resp ) && 200 == $resp['response']['code'] ) {
+        // Things are good, set transient for 5 minutes
+        set_transient( 'google_jquery', 'true', 60 * 5 );
+      } else {
+        // Error, use WP version and set transient for 5 minutes
+        set_transient( 'google_jquery', 'false', 60 * 5 );
+        $url = $wp_jquery;
+        // Set jQuery Version, as of 4.3
+        $jquery_ver = '1.11.3';
+      }
+    }
+
+    wp_register_script( 'jquery', $url, array(), $jquery_ver, true );
+  }
+
+  /**
+   * Enqueue Apollo Scripts
+   *
+   * @since  1.0.0
+   */
+  wp_enqueue_script('jquery');
+  wp_enqueue_script('apollo-js', asset_path('scripts/main.js', DIST_DIR), [], null, true);
+
+
+  /**
+   * Enqueue Apollo CSS
+   *
+   * @since  1.0.0
+   */
   wp_enqueue_style('apollo-css', asset_path('styles/main.css', DIST_DIR), false, null);
 
   /**
-   * Grab Google CDN's latest jQuery with a protocol relative URL; fallback to local if offline
-   * jQuery & Modernizr load in the footer per HTML5 Boilerplate's recommendation: http://goo.gl/nMGR7P
-   * If a plugin enqueues jQuery-dependent scripts in the head, jQuery will load in the head to meet the plugin's dependencies
-   * To explicitly load jQuery in the head, change the last wp_enqueue_script parameter to false
+   * Enqueue Comment Scripts
+   *
+   * @since  1.0.0
    */
-  if (!is_admin() ) {
-    wp_deregister_script('jquery');
-
-    wp_register_script('jquery', bower_map_to_cdn([
-      'name'  => 'jquery',
-      'cdn'   => 'google',
-      'file'  => 'jquery.min.js'
-    ], asset_path('scripts/jquery.js', DIST_DIR)), [], null, true);
-
-    add_filter('script_loader_src', __NAMESPACE__ . '\\jquery_local_fallback', 10, 2);
-  }
-
-  // COMMENTS
   if (is_single() && comments_open() && get_option('thread_comments')) {
     wp_enqueue_script('comment-reply');
   }
 
-  // GOOGLE FONTS
+
+  /**
+   * Enqueue Fonts
+   *
+   * @since  1.0.0
+   */
   if ( GOOGLE_FONTS !== false ) {
-    $google_url = 'https://fonts.googleapis.com/css?family=' . GOOGLE_FONTS;
-    wp_enqueue_style( 'google-fonts', $google_url );
+    $url = 'https://fonts.googleapis.com/css?family=' . GOOGLE_FONTS;
+    wp_enqueue_style( 'google-fonts', $url );
   }
 
-  // FONT AWESOME ICONS
   if ( FONTAWESOME ) {
-    wp_enqueue_style( 'font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css' );
+    wp_enqueue_style( 'font-awesome',
+      'https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css' );
   }
-
-  // TYPEKIT
-  if (TYPEKIT_ID) {
-    wp_enqueue_style( 'typekit', '//use.typekit.net/' . TYPEKIT_ID . '.js' );
-  }
-
-  // BASIC SITE SCRIPTS
-  wp_enqueue_script('jquery');
-  wp_enqueue_script('apollo-js', asset_path('scripts/main.js', DIST_DIR), [], null, true);
 }
 add_action('wp_enqueue_scripts', __NAMESPACE__ . '\\assets', 100);
+
 
 
 /**
@@ -157,45 +172,14 @@ if (TYPEKIT_ID) {
 
 
 /**
- * Add local jQuery fallback
- *
- * @since  1.0.0
- */
-function jquery_local_fallback($src, $handle = null) {
-  static $add_jquery_fallback = false;
-
-  if ($add_jquery_fallback) {
-    echo '<script>window.jQuery || document.write(\'<script src="' . get_template_directory_uri() . DIST_DIR . 'scripts/jquery.js"><\/script>\')</script>' . "\n";
-    $add_jquery_fallback = false;
-  }
-
-  if ($handle === 'jquery') {
-    $add_jquery_fallback = true;
-  }
-
-  return $src;
-}
-add_action('wp_head', __NAMESPACE__ . '\\jquery_local_fallback');
-
-
-
-
-/**
- * Add Google Analytics ID Field to WP Settings
- * Uses WP Settings API
- *
- * @since  1.0.0
- */
-
-
-/**
+ * Google Analytics ID Field to WP Settings
+ * ----------------------------------------
  * Add a new section to the General Settings Page
  *
  * @since  1.0.0
  */
-add_action('admin_init', __NAMESPACE__ . '\\j2_ga_api_settings_section');
-
-function j2_ga_api_settings_section() {
+add_action('admin_init', __NAMESPACE__ . '\\apollo_ga_id_settings_section');
+function apollo_ga_id_settings_section() {
   add_settings_section('ga_id_section', 'Google Analytics', __NAMESPACE__ . '\\ga_id_callback', 'general');
 
   // Add an analytics Form Field
@@ -212,7 +196,7 @@ function j2_ga_api_settings_section() {
  * @since  1.0.0
  */
 function ga_id_callback() {
-  echo '<p>Enter your '.
+  echo  '<p>Enter your '.
         '<a href="https://support.google.com/analytics/answer/1032385?hl=en" target="blank">' .
         'Google Analytics UA ID'.
         '</a> number to allow tracking.</p>';
@@ -240,6 +224,10 @@ function ga_id_textbox_callback($args) {
  * @since 1.0.0
  *
  */
+if (get_option('ga_id') && WP_ENV === 'production') {
+  add_action('wp_head', __NAMESPACE__ . '\\Google_Analytics_Script');
+}
+
 function Google_Analytics_Script() {
   if ( !current_user_can('manage_options') ) : ?>
     <script>
@@ -251,8 +239,4 @@ function Google_Analytics_Script() {
       ga('send', 'pageview');
     </script>
   <?php endif;
-}
-
-if (get_option('ga_id') && WP_ENV === 'production') {
-  add_action('wp_head', __NAMESPACE__ . '\\Google_Analytics_Script');
 }

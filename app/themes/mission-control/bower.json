@@ -14,10 +14,7 @@
     "assets/vendor"
   ],
   "dependencies": {
-    "jquery": "1.11.1",
-    "bourbon": "~4.2",
-    "neat": "~1.7",
-    "sanitize-css": "latest"
+    "jquery": "1.11.1"
   },
   "overrides": {
   }

@@ -13,6 +13,7 @@ var merge       = require('merge-stream');
 var runSequence = require('run-sequence');
 var cssnano     = require('gulp-cssnano');
 var mediaQuery  = require('gulp-group-css-media-queries');
+var neat        = require('node-neat').includePaths;
 
 
 // MANIFEST VARS
@@ -55,9 +56,9 @@ var cssTasks = function(filename) {
     .pipe( function() { return $.if(enabled.maps, $.sourcemaps.init()); } )
       .pipe(function() {
         return $.if('*.scss', $.sass({
-          outputStyle: 'nested', // libsass doesn't support expanded yet
+          outputStyle: 'expanded',
           precision: 10,
-          includePaths: ['.'],
+          includePaths: neat,
           errLogToConsole: !enabled.failStyleTask
         }));
       })
