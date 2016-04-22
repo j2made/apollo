@@ -12,55 +12,37 @@ namespace Apollo\Theme\Wrapper;
  */
 
 function template_path() {
-  return SageWrapping::$main_template;
+  return Apollo_Wrapper::$main_template;
 }
 
-function sidebar_path() {
-  return new SageWrapping('templates/sidebar/_sidebar-main.php');
-}
 
-class SageWrapping {
-  // Stores the full path to the main template file
-  public static $main_template;
+class Apollo_Wrapper {
 
-  // Basename of template file
-  public $slug;
+  /**
+   * Stores the full path to the main template file
+   */
+  static $main_template;
 
-  // Array of templates
-  public $templates;
+  /**
+   * Stores the base name of the template file; e.g. 'page' for 'page.php' etc.
+   */
+  static $base;
 
-  // Stores the base name of the template file; e.g. 'page' for 'page.php' etc.
-  public static $base;
+  static function wrap( $template ) {
+    self::$main_template = $template;
 
-  public function __construct($template = 'base.php') {
-    $this->slug = basename($template, '.php');
-    $this->templates = [$template];
+    self::$base = substr( basename( self::$main_template ), 0, -4 );
 
-    if (self::$base) {
-      $str = substr($template, 0, -4);
-      array_unshift($this->templates, sprintf($str . '-%s.php', self::$base));
-    }
-  }
-
-  public function __toString() {
-    $this->templates = apply_filters('sage/wrap_' . $this->slug, $this->templates);
-    return locate_template($this->templates);
-  }
-
-  public static function wrap($main) {
-    // Check for other filters returning null
-    if (!is_string($main)) {
-      return $main;
-    }
-
-    self::$main_template = $main;
-    self::$base = basename(self::$main_template, '.php');
-
-    if (self::$base === 'index') {
+    if ( 'index' == self::$base )
       self::$base = false;
-    }
 
-    return new SageWrapping();
+    $templates = array( 'base.php' );
+
+    if ( self::$base )
+      array_unshift( $templates, sprintf( 'base-%s.php', self::$base ) );
+
+    return locate_template( $templates );
   }
 }
-add_filter('template_include', [__NAMESPACE__ . '\\SageWrapping', 'wrap'], 109);
+
+add_filter( 'template_include', array( __NAMESPACE__ . '\\Apollo_Wrapper', 'wrap' ), 99 );

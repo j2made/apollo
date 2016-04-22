@@ -42,7 +42,7 @@ function sidebar_body_class($classes) {
   $sidebar_direction = sidebar_orientation();
 
   if ( !Condition\hide_sidebar() ) {
-    $classes[] = 'sidebar-primary';
+    $classes[] = 'sidebar-layout';
     $classes[] = 'sidebar-' . $sidebar_direction;
   }
 
@@ -69,6 +69,9 @@ function base_structure($main_class = 'main-content', $sidebar_class = 'sidebar'
     // Determine layout orientation
     $sidebar_direction = sidebar_orientation();
 
+    // Location of sidebar template file
+    $sidebar_path      = locate_template( 'templates/sidebar/_sidebar-main.php' );
+
     // Create classes for sidebar
     $sidebar_open      = '<aside class="' . $sidebar_class . '" role="complementary">';
     $sidebar_close     = '</aside>';
@@ -76,7 +79,7 @@ function base_structure($main_class = 'main-content', $sidebar_class = 'sidebar'
     // Left Sidebar
     if( $sidebar_direction === 'left' ) {
       echo $sidebar_open;
-      include Wrapper\sidebar_path();
+      include( $sidebar_path );
       echo $sidebar_close;
     }
 
@@ -88,7 +91,7 @@ function base_structure($main_class = 'main-content', $sidebar_class = 'sidebar'
     // Right Sidebar
     if( $sidebar_direction === 'right' ) {
       echo $sidebar_open;
-      include Wrapper\sidebar_path();
+      include( $sidebar_path );
       echo $sidebar_close;
     }
 

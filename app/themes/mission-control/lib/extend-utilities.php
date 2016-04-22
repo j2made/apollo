@@ -2,9 +2,12 @@
 
 namespace Apollo\Extend\Util;
 
-// BODY CLASSES
-// =============================================================================
-
+/**
+ * Add custom body classes
+ *
+ * @return array
+ * @since 1.0.0
+ */
 function add_custom_body_classes( $classes ) {
 
   // Add Non-Development Env Class
@@ -23,10 +26,15 @@ add_filter( 'body_class', __NAMESPACE__ . '\\add_custom_body_classes' );
 
 
 
-// WP NAV AS LINKS
-// =============================================================================
-
-function Listless_WP_Nav($menu_position) {
+/**
+ * WP Nav Menus as links and not list items
+ *
+ * @param string  $menu_position name of nav menu to display
+ * @param boolean $echo          whether to return html or echo
+ * @return string or echo
+ * @since  1.0.0
+ */
+function Listless_WP_Nav($menu_position, $echo = false) {
 
   if (has_nav_menu($menu_position)) {
     $html = '';
@@ -55,6 +63,11 @@ function Listless_WP_Nav($menu_position) {
       $html .= '<a' . $item . '</a>';
     }
 
-    return $html;
+    // Echo or Return
+    if($echo) {
+      echo $html;
+    } else {
+      return $html;
+    }
   }
 }
