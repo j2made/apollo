@@ -1,6 +1,7 @@
 <?php
 
 namespace Apollo\Assets;
+use Apollo\Extend\Util;
 
 /**
  * Get Assets based on enviornment
@@ -17,7 +18,7 @@ function get_asset($revpath) {
 
   } else {
     // Get revisioned assets from Rev Manifest
-    if( $manifest = json_decode( file_get_contents( dirname(__DIR__) . '/dist/_rev-manifest.json', 'r' ) ) ) {
+    if( $manifest = json_decode( Util\Fetch_Url( dirname(__DIR__) . '/dist/_rev-manifest.json', 'r' ) ) ) {
       $asset_path = $manifest->$revpath ? $home_path . DIST_DIR . $manifest->$revpath : $src_path;
 
     } else {
