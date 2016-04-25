@@ -2,7 +2,7 @@
 // ============================================================
 
 a {
-  @extend %standard-trans;
+  @include standard-trans();
   color: $base-link-color;
   text-decoration: none;
 

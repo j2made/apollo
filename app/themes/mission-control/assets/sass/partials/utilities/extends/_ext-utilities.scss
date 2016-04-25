@@ -41,36 +41,28 @@
 // =============================================================================
 
 %space-before-sm {
-  margin-top: $space-sm;
-}
+  margin-top: $space-sm; }
 
 %space-after-sm {
-  margin-bottom: $space-sm;
-}
+  margin-bottom: $space-sm; }
 
 %space-before-md {
-  margin-top: $space-md;
-}
+  margin-top: $space-md; }
 
 %space-after-md {
-  margin-bottom: $space-md;
-}
+  margin-bottom: $space-md; }
 
 %space-before-lg {
-  margin-top: $space-lg;
-}
+  margin-top: $space-lg; }
 
 %space-after-lg {
-  margin-bottom: $space-lg;
-}
+  margin-bottom: $space-lg; }
 
 %space-before-xl {
-  margin-top: $space-xl;
-}
+  margin-top: $space-xl; }
 
 %space-after-xl {
-  margin-bottom: $space-xl;
-}
+  margin-bottom: $space-xl; }
 
 
 // CSS3 EXTENDS
@@ -80,18 +72,6 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-}
-
-
-// TRANSITIONS
-// =============================================================================
-
-%standard-trans {
-  @include transition(all .35s ease-in-out);
-}
-
-%long-trans {
-  @include transition(all .5s ease-in-out);
 }
 
 // BUTTONS

@@ -1,2 +1,14 @@
 // Mixins: Utilities
 // -----------------
+
+
+// TRANSITIONS
+// =============================================================================
+
+@mixin standard-trans() {
+  @include transition(all .35s ease-in-out); }
+
+@mixin long-trans() {
+  @include transition(all .5s ease-in-out);
+}
+
