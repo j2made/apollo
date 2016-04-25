@@ -104,16 +104,16 @@ gulp.task('build_sass', function() {
 
       return stream
         .pipe( $if( !production, $p.plumber() ) )
-        .pipe( $p.changed( dest.css) )                       // Only run on changed files
+        .pipe( $p.changed( dest.css) )                        // Only run on changed files
         .pipe( $if( !production, maps.init() ) )              // If no production flag, generate maps
-          .pipe($p.sass().on('error', $p.sass.logError))    // Compile sass
+          .pipe($p.sass().on('error', $p.sass.logError))      // Compile sass
           .pipe( $if( production, mediaQuery() ) )            // Reorg media queries
-          .pipe($p.cssnano({ autoprefixer: { add: true } })) // Shrink that css
-          .pipe($p.rename(name))                             // Rename
+          .pipe($p.cssnano({ autoprefixer: { add: true } }))  // Shrink that css
+          .pipe($p.rename(name))                              // Rename
         .pipe( $if( !production, maps.write('.') ) );         // If no production flag, write maps
     }) )
     .pipe( gulp.dest( dest.css ) )                            // Ship it
-    .pipe( browsersync.stream() );                            // Beam it to browsersync
+    .pipe( browsersync.stream({match: '**/*.css'}) );         // Beam it to browsersync
 });
 
 
