@@ -71,3 +71,29 @@ function Listless_WP_Nav($menu_position, $echo = false) {
     }
   }
 }
+
+
+
+
+/**
+ * Get a URL via file_get_contents, fallback to cURL
+ * via https://gist.github.com/mrclay/1271106
+ *
+ * @param  $url  string  url to fetch
+ * @since  1.0.0
+ */
+function Fetch_Url($url) {
+  $allowUrlFopen = preg_match('/1|yes|on|true/i', ini_get('allow_url_fopen'));
+  if ($allowUrlFopen) {
+      return file_get_contents($url);
+  } elseif (function_exists('curl_init')) {
+      $c = curl_init($url);
+      curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+      $contents = curl_exec($c);
+      curl_close($c);
+      if (is_string($contents)) {
+          return $contents;
+      }
+  }
+  return false;
+}
