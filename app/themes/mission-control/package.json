@@ -40,7 +40,7 @@
     "gulp-rev": "^7.0.0",
     "gulp-sass": "^2.2.0",
     "gulp-sequence": "^0.4.5",
-    "gulp-sourcemaps": "^1.6.0",
+    "gulp-sourcemaps": "^2.0.0-alpha",
     "gulp-uglify": "^1.5.3",
     "gulp-util": "^3.0.7",
     "imagemin-pngquant": "^4.2.2",
