@@ -80,4 +80,4 @@ The Apollo repo workflow utilizes Git Flow. Features branches should be named wi
 
 
 ## Credits:
-This project is heavily influenced by [Bedrock] (https://github.com/roots/bedrock) and [Sage] (https://github.com/roots/sage) by the [Roots] (https://roots.io/) team. A lot of the code here has been adopted from or inspired by those projects, including the gulp file and [the wrapper] (https://roots.io/sage/docs/theme-wrapper/).
+This project is heavily influenced by [Bedrock] (https://github.com/roots/bedrock) and [Sage] (https://github.com/roots/sage) by the [Roots] (https://roots.io/) team. A lot of the code here has been adopted from or inspired by those projects, such as [the wrapper] (https://roots.io/sage/docs/theme-wrapper/).
