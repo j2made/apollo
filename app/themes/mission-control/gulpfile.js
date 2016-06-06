@@ -98,9 +98,11 @@ gulp.task('clean', function() {
  */
 gulp.task('build_sass', function() {
   gulp.src( base.sassMain )
-    .pipe($p.foreach( function(stream, file) {
+    .pipe($p.flatmap( function(stream, file) {
       // Get base file name, rename it based on argv
       var name = node_path.basename(file.path, '.scss') + '.min.css';
+
+      gutil.log(name);
 
       return stream
         .pipe( $if( !production, $p.plumber() ) )
