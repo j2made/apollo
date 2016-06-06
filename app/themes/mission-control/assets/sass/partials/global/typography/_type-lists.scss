@@ -2,9 +2,9 @@
 // -----------
 
 .list-inline {
-  @extend %list-inline;
+  @include list-inline;
 }
 
 .list-unstyled {
-  @extend %list-unstyled;
+  @include list-unstyled;
 }

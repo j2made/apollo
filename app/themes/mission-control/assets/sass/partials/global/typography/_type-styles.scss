@@ -10,7 +10,7 @@ p + p {
 
 b,
 strong {
-  @extend %semi-bold;
+  @include semi-bold();
 }
 
 // TYPE CLASSES

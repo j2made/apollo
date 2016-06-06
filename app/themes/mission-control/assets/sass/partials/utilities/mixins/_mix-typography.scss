@@ -1,2 +1,40 @@
 // Mixins: Typography
 // ------------------
+
+// BASICS
+// =============================================================================
+
+@mixin semi-bold() {
+  font-weight: 600;
+}
+
+@mixin bold() {
+  font-weight: 700;
+}
+
+@mixin bold-caps() {
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+
+// LISTS
+// =============================================================================
+@mixin list-inline() {
+  padding-left: 0;
+  margin-left: -5px;
+  list-style: none;
+}
+
+
+@mixin list-unstyled() {
+  padding-left: 0;
+  list-style: none;
+
+  > li {
+    display: inline-block;
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+}

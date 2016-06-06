@@ -12,3 +12,91 @@
   @include transition(all .5s ease-in-out);
 }
 
+// LAYOUT EXTENDS
+// =============================================================================
+
+@mixin cover() {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+@mixin hidden() {
+  display: none;
+  visibility: hidden;
+}
+
+@mixin visually-hidden() {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+@mixin img-responsive() {
+  @include image-rendering(optimizeSpeed);
+  display: block;
+  height: auto;
+  max-width: 100%;
+  width: 100% \9;
+  width: 100%;
+}
+
+// SPACING (SPACING VARS IN VARIABLES/_VAR-UTILITIES)
+// =============================================================================
+
+@mixin space-before-sm() {
+  margin-top: $space-sm; }
+
+@mixin space-after-sm() {
+  margin-bottom: $space-sm; }
+
+@mixin space-before-md() {
+  margin-top: $space-md; }
+
+@mixin space-after-md() {
+  margin-bottom: $space-md; }
+
+@mixin space-before-lg() {
+  margin-top: $space-lg; }
+
+@mixin space-after-lg() {
+  margin-bottom: $space-lg; }
+
+@mixin space-before-xl() {
+  margin-top: $space-xl; }
+
+@mixin space-after-xl() {
+  margin-bottom: $space-xl; }
+
+
+// CSS3 EXTENDS
+// =============================================================================
+
+@mixin background-cover() {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+// BUTTONS
+// =============================================================================
+
+@mixin btn-reset() {
+  background-clip: padding-box;
+  background-image: none;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  touch-action: manipulation;
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
