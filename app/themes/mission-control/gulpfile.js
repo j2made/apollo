@@ -102,8 +102,6 @@ gulp.task('build_sass', function() {
       // Get base file name, rename it based on argv
       var name = node_path.basename(file.path, '.scss') + '.min.css';
 
-      gutil.log(name);
-
       return stream
         .pipe( $if( !production, $p.plumber() ) )
         .pipe( $p.changed( dest.css) )                        // Only run on changed files
@@ -151,7 +149,7 @@ gulp.task('lint_bundle', function(){
  */
 gulp.task('build_single_js', ['lint_single'], function(){
   gulp.src( base.js.single )
-    .pipe($p.foreach( function(stream, file) {
+    .pipe($p.flatmap( function(stream, file) {
       // Get base file name, rename it based on argv
       var name = node_path.basename(file.path, '.js') + '.min.js';
 
