@@ -4,6 +4,10 @@
 // SCAFFOLDING
 // =============================================================================
 
+:root {
+  font-size: $em-base;
+}
+
 html {
   box-sizing: border-box;
 }
@@ -44,5 +48,3 @@ body {
   height: 1px;
   overflow: hidden;
 }
-
-
