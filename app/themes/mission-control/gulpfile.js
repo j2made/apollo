@@ -2,7 +2,7 @@
  * CONFIGURATION VARIABLES
  *
  */
-var devUrl = 'apollo-rev.dev';
+var devUrl = 'apollo.dev';
 
 
 

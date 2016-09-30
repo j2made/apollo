@@ -12,6 +12,7 @@ $function_includes = [
   'theme-structure',          // Build Theme Layouts
   'theme-wrapper',            // Theme wrapper class
   'theme-assets',             // Scripts and stylesheets
+  'theme-modules',            // Modular HTML Components
   'extend-core',              // Additions and Changes to Core
   'extend-utilities',         // Custom Functions for Practical Purposes
 
