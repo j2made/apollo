@@ -30,18 +30,24 @@ $function_includes = [
  */
 
 // Advanced Custom Field Functions
-if(class_exists('acf')) {
-  $function_includes[] = 'misc/extend-acf';
+if ( class_exists('acf') ) {
+
+  $function_includes[] = 'misc/plugins/extend-acf';
+
 }
 
 // Gravity Form Functions
-if(class_exists('GFCommon')) {
-  $function_includes[] = 'misc/extend-gforms';
+if ( class_exists('GFCommon') ) {
+
+  $function_includes[] = 'misc/plugins/extend-gforms';
+
 }
 
 // Gravity Form Functions
-if(class_exists('Tribe__Events__Main')) {
-  $function_includes[] = 'misc/extend-events';
+if ( class_exists('Tribe__Events__Main') ) {
+
+  $function_includes[] = 'misc/plugins/extend-events';
+
 }
 
 
@@ -50,9 +56,11 @@ if(class_exists('Tribe__Events__Main')) {
  *
  * @since  1.0.0
  */
-foreach ($function_includes as $filename) {
+foreach ( $function_includes as $filename ) {
+
   $filepath = 'lib/' . $filename . '.php';
   require_once locate_template($filepath);
+
 }
 
 unset($filename, $filepath);

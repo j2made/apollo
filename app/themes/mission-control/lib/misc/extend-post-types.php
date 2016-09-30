@@ -10,7 +10,10 @@ namespace Apollo\Extend\PostTypes;
  * @param  string $plural   Plural for of CPT label
  * @return array            Label array neecessary for CPT
  */
-function label_factory($name, $singular, $plural) {
+function label_factory( $name, $singular = false, $plural = false ) {
+
+  $singular = $singular ? $singular : $name;
+  $plural = $plural ? $plural : $name;
 
   $labels = array(
     'name'                  => $name,
@@ -34,6 +37,7 @@ function label_factory($name, $singular, $plural) {
   );
 
   return $labels;
+
 }
 
 
@@ -44,8 +48,7 @@ function label_factory($name, $singular, $plural) {
  *
  * To customize further, refer to: http://generatewp.com/post-type/
  */
-
-function projects_cpt() {
+function apollo_cpt() {
 
   $labels = label_factory('Singular', 'Singular', 'Plural');
 
@@ -60,8 +63,8 @@ function projects_cpt() {
     'menu_icon'             => 'dashicons-admin-page'
   );
 
-  register_post_type( 'projects', $args );
+  register_post_type( 'apollo_post_type', $args );
 
 }
 
-add_action( 'init', __NAMESPACE__ . '\\projects_cpt', 0 );
+add_action( 'init', __NAMESPACE__ . '\\apollo_cpt', 0 );

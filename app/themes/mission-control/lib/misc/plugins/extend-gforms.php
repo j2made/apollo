@@ -7,5 +7,7 @@ namespace Apollo\Extend\GForms;
 
 // Remove Gravity Forms "Add Form" Button
 add_filter( 'gform_display_add_form_button', function(){
+
  return false;
+
 });

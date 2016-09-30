@@ -1,5 +1,8 @@
 // Base: Components
 // ----------------
 
+@import 'header/base';              // Site Header
+@import 'footer/base';              // Site Footer
 @import 'buttons';                  // Button Styles
-@import 'sliders';                  // Slider Styles
+@import 'sliders';                  // Sliders
+@import 'modules/base';             // Individual module styles

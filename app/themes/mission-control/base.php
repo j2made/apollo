@@ -22,7 +22,7 @@ get_template_part('templates/global/head'); ?>
     // Make
     do_action( 'get_header' );
 
-    if(!Condition\hide_page_header())               // Conditionally get the page header
+    if ( !Condition\hide_page_header() )            // Conditionally get the page header
       get_template_part( 'templates/page-header/_page-header-main' );
   ?>
 
@@ -35,7 +35,7 @@ get_template_part('templates/global/head'); ?>
        * @param string $main_class class for content wrapper
        * @param string $sidebar_class class for sidebar content
        */
-      Structure\base_structure('main-content', 'sidebar');
+      Structure\base_structure( 'main-content', 'sidebar' );
     ?>
   </main>
 

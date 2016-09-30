@@ -11,17 +11,23 @@ namespace Apollo\Extend\Util;
 function add_custom_body_classes( $classes ) {
 
   // Add Non-Development Env Class
-  if(WP_ENV === 'development') {
+  if ( WP_ENV === 'development' ) {
+
     $classes[] = 'development-env';
+
   }
 
   // Front Page
-  if(is_front_page()) {
+  if ( is_front_page() ) {
+
     $classes[] = 'front-page';
+
   }
 
   return $classes;
+
 }
+
 add_filter( 'body_class', __NAMESPACE__ . '\\add_custom_body_classes' );
 
 
@@ -29,19 +35,20 @@ add_filter( 'body_class', __NAMESPACE__ . '\\add_custom_body_classes' );
 /**
  * WP Nav Menus as links and not list items
  *
- * @param string  $menu_position name of nav menu to display
- * @param boolean $echo          whether to return html or echo
+ * @param string  $menu_name  name of nav menu to display
+ * @param boolean $echo       whether to return html or echo
  * @return string or echo
  * @since  1.0.0
  */
-function Listless_WP_Nav($menu_position, $echo = false) {
+function Listless_WP_Nav( $menu_name, $echo = false ) {
 
-  if (has_nav_menu($menu_position)) {
+  if ( has_nav_menu($menu_name) ) {
+
     $html = '';
 
     // Get the menu
     $primary_nav = wp_nav_menu( array(
-      'theme_location' => $menu_position,
+      'theme_location' => $menu_name,
       'depth' => 3,
       'menu_class' => '',
       'items_wrap'=>'%3$s',
@@ -59,15 +66,23 @@ function Listless_WP_Nav($menu_position, $echo = false) {
     $count = 1;
 
     // Build output
-    foreach($nav as $item) {
+    foreach( $nav as $item ) {
+
       $html .= '<a' . $item . '</a>';
+
     }
 
     // Echo or Return
-    if($echo) {
+    if ( $echo ) {
+
       echo $html;
+
+      return;
+
     } else {
+
       return $html;
+
     }
   }
 }
@@ -82,18 +97,29 @@ function Listless_WP_Nav($menu_position, $echo = false) {
  * @param  $url  string  url to fetch
  * @since  1.0.0
  */
-function Fetch_Url($url) {
+function Fetch_Url( $url ) {
+
   $allowUrlFopen = preg_match('/1|yes|on|true/i', ini_get('allow_url_fopen'));
-  if ($allowUrlFopen) {
+
+  if ( $allowUrlFopen ) {
+
       return file_get_contents($url);
-  } elseif (function_exists('curl_init')) {
+
+  } elseif ( function_exists('curl_init') ) {
+
       $c = curl_init($url);
       curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
       $contents = curl_exec($c);
       curl_close($c);
-      if (is_string($contents)) {
+
+      if ( is_string($contents) ) {
+
           return $contents;
+
       }
+
   }
+
   return false;
+
 }
