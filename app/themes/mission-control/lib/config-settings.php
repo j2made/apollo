@@ -36,9 +36,9 @@ define( 'CONTENT_WIDTH', '1140' );            // Content Width            https:
 define( 'CLEAN_THEME_WP_HEAD', true );        // Clean up wp head         Boolean. See 'Clean `wp_head`' below
 define( 'REMOVE_EMOJI', true );               // Clean up wp head         Boolean. See 'Remove emojis' below
 
-define( 'TYPEKIT_ID', false );                // Typekit                Kit ID
-define( 'FONTAWESOME', false );               // Include FontAwesome    Boolean, if true, will be loaded from CDN
-define( 'GOOGLE_FONTS', false );              // Google Fonts           False or Font Family
+define( 'TYPEKIT_ID', false );                // Typekit                  Kit ID
+define( 'FONTAWESOME', false );               // Include FontAwesome      Boolean, if true, will be loaded from CDN
+
 /**
  * To define Google Fonts, set definition name to font name.
  *
@@ -47,7 +47,7 @@ define( 'GOOGLE_FONTS', false );              // Google Fonts           False or
  * Resulting definition:
  *   define('GOOGLE_FONTS', 'Dosis:400,300');
  */
-
+define( 'GOOGLE_FONTS', false );              // Google Fonts           False or Font Family
 
 
 /**
@@ -78,23 +78,49 @@ if ( WP_ENV == 'development' ) {
  */
 function theme_setup() {
 
-  // Register Nav Menus                                                    // (1)
+  /**
+   * Register Navigation Menus
+   *
+   * @link https://developer.wordpress.org/reference/functions/register_nav_menus
+   */
   register_nav_menus([
     'primary_navigation' => 'Primary Navigation',
     // Add additional menus here
   ]);
 
+  /**
+   * Support Titles
+   *
+   * @link http://codex.wordpress.org/Function_Reference/add_theme_support#Title_Tag
+   *
+   */
+  add_theme_support( 'title-tag');
 
-  add_theme_support( 'title-tag');                                         // (2)
-  add_theme_support( 'post-thumbnails');                                   // (3)
-  add_theme_support( 'html5', [                                            // (4)
+  /**
+   * Support Post Thumbnails
+   *
+   * @link https://codex.wordpress.org/Function_Reference/add_theme_support#Post_Thumbnails
+   *
+   */
+  add_theme_support( 'post-thumbnails');
+
+  /**
+   * Support HTML5 markdown
+   *
+   * @link https://codex.wordpress.org/Function_Reference/add_theme_support#HTML5
+   *
+   */
+  add_theme_support( 'html5', [
     'comment-list', 'comment-form', 'search-form', 'gallery', 'caption'
   ] );
 
-  // Post Formats - uncoment to use
-  // add_theme_support('post-formats', [
-  //  'aside', 'gallery', 'link', 'image', 'quote', 'video', 'audio'
-  // ]);
+  /**
+   * Support Post Formats
+   *
+   * @link https://developer.wordpress.org/reference/functions/add_theme_support/#post-formats
+   *
+   */
+  // add_theme_support('post-formats', ['aside', 'gallery', 'link', 'image', 'quote', 'video', 'audio']);
 
 }
 
@@ -234,12 +260,3 @@ if ( !isset($content_width) ) {
 // }
 //
 // add_action( 'widgets_init', __NAMESPACE__ . '\\widgets_init' );
-
-
-// REFERENCES
-// =============================================================================
-
-// 1. https://developer.wordpress.org/reference/functions/register_nav_menus
-// 2. http://codex.wordpress.org/Function_Reference/add_theme_support#Title_Tag
-// 3. https://codex.wordpress.org/Function_Reference/add_theme_support#Post_Thumbnails
-// 4. https://codex.wordpress.org/Function_Reference/add_theme_support#HTML5
