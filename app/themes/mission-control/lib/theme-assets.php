@@ -3,6 +3,17 @@
 namespace Apollo\Assets;
 use Apollo\Extend\Util;
 
+
+/**
+ * Add Custom Image Sizes
+ *
+ * @since  1.0.0
+ */
+
+// add_image_size($name, $width, $height, $hard_crop);
+
+
+
 /**
  * Get Assets based on enviornment
  *
