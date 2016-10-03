@@ -21,26 +21,32 @@ if ( ! defined( 'ABSPATH' ) ) {
   die( '-1' );
 }
 
+
 /**
  * Update Password Hash
- * ----------------------------------------
  * Opt for sha256 over the WordPress default MD5
  *
+ * @link   http://stackoverflow.com/questions/23949502/wordpress-sha-256-login
  * @since  1.1.0
 */
+if ( !function_exists( 'wp_hash_password' ) ) {
 
-
-if(!function_exists('wp_hash_password')) {
   function wp_hash_password($password){
+
     return hash('sha256', $password);
+
   }
 }
 
-if (!function_exists('wp_check_password')) {
-  function wp_check_password($password, $hash, $user_id = '') {
+if ( !function_exists( 'wp_check_password' ) ) {
+
+  function wp_check_password( $password, $hash, $user_id = '' ) {
+
     return wp_hash_password($password) == $hash;
+
   }
 }
+
 
 
 /**
@@ -49,26 +55,10 @@ if (!function_exists('wp_check_password')) {
  *
  * @since  1.0.0 [<description>]
  */
-if (!is_blog_installed()) {
+if ( !is_blog_installed() ) {
+
   return;
-}
 
-
-/**
- * Configure privacy settings conditionally
- * ----------------------------------------
- * Prevents search engine indexing in `development` and `staging` enviornments
- *
- * @since  1.0.0
-*/
-if( !function_exists( 'J2_wp_indexing' ) ) {
-  add_action( 'wp_loaded', 'J2_wp_indexing' );
-
-  function J2_wp_indexing() {
-    if (WP_ENV !== 'production') {
-      update_option( 'blog_public', '0' );
-    }
-  }
 }
 
 
@@ -83,9 +73,71 @@ register_theme_directory(ABSPATH . 'wp-content/themes');
 
 
 /**
- * Evac if installation
- */
+ * Configure privacy settings conditionally
+ * ----------------------------------------
+ * Prevents search engine indexing in `development` and `staging` enviornments
+ *
+ * @since  1.0.0
+*/
+if ( !function_exists( 'EVA_wp_indexing' ) ) {
 
+  function EVA_wp_indexing() {
+
+    if (WP_ENV !== 'production') {
+
+      update_option( 'blog_public', '0' );
+
+    }
+  }
+
+  add_action( 'wp_loaded', 'EVA_wp_indexing' );
+}
+
+
+
+/**
+ * Allow SVG uploads
+ *
+ * @link   https://css-tricks.com/snippets/wordpress/allow-svg-through-wordpress-media-uploader/
+ * @since  1.1.0
+ */
+if ( !function_exists( 'EVA_mime_types' ) ) {
+
+  function EVA_mime_types( $mimes ) {
+
+    $mimes['svg'] = 'image/svg+xml';
+
+    return $mimes;
+
+  }
+
+  add_filter( 'upload_mimes',  'eva_mime_types' );
+
+}
+
+
+
+/**
+ * Fix SVG Thumb Display
+ *
+ * @link   https://css-tricks.com/snippets/wordpress/allow-svg-through-wordpress-media-uploader/
+ * @since  1.1.0
+ */
+if ( !function_exists( 'EVA_fix_svg_thumb_display' ) ) {
+
+  function EVA_fix_svg_thumb_display() {
+    ?>
+      <style type="text/css">
+        td.media-icon img[src$=".svg"], img[src$=".svg"].attachment-post-thumbnail {
+          width: 100% !important;
+          height: auto !important;
+        }
+      </style>
+    <?php
+  }
+
+  add_action( 'admin_head',  'EVA_fix_svg_thumb_display' );
+}
 
 
 /**
@@ -95,8 +147,8 @@ register_theme_directory(ABSPATH . 'wp-content/themes');
  * that are loaded in directories.
  *
  * Original plugin: Bedrock Autoloader v1.0.0
- * @link (https://github.com/roots/bedrock/)
- * @link (https://github.com/roots/bedrock/blob/master/web/app/mu-plugins/bedrock-autoloader.php)
+ * @link https://github.com/roots/bedrock/
+ * @link https://github.com/roots/bedrock/blob/master/web/app/mu-plugins/bedrock-autoloader.php
  *
  * @since  1.0.0
  */
@@ -154,7 +206,7 @@ class Bedrock_Autoloader {
     $screen = get_current_screen();
     $current = is_multisite() ? 'plugins-network' : 'plugins';
 
-    if ($screen->{'base'} != $current || $type != 'mustuse' || !current_user_can('activate_plugins')) {
+    if ( $screen->{'base'} != $current || $type != 'mustuse' || !current_user_can('activate_plugins') ) {
       return $bool;
     }
 
@@ -233,7 +285,7 @@ class Bedrock_Autoloader {
   private function countPlugins() {
     if (isset(self::$count)) { return self::$count; }
 
-    $count = count(glob(WPMU_PLUGIN_DIR . '/*/', GLOB_ONLYDIR | GLOB_NOSORT));
+    $count = count( glob( WPMU_PLUGIN_DIR . '/*/', GLOB_ONLYDIR | GLOB_NOSORT ) );
 
     if (!isset(self::$cache['count']) || $count != self::$cache['count']) {
       self::$count = $count;
