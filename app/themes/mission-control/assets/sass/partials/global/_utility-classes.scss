@@ -1,0 +1,16 @@
+// Wordpress Screen Reader Class
+.screen-reader-text {
+  position: absolute !important;
+  top: -9999px;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+// Text and Background Color Classes
+// See $color-styles in sass/utilities/variables/_var-colors.scss
+@each $name, $value in $color-styles {
+  .#{$name} { color: $value; }
+  ._#{$name} { background-color: $value; }
+}

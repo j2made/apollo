@@ -23,6 +23,17 @@ $black-90: darken($white, 90%);
 $brand-color: #23cbd9;
 
 
+// COLOR LISTS FOR UTILITY CLASSES - see `sass/global/_utility-classes.scss
+// Array format: 'class-base': $color-var, where `class-base' would output as
+// both `.class-base` and `._class-base`
+// =============================================================================
+$color-styles: (
+  'white': $white,
+  'black': $black,
+  'brand-color': $brand-color
+);
+
+
 // ELEMENT COLORS
 // =============================================================================
 
