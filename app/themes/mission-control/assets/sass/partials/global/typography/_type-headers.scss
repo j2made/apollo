@@ -8,5 +8,6 @@
 @for $i from 1 through 6 {
   h#{$i} {
     @extend %header-reset;
+    line-height: $header-line-height;
   }
 }
