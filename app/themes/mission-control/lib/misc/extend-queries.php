@@ -2,10 +2,15 @@
 
 namespace Apollo\Functions\Queries;
 
-// // Change Posts Per Page and Order for Post Types
-// function manipulate_queries( $query ) {
-//   if ( is_admin() || is_search() )
-//     return;
+/**
+ * Alter queries based on post type.
+ *
+ * @since  1.0.0
+ */
+function manipulate_queries( $query ) {
+
+  if ( is_admin() || is_search() )
+    return;
 
 //   if ( is_post_type_archive( $post_type ) ) {
 //     // Return all posts
@@ -14,7 +19,7 @@ namespace Apollo\Functions\Queries;
 //     $query->set( 'orderby', 'menu_order' );
 //     return;
 //   }
-// }
-// add_action( 'pre_get_posts', __NAMESPACE__ . '\\manipulate_queries', 1 );
 
-?>
+}
+
+add_action( 'pre_get_posts', __NAMESPACE__ . '\\manipulate_queries', 1 );

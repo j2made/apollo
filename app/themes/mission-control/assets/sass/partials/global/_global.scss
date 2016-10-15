@@ -4,6 +4,10 @@
 // SCAFFOLDING
 // =============================================================================
 
+:root {
+  font-size: $em-base;
+}
+
 html {
   box-sizing: border-box;
 }
@@ -33,16 +37,3 @@ body {
   -webkit-font-smoothing: antialiased;
   line-height: $base-line-height;
 }
-
-
-// Wordpress Screen Reader Class
-.screen-reader-text {
-  position: absolute !important;
-  top: -9999px;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-}
-
-

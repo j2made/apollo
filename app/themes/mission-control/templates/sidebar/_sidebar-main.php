@@ -1,1 +1,3 @@
-HELLO
+<div class="sidebar">
+
+</div>

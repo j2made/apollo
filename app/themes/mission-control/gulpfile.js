@@ -2,7 +2,7 @@
  * CONFIGURATION VARIABLES
  *
  */
-var devUrl = 'apollo-rev.dev';
+var devUrl = 'apollo.dev';
 
 
 
@@ -98,7 +98,7 @@ gulp.task('clean', function() {
  */
 gulp.task('build_sass', function() {
   gulp.src( base.sassMain )
-    .pipe($p.foreach( function(stream, file) {
+    .pipe($p.flatmap( function(stream, file) {
       // Get base file name, rename it based on argv
       var name = node_path.basename(file.path, '.scss') + '.min.css';
 
@@ -149,7 +149,7 @@ gulp.task('lint_bundle', function(){
  */
 gulp.task('build_single_js', ['lint_single'], function(){
   gulp.src( base.js.single )
-    .pipe($p.foreach( function(stream, file) {
+    .pipe($p.flatmap( function(stream, file) {
       // Get base file name, rename it based on argv
       var name = node_path.basename(file.path, '.js') + '.min.js';
 

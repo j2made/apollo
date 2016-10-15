@@ -12,7 +12,9 @@ namespace Apollo\Theme\Wrapper;
  */
 
 function template_path() {
+
   return Apollo_Wrapper::$main_template;
+
 }
 
 
@@ -42,6 +44,7 @@ class Apollo_Wrapper {
       array_unshift( $templates, sprintf( 'base-%s.php', self::$base ) );
 
     return locate_template( $templates );
+
   }
 }
 

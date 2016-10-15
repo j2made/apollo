@@ -12,8 +12,8 @@ $function_includes = [
   'theme-structure',          // Build Theme Layouts
   'theme-wrapper',            // Theme wrapper class
   'theme-assets',             // Scripts and stylesheets
-  'extend-core',              // Additions and Changes to Core
-  'extend-utilities',         // Custom Functions for Practical Purposes
+  'theme-modules',            // Modular HTML Components
+  'theme-utilities',         // Custom Functions for Practical Purposes
 
   /* Uncomment as needed */
   // 'misc/extend-post-types',      // Custom Post Types
@@ -24,35 +24,15 @@ $function_includes = [
 
 
 /**
- * Add plugin specific files
- *
- * @since  1.0.0
- */
-
-// Advanced Custom Field Functions
-if(class_exists('acf')) {
-  $function_includes[] = 'misc/extend-acf';
-}
-
-// Gravity Form Functions
-if(class_exists('GFCommon')) {
-  $function_includes[] = 'misc/extend-gforms';
-}
-
-// Gravity Form Functions
-if(class_exists('Tribe__Events__Main')) {
-  $function_includes[] = 'misc/extend-events';
-}
-
-
-/**
  * Loop through files and require them
  *
  * @since  1.0.0
  */
-foreach ($function_includes as $filename) {
+foreach ( $function_includes as $filename ) {
+
   $filepath = 'lib/' . $filename . '.php';
   require_once locate_template($filepath);
+
 }
 
 unset($filename, $filepath);

@@ -12,8 +12,11 @@ namespace Apollo\Config\Condition;
  * @since  1.0.0
  */
 function hide_sidebar() {
-  if( is_404() ) {
+
+  if ( is_404() ) {
+
     return true;
+
   }
 }
 
@@ -27,19 +30,19 @@ function hide_sidebar() {
  * @since  1.0.0
  */
 function hide_page_header() {
+
   // if(is_front_page() || 'jobs' === get_post_type() ) {
+  //
   //   return true;
   // }
-  // if(is_single() && 'tribe_events' === get_post_type()) {
-  //   return true;
-  // }
+
 }
 
 
 
 /**
- * Determine the position of the sidebar in the layout
- * If condition returns true, the opposite of the default
+ * Determine the position of the sidebar in the layout.
+ * If condition returns `true`, the opposite of the default
  * position (`SIDEBAR_DEFAULT_LAYOUT`) will be output. Definition
  * for `SIDEBAR_DEFAULT_LAYOUT` is in `lib/config-settings.php` of
  * this theme directory.
@@ -50,8 +53,9 @@ function hide_page_header() {
 function sidebar_switch() {
 
   // if( is_page('sample-page') ) {
-  //   // Return the opposite of existing default
+  //
   //   return true;
+  //
   // }
 
 }
