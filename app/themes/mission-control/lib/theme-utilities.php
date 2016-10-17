@@ -37,7 +37,9 @@ add_filter( 'body_class', __NAMESPACE__ . '\\add_custom_body_classes' );
  * @since  1.0.0
  */
 function embed_wrapper( $html ) {
+
     return '<div class="video-container">' . $html . '</div>';
+
 }
 
 add_filter( 'embed_oembed_html', __NAMESPACE__ . '\\embed_wrapper', 10, 3 );
