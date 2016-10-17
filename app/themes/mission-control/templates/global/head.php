@@ -1,5 +1,5 @@
 <?php
-  $icon_path = get_bloginfo('template_url') . '/dist/images/';
+  $icon_path = get_bloginfo('template_url') . '/dist/images/favicon/';
 ?>
 <!doctype html>
 <html class="no-js" <?php language_attributes(); ?>>

@@ -100,7 +100,8 @@ gulp.task('build_sass', function() {
   gulp.src( base.sassMain )
     .pipe($p.flatmap( function(stream, file) {
       // Get base file name, rename it based on argv
-      var name = node_path.basename(file.path, '.scss') + '.min.css';
+      var ext = production ? '.min.css' : '.css';
+      var name = node_path.basename(file.path, '.scss') + ext;
 
       return stream
         .pipe( $if( !production, $p.plumber() ) )
@@ -108,7 +109,10 @@ gulp.task('build_sass', function() {
         .pipe( $if( !production, maps.init() ) )              // If no production flag, generate maps
           .pipe($p.sass().on('error', $p.sass.logError))      // Compile sass
           .pipe( $if( production, mediaQuery() ) )            // Reorg media queries
-          .pipe($p.cssnano({ autoprefixer: { add: true } }))  // Shrink that css
+          .pipe( $if( !production, $p.autoprefixer() ) )
+          .pipe( $if( production, $p.cssnano({
+            autoprefixer: { add: true }
+          }) ) )
           .pipe($p.rename(name))                              // Rename
         .pipe( $if( !production, maps.write('.') ) );         // If no production flag, write maps
     }) )
