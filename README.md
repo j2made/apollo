@@ -19,11 +19,15 @@ Versions listed are required to be equal to or greater than.
 - [Node] (https://nodejs.org/) v0.10.0
 - [NPM] (https://www.npmjs.com/) v2.1.5
 - PHP v5.4.3
-- [Gulp] (http://gulpjs.com/) v3.8.10
-- WordPress v4.1.0 (installed via stack)
+
+Global NPM Packages:
+
+- [Gulp](http://gulpjs.com/) v3.9.1^ `npm install -g browser-sync`
+- [Browsersync](https://www.browsersync.io/) v2.11.1^ `npm install -g browser-sync`
 
 Optional:
-- [Bower] (http://bower.io/) v1.3.12
+
+- [Bower](http://bower.io/) v1.3.12
 
 ## Installation
 

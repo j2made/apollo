@@ -4,10 +4,6 @@
 // SCAFFOLDING
 // =============================================================================
 
-:root {
-  font-size: $em-base;
-}
-
 html {
   box-sizing: border-box;
 }
@@ -15,6 +11,8 @@ html {
 *,
 *:before,
 *:after {
+  margin: 0;
+  padding: 0;
   border: 0;
   box-sizing: inherit;
   outline: 0;
