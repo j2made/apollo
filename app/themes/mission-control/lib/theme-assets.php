@@ -122,7 +122,8 @@ function enqueue_assets() {
    *
    * @since  1.0.0
    */
-  wp_enqueue_style( 'apollo-css', get_asset('css/main.min.css'), false, null );
+  $css = WP_ENV === 'development' ? 'css/main.css' : 'css/main.min.css';
+  wp_enqueue_style( 'apollo-css', get_asset($css), false, null );
 
 
   /**
