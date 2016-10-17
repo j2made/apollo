@@ -31,6 +31,18 @@ function add_custom_body_classes( $classes ) {
 add_filter( 'body_class', __NAMESPACE__ . '\\add_custom_body_classes' );
 
 
+/**
+ * Add Video Wrapper to Embeds
+ *
+ * @since  1.0.0
+ */
+function embed_wrapper( $html ) {
+    return '<div class="video-container">' . $html . '</div>';
+}
+
+add_filter( 'embed_oembed_html', __NAMESPACE__ . '\\embed_wrapper', 10, 3 );
+add_filter( 'video_embed_html', __NAMESPACE__ . '\\embed_wrapper' );
+
 
 /**
  * WP Nav Menus as links and not list items
