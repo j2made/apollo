@@ -22,7 +22,7 @@ Versions listed are required to be equal to or greater than.
 
 Global NPM Packages:
 
-- [Gulp](http://gulpjs.com/) v3.9.1^ `npm install -g browser-sync`
+- [Gulp](http://gulpjs.com/) v3.9.1^ `npm install -g gulp`
 - [Browsersync](https://www.browsersync.io/) v2.11.1^ `npm install -g browser-sync`
 
 Optional:
