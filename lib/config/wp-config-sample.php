@@ -13,8 +13,8 @@ define("WP_ENV", "development");  // 'development', 'staging', or 'production'
 
 
 /** Site */
-define("WP_HOME", "http://example.com");
-define("WP_SITEURL", "http://example.com/wp");
+define("WP_HOME", "http://apollo.dev");
+define("WP_SITEURL", "http://apollo.dev/wp");
 
 
 /** Database */
