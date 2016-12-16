@@ -6,7 +6,7 @@ use Apollo\Extend\PostTypes;
 // Refer to: http://generatewp.com/taxonomy/
 function apollo_taxonomy() {
 
-  $labels = label_factory('Singular', 'Singular', 'Plural');
+  $labels = PostTypes\label_factory('Singular', 'Singular', 'Plural');
 
   $args = array(
     'labels'                     => $labels,
