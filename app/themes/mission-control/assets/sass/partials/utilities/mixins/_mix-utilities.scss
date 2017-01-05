@@ -5,11 +5,12 @@
 // TRANSITIONS
 // =============================================================================
 
-@mixin standard-trans() {
-  @include transition(all .35s ease-in-out); }
+@mixin standard-trans($attr: all) {
+  transition: $attr 0.35s ease; 
+}
 
-@mixin long-trans() {
-  @include transition(all .5s ease-in-out);
+@mixin long-trans($attr: all) {
+  transition: $attr 0.5s ease-in-out;
 }
 
 // LAYOUT EXTENDS
