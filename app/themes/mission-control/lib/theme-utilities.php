@@ -71,8 +71,8 @@ function Listless_WP_Nav( $menu_name, $echo = false ) {
     ) );
 
     // Replace li elements with links
-    $find = array('><a','<li', 'ul');
-    $replace = array('','<a', 'div');
+    $find    = array( '<li', '><a href', '</li>', '<ul', '</ul>' );
+    $replace = array( '<a',  ' href',    '',      '<div', '</div>' );
     $primary_nav = str_replace( $find, $replace, $primary_nav );
 
     // Tear list apart, get rid of empty items
