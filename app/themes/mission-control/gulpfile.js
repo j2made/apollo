@@ -316,7 +316,7 @@ gulp.task('watch_reload', function(){ browsersync.reload(); });
  * --------------------------------------------------------
  * Initialize browsersync, watch for file changes
  */
-gulp.task('serve', ['watch_bundle'], function(){
+gulp.task('serve', ['watch_bundle', 'build_sass'], function(){
   browsersync({
     proxy: devUrl
   });
