@@ -6,14 +6,14 @@
   "homepage": "https://github.com/j2made/apollo",
   "authors": [
     {
-      "name": "Daniel Olson",
-      "email": "emaildano@gmail.com",
-      "homepage": "https://github.com/emaildano"
-    },
-    {
       "name": "Shaun M. Baer",
       "email": "shaun.baer@gmail.com",
       "homepage": "https://github.com/iamhexcoder"
+    },
+    {
+      "name": "Daniel Olson",
+      "email": "emaildano@gmail.com",
+      "homepage": "https://github.com/emaildano"
     }
   ],
   "keywords": [
@@ -27,7 +27,7 @@
     "vendor-dir": "lib/vendor/"
   },
   "scripts": {
-    "post-root-package-install": [
+    "pre-update-cmd": [
       "php -r \"if(!file_exists('wp-config.php')) { copy('lib/config/wp-config-sample.php', 'wp-config.php'); }\""
     ]
   },
@@ -39,8 +39,8 @@
   ],
   "require": {
     "php": ">=5.4",
-    "johnpbloch/wordpress": "4.7.0",
-    "composer/installers": "v1.0.25"
+    "johnpbloch/wordpress": "4.7.3",
+    "composer/installers": "1.2.0"
   },
   "extra": {
     "installer-paths": {
