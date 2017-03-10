@@ -29,6 +29,7 @@ var maps = require('gulp-sourcemaps');
 var sequence = require('gulp-sequence');
 var rev = require('gulp-rev');
 var mediaQuery = require('gulp-group-css-media-queries');
+var babelify = require('babelify');
 
 
 
@@ -183,7 +184,8 @@ var b = function() {
     debug: true,
     cache: {},
     paths: ['./node_modules', base.js.modules]
-  });
+  })
+  .transform( babelify, { presets: ["es2015"] });
 };
 
 /** Watchify Bundler */
