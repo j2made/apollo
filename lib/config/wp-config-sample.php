@@ -85,9 +85,13 @@ define( 'DB_PREFIX',  $table_prefix );
 
 
 /** Start Apollo Config */
-//* Composer Autoloads, Theme Dir Defs
-require_once( __DIR__ . '/lib/vendor/autoload.php' );   // Composer autoloads
-require_once( 'lib/config/apollo-config.php' );         // Apollo settings & defs
+
+// Composer autoloads
+require_once( __DIR__ . '/lib/vendor/autoload.php' ); // Composer autoloads
+
+// Apollo settings & defs
+require_once( 'lib/config/apollo-config.php' );
+
 /** End Apollo Config */
 
 
@@ -100,17 +104,13 @@ require_once( 'lib/config/apollo-config.php' );         // Apollo settings & def
  * @since  0.1.0
  */
 if ( ! defined( 'ABSPATH' ) ) {
-
   if ( ! defined( 'IS_APOLLO' ) ) {
     // Standard WP
     define('ABSPATH', dirname(__FILE__) . '/');
-
   } else {
     // Apollo WP
     define( 'ABSPATH', dirname(__FILE__) . '/wp/' );
-
   }
-
 }
 
 /**
