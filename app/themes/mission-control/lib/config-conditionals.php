@@ -29,12 +29,34 @@ function hide_sidebar() {
  * @return  boolean
  * @since  1.0.0
  */
-function hide_page_header() {
+function get_page_header() {
 
-  // if(is_front_page() || 'jobs' === get_post_type() ) {
+  // if ( is_front_page() || 'jobs' === get_post_type() ) {
   //
-  //   return true;
+  //   return false;
+  //
   // }
+
+  return true;
+
+}
+
+/**
+ * Determine if page header template part should be displayed
+ * If condition returns true, page header will not be displayed.
+ *
+ * @return  boolean
+ * @since  1.0.0
+ */
+function get_page_footer() {
+
+  // if ( is_front_page() || 'jobs' === get_post_type() ) {
+  //
+  //   return false;
+  //
+  // }
+
+  return true;
 
 }
 

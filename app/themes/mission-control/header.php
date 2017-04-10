@@ -1,21 +1,16 @@
 <?php
 
-/**
- * header.php
- *
- * ---------------------
- * PLACEHOLDER FILE ONLY
- * ---------------------
- *
- * Do not make changes to this file. This file only exists to make this
- * theme standards compliant. This theme uses a theme wrapper
- *
- * To make changes to the site header, use:
- * `templates/global/head.php`
- * `templates/global/header.php`
- * 'base.php'
- *
- *
- * @link   http://scribu.net/wordpress/theme-wrappers.html
- * @since  1.0.0
- */
+  get_template_part( 'templates/global/head');
+
+?>
+
+<body <?= body_class() ?>>
+  <!--[if lte IE 8]>
+    <div class="alert alert-warning">
+      <p>You're browser is outdated. We recommend that you update for a better experience.</p>
+      <a href="http://outdatedbrowser.com/en">View your options here.</a>
+    </div>
+  <![endif]-->
+
+  <?php // Get the global header
+    get_template_part( 'templates/global/header' );

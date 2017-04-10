@@ -79,9 +79,6 @@ function base_structure( $main_class = 'main-content', $sidebar_class = 'sidebar
     // Determine layout orientation
     $sidebar_direction = sidebar_orientation();
 
-    // Location of sidebar template file
-    $sidebar_path      = locate_template( 'templates/sidebar/_sidebar-main.php' );
-
     // Create classes for sidebar
     $sidebar_open      = '<aside class="' . $sidebar_class . '" role="complementary">';
     $sidebar_close     = '</aside>';
@@ -90,7 +87,7 @@ function base_structure( $main_class = 'main-content', $sidebar_class = 'sidebar
     if ( $sidebar_direction === 'left' ) {
 
       echo $sidebar_open;
-      include( $sidebar_path );
+      get_sidebar();
       echo $sidebar_close;
 
     }
@@ -106,7 +103,7 @@ function base_structure( $main_class = 'main-content', $sidebar_class = 'sidebar
     if ( $sidebar_direction === 'right' ) {
 
       echo $sidebar_open;
-      include( $sidebar_path );
+      get_sidebar();
       echo $sidebar_close;
 
     }
@@ -128,9 +125,11 @@ function base_structure( $main_class = 'main-content', $sidebar_class = 'sidebar
  * NAVIGATION
  *
  * Modify default WP Navigation:
- *   Allow only specific classes
- *   Remove menu item IDs
- *   Convert allowed classes to new names
+ *   - Allow only specific classes
+ *   - Remove menu item IDs
+ *   - Convert allowed classes to new names
+ *
+ * @since  2.0.0
  */
 
 /**
