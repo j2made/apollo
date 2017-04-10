@@ -24,7 +24,7 @@ function hide_sidebar() {
 
 /**
  * Determine if page header template part should be displayed
- * If condition returns true, page header will not be displayed.
+ * If condition returns false, page header will not be displayed.
  *
  * @return  boolean
  * @since  1.0.0
@@ -43,7 +43,7 @@ function get_page_header() {
 
 /**
  * Determine if page header template part should be displayed
- * If condition returns true, page header will not be displayed.
+ * If condition returns false, page header will not be displayed.
  *
  * @return  boolean
  * @since  1.0.0

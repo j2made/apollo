@@ -15,7 +15,7 @@ use Apollo\Theme\Wrapper;
  * @return string `right` or `left`
  * @since  1.0.0
  */
-function sidebar_orientation() {
+function Sidebar_Orientation() {
 
   // Determine layout orientation
   $sidebar_direction = SIDEBAR_DEFAULT_LAYOUT;
@@ -37,7 +37,7 @@ function sidebar_orientation() {
  * @param  array $classes inherited classes from WP
  * @since 1.0.0
  */
-function sidebar_body_class( $classes ) {
+function Sidebar_Body_Class( $classes ) {
 
   // Do not add any classes if value is false
   if ( !SIDEBAR_DEFAULT_LAYOUT ) {
@@ -46,7 +46,7 @@ function sidebar_body_class( $classes ) {
 
   }
 
-  $sidebar_direction = sidebar_orientation();
+  $sidebar_direction = Sidebar_Orientation();
 
   if ( !Condition\hide_sidebar() ) {
 
@@ -59,7 +59,7 @@ function sidebar_body_class( $classes ) {
 
 }
 
-add_filter( 'body_class', __NAMESPACE__ . '\\sidebar_body_class' );
+add_filter( 'body_class', __NAMESPACE__ . '\\Sidebar_Body_Class' );
 
 
 /**
@@ -72,12 +72,12 @@ add_filter( 'body_class', __NAMESPACE__ . '\\sidebar_body_class' );
  *
  * @since 1.0.0
  */
-function base_structure( $main_class = 'main-content', $sidebar_class = 'sidebar' ) {
+function Base_Structure( $main_class = 'main-content', $sidebar_class = 'sidebar' ) {
 
   if ( !Condition\hide_sidebar() ) {
 
     // Determine layout orientation
-    $sidebar_direction = sidebar_orientation();
+    $sidebar_direction = Sidebar_Orientation();
 
     // Create classes for sidebar
     $sidebar_open      = '<aside class="' . $sidebar_class . '" role="complementary">';
@@ -129,7 +129,7 @@ function base_structure( $main_class = 'main-content', $sidebar_class = 'sidebar
  *   - Remove menu item IDs
  *   - Convert allowed classes to new names
  *
- * @since  2.0.0
+ * @since  1.0.0
  */
 
 /**
@@ -138,7 +138,7 @@ function base_structure( $main_class = 'main-content', $sidebar_class = 'sidebar
  *
  * @since 1.0.0
  */
-function custom_wp_nav_menu_classes( $classes, $item ) {
+function Custom_WP_Nav_Menu_Classes( $classes, $item ) {
 
   // List of allowed WP menu item class names
   $allowed_classes = array_intersect($classes, [
@@ -161,7 +161,7 @@ function custom_wp_nav_menu_classes( $classes, $item ) {
 
 }
 
-add_filter('nav_menu_css_class', __NAMESPACE__ . '\\custom_wp_nav_menu_classes', 10, 2);
+add_filter('nav_menu_css_class', __NAMESPACE__ . '\\Custom_WP_Nav_Menu_Classes', 10, 2);
 
 
 /**
@@ -169,14 +169,14 @@ add_filter('nav_menu_css_class', __NAMESPACE__ . '\\custom_wp_nav_menu_classes',
  *
  * @since 1.0.0
  */
-function strip_wp_nav_menu( $var ) {
+function Strip_WP_Nav_Menu( $var ) {
 
   return ''; // Return to nothing
 
 }
 
-add_filter('nav_menu_item_id', __NAMESPACE__ . '\\strip_wp_nav_menu');
-add_filter('page_css_class', __NAMESPACE__ . '\\strip_wp_nav_menu');
+add_filter('nav_menu_item_id', __NAMESPACE__ . '\\Strip_WP_Nav_Menu');
+add_filter('page_css_class', __NAMESPACE__ . '\\Strip_WP_Nav_Menu');
 
 
 /**
@@ -184,7 +184,7 @@ add_filter('page_css_class', __NAMESPACE__ . '\\strip_wp_nav_menu');
  *
  * @since  1.0.0 [<description>]
  */
-function current_to_active( $text ){
+function Current_To_Active( $text ){
 
   // Array of menu_item class strings as keys with replacement strings as values
   $replace = array(
@@ -201,7 +201,7 @@ function current_to_active( $text ){
 
 }
 
-add_filter ('wp_nav_menu', __NAMESPACE__ . '\\current_to_active');
+add_filter ('wp_nav_menu', __NAMESPACE__ . '\\Current_To_Active');
 
 
 /**
@@ -209,7 +209,7 @@ add_filter ('wp_nav_menu', __NAMESPACE__ . '\\current_to_active');
  *
  * @since  1.0.0
  */
-function strip_empty_classes( $menu ) {
+function Strip_Empty_Classes( $menu ) {
 
   $menu = preg_replace('/ class=""/','',$menu);
 
@@ -217,5 +217,5 @@ function strip_empty_classes( $menu ) {
 
 }
 
-add_filter ('wp_nav_menu', __NAMESPACE__ . '\\strip_empty_classes');
+add_filter ('wp_nav_menu', __NAMESPACE__ . '\\Strip_Empty_Classes');
 

@@ -24,7 +24,7 @@ function post_module() {
         <p>Author: <a href="<?= get_author_posts_url(get_the_author_meta('ID')); ?>" rel="author"><?= get_the_author(); ?></a></p>
       </header>
       <div class="entry-summary">
-        <?php the_excerpt(); ?>
+        <?php the_content(); ?>
       </div>
     </article>
   <?php

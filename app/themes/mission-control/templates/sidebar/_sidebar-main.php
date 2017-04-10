@@ -1,3 +1,3 @@
-<div class="sidebar">
-I AM SIDEBAR
+<div class="sidebar__inner">
+
 </div>

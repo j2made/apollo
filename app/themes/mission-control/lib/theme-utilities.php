@@ -8,7 +8,7 @@ namespace Apollo\Extend\Util;
  * @return array
  * @since 1.0.0
  */
-function add_custom_body_classes( $classes ) {
+function Add_Custom_Body_Classes( $classes ) {
 
   // Add Non-Development Env Class
   if ( WP_ENV === 'development' ) {
@@ -28,7 +28,7 @@ function add_custom_body_classes( $classes ) {
 
 }
 
-add_filter( 'body_class', __NAMESPACE__ . '\\add_custom_body_classes' );
+add_filter( 'body_class', __NAMESPACE__ . '\\Add_Custom_Body_Classes' );
 
 
 /**
@@ -36,14 +36,39 @@ add_filter( 'body_class', __NAMESPACE__ . '\\add_custom_body_classes' );
  *
  * @since  1.0.0
  */
-function embed_wrapper( $html ) {
+function Embed_Wrapper( $html ) {
 
     return '<div class="video-container">' . $html . '</div>';
 
 }
+add_filter( 'video_embed_html', __NAMESPACE__ . '\\Embed_Wrapper' );
 
-add_filter( 'embed_oembed_html', __NAMESPACE__ . '\\embed_wrapper', 10, 3 );
-add_filter( 'video_embed_html', __NAMESPACE__ . '\\embed_wrapper' );
+
+/**
+ * Add Wrapper to oEmbeds
+ *
+ * @since  1.0.0
+ */
+function Video_oEmbed_Wrapper( $html, $url ) {
+
+  $class  = 'oembed-wrapper';
+  $base   = parse_url($url, PHP_URL_HOST);
+  $base   = str_replace( array( 'www.', '.com', '.tv', '.co' ), '', $base);
+  $class .= ' oembed-' . $base;
+
+  if (
+    false !== strpos( $base, 'youtube') ||
+    false !== strpos( $base, 'youtu.be') ||
+    false !== strpos( $base, 'vimeo')
+  ) {
+    $class .= ' video-container';
+  }
+
+  return '<div class="' . $class . '">' . $html . '</div>';
+
+}
+
+add_filter( 'embed_oembed_html', __NAMESPACE__ . '\\Video_oEmbed_Wrapper', 10, 3 );
 
 
 /**
@@ -56,7 +81,7 @@ add_filter( 'video_embed_html', __NAMESPACE__ . '\\embed_wrapper' );
  */
 function Listless_WP_Nav( $menu_name, $echo = false ) {
 
-  if ( has_nav_menu($menu_name) ) {
+  if ( has_nav_menu( $menu_name ) ) {
 
     $html = '';
 
@@ -71,16 +96,16 @@ function Listless_WP_Nav( $menu_name, $echo = false ) {
     ) );
 
     // Replace li elements with links
-    $find    = array( '<li', '><a href', '</li>', '<ul', '</ul>' );
-    $replace = array( '<a',  ' href',    '',      '<div', '</div>' );
+    $find        = array( '<li', '><a href', '</li>', '<ul', '</ul>' );
+    $replace     = array( '<a',  ' href',    '',      '<div', '</div>' );
     $primary_nav = str_replace( $find, $replace, $primary_nav );
 
     // Tear list apart, get rid of empty items
-    $nav = array_filter( explode('<a', $primary_nav) );
+    $nav   = array_filter( explode('<a', $primary_nav) );
     $count = 1;
 
     // Build output
-    foreach( $nav as $item ) {
+    foreach ( $nav as $item ) {
 
       $html .= '<a' . $item . '</a>';
 
@@ -113,20 +138,20 @@ function Listless_WP_Nav( $menu_name, $echo = false ) {
  */
 function Fetch_Url( $url ) {
 
-  $allowUrlFopen = preg_match('/1|yes|on|true/i', ini_get('allow_url_fopen'));
+  $allowUrlFopen = preg_match( '/1|yes|on|true/i', ini_get( 'allow_url_fopen' ) );
 
   if ( $allowUrlFopen ) {
 
-      return file_get_contents($url);
+      return file_get_contents( $url );
 
-  } elseif ( function_exists('curl_init') ) {
+  } elseif ( function_exists( 'curl_init' ) ) {
 
-      $c = curl_init($url);
-      curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
-      $contents = curl_exec($c);
-      curl_close($c);
+      $c        = curl_init( $url );
+      curl_setopt( $c, CURLOPT_RETURNTRANSFER, 1 );
+      $contents = curl_exec( $c );
+      curl_close( $c );
 
-      if ( is_string($contents) ) {
+      if ( is_string( $contents ) ) {
 
           return $contents;
 

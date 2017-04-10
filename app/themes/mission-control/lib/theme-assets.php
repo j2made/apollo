@@ -20,7 +20,7 @@ use Apollo\Extend\Util;
  * @param  $revpath  The path of the original file in the rev manifest.
  * @since  1.0.0
  */
-function get_asset( $revpath ) {
+function Get_Asset( $revpath ) {
 
   $home_path = get_bloginfo( 'stylesheet_directory' );
   $src_path  = $asset_path = $home_path . '/src/' . $revpath;
@@ -114,7 +114,7 @@ function enqueue_assets() {
    * @since  1.0.0
    */
   wp_enqueue_script( 'jquery' );
-  wp_enqueue_script( 'apollo-js', get_asset('js/bundle.js'), ['jquery'], null, true );
+  wp_enqueue_script( 'apollo-js', Get_Asset('js/bundle.js'), ['jquery'], null, true );
 
 
   /**
@@ -123,7 +123,7 @@ function enqueue_assets() {
    * @since  1.0.0
    */
   $css = WP_ENV === 'development' ? 'css/main.css' : 'css/main.min.css';
-  wp_enqueue_style( 'apollo-css', get_asset($css), false, null );
+  wp_enqueue_style( 'apollo-css', Get_Asset($css), false, null );
 
 
   /**

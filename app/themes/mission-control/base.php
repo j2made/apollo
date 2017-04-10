@@ -22,7 +22,7 @@ get_header();
        * @param string $main_class class for content wrapper
        * @param string $sidebar_class class for sidebar content
        */
-      Structure\base_structure( 'main-content', 'sidebar' );
+      Structure\Base_Structure( 'main-content', 'sidebar' );
     ?>
   </main>
 
