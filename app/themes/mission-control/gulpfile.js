@@ -45,7 +45,7 @@ var production = argv.production;
  */
 
 /** Paths */
-var enter     = './assets/';
+var enter     = 'assets/';
 var src_base  = './src/';
 var dist_base = './dist/';
 
