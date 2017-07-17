@@ -4,7 +4,7 @@
 
 ## About
 
-Apollo is a two stage unit: A WordPress Stack built with Composer, and a Starter Theme packed with Sass, Gulp, Bourbon, Bower, and a Theme Wrapper structure.
+Apollo is a two stage unit: A WordPress Stack built with Composer, and a Starter Theme packed with Sass, Gulp, Bower, and a Theme Wrapper structure.
 
 
 #### Minimum Requirements (Stack)

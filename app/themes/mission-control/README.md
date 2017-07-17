@@ -35,6 +35,8 @@ gulp clean          // remove existing `dist` and `src` files
 ## SCSS
 `assets/sass` is structured into two primary directories: `main` and `partials`. Any file that live in the `main` directory will be output to a file when the `gulp sass` task runs. These files should only contain scss `@import` directives. Use these files to import files living in `partials` or elsewhere.
 
+The default utility library [Parts and Labor](https://iamhexcoder.github.io/partsandlabor/) is included by defualt :)
+
 
 ## JS
 `assets/js` is structured into two primary directories: `modules` and `single`, with `main.js` living in there too.
