@@ -165,7 +165,9 @@ class Bedrock_Autoloader {
 
   public function __construct() {
 
-    if (isset(self::$_single)) { return; }
+    if ( isset( self::$_single ) ) {
+      return;
+    }
 
     self::$_single       = $this; // Singleton set.
     self::$relative_path = '/../' . basename(__DIR__); // Rel path set.
@@ -191,7 +193,7 @@ class Bedrock_Autoloader {
     $this->validatePlugins();
     $this->countPlugins();
 
-    foreach (self::$cache['plugins'] as $plugin_file => $plugin_info) {
+    foreach ( self::$cache['plugins'] as $plugin_file => $plugin_info ) {
       include_once(WPMU_PLUGIN_DIR . '/' . $plugin_file);
     }
 
@@ -203,7 +205,7 @@ class Bedrock_Autoloader {
    */
   public function showInAdmin($bool, $type) {
 
-    $screen = get_current_screen();
+    $screen  = get_current_screen();
     $current = is_multisite() ? 'plugins-network' : 'plugins';
 
     if ( $screen->{'base'} != $current || $type != 'mustuse' || !current_user_can('activate_plugins') ) {
@@ -212,7 +214,7 @@ class Bedrock_Autoloader {
 
     $this->updateCache(); // May as well update the transient cache whilst here.
 
-    self::$auto_plugins = array_map(function ($auto_plugin) {
+    self::$auto_plugins = array_map( function ($auto_plugin) {
       $auto_plugin['Name'] .= ' *';
       return $auto_plugin;
     }, self::$auto_plugins);
@@ -220,12 +222,14 @@ class Bedrock_Autoloader {
     $GLOBALS['plugins']['mustuse'] = array_unique(array_merge(self::$auto_plugins, self::$mu_plugins), SORT_REGULAR);
 
     return false; // Prevent WordPress overriding our work.
+
   }
 
   /**
    * This sets the cache or calls for an update
    */
   private function checkCache() {
+
     $cache = get_site_option('bedrock_autoloader');
 
     if ($cache === false) {
@@ -233,6 +237,7 @@ class Bedrock_Autoloader {
     }
 
     self::$cache = $cache;
+
   }
 
   /**
@@ -241,16 +246,17 @@ class Bedrock_Autoloader {
    * After that, we can update the cache.
    */
   private function updateCache() {
-    require_once(ABSPATH . 'wp-admin/includes/plugin.php');
 
-    self::$auto_plugins = get_plugins(self::$relative_path);
-    self::$mu_plugins   = get_mu_plugins(self::$relative_path);
-    $plugins            = array_diff_key(self::$auto_plugins, self::$mu_plugins);
-    $rebuild            = !is_array(self::$cache['plugins']);
-    self::$activated    = ($rebuild) ? $plugins : array_diff_key($plugins, self::$cache['plugins']);
-    self::$cache        = array('plugins' => $plugins, 'count' => $this->countPlugins());
+    require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
-    update_site_option('bedrock_autoloader', self::$cache);
+    self::$auto_plugins = get_plugins( self::$relative_path );
+    self::$mu_plugins   = get_mu_plugins( self::$relative_path );
+    $plugins            = array_diff_key( self::$auto_plugins, self::$mu_plugins );
+    $rebuild            = ! is_array( self::$cache['plugins'] );
+    self::$activated    = ( $rebuild ) ? $plugins : array_diff_key( $plugins, self::$cache['plugins'] );
+    self::$cache        = array( 'plugins' => $plugins, 'count' => $this->countPlugins() );
+
+    update_site_option( 'bedrock_autoloader', self::$cache );
   }
 
   /**
@@ -259,23 +265,31 @@ class Bedrock_Autoloader {
    * to deactivate or uninstall.
    */
   private function pluginHooks() {
-    if (!is_array(self::$activated)) { return; }
 
-    foreach (self::$activated as $plugin_file => $plugin_info) {
-      do_action('activate_' . $plugin_file);
+    if ( ! is_array( self::$activated ) ) {
+      return;
     }
+
+    foreach ( self::$activated as $plugin_file => $plugin_info ) {
+      do_action( 'activate_' . $plugin_file );
+    }
+
   }
 
   /**
    * Check that the plugin file exists, if it doesn't update the cache.
    */
   private function validatePlugins() {
-    foreach (self::$cache['plugins'] as $plugin_file => $plugin_info) {
-      if (!file_exists(WPMU_PLUGIN_DIR . '/' . $plugin_file)) {
+
+    foreach ( self::$cache['plugins'] as $plugin_file => $plugin_info ) {
+
+      if ( ! file_exists(WPMU_PLUGIN_DIR . '/' . $plugin_file ) ) {
         $this->updateCache();
         break;
       }
+
     }
+
   }
 
   /**
@@ -283,19 +297,22 @@ class Bedrock_Autoloader {
    * mu-plugins dir. If it's more or less than last time, update the cache.
    */
   private function countPlugins() {
-    if (isset(self::$count)) { return self::$count; }
+
+    if ( isset( self::$count ) ) { return self::$count; }
 
     $count = count( glob( WPMU_PLUGIN_DIR . '/*/', GLOB_ONLYDIR | GLOB_NOSORT ) );
 
-    if (!isset(self::$cache['count']) || $count != self::$cache['count']) {
+    if ( !isset( self::$cache['count'] ) || $count != self::$cache['count'] ) {
       self::$count = $count;
       $this->updateCache();
     }
 
     return self::$count;
+
   }
+
 }
 
-if (is_blog_installed()) {
+if ( is_blog_installed() ) {
   new Bedrock_Autoloader();
 }

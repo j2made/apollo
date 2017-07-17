@@ -3,41 +3,31 @@
 
 // Container
 .container-fluid {
-  @include outer-container(100%);
+  @include base-container(90%, true);
 }
 
 .container {
-  @include base-container();
+  @include base-container(90%, false);
 }
 
 .row {
   @include row();
 }
 
-.section-padding {
-  padding-bottom: $space-lg;
-  padding-top: $space-lg;
-
-  @include media($medium) {
-    padding-bottom: $space-xl;
-    padding-top: $space-xl;
-  }
-}
-
 // Sidebar
 .sidebar-right {
   .main-content {
 
-    @include media($medium) {
-      @include span-columns(7);
+    @include break($medium) {
+      @include grid-col(7);
     }
   }
 
   .sidebar {
 
-    @include media($medium) {
-      @include span-columns(4);
-      @include shift(1);
+    @include break($medium) {
+      @include grid-col(4);
+      @include grid-shift(1);
     }
   }
 }

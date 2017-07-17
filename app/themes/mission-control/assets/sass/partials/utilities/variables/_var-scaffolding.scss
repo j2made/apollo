@@ -5,33 +5,33 @@
 // ============================================================
 
 // Basic Settings
-$grid-columns: 12;
-$gutter: 20px;
-$max-container-width: 1200px;
-$max-width: $max-container-width;
+// $grid-columns: 12;
+// $gutter: 20px;
+// $max-container-width: 1200px;
+// $max-width: $max-container-width;
 
 // Container Sizes
-$xsmall-container:    500px;
-$small-container:			750px;
-$medium-container:		970px;
-$large-container:			$max-width;
-$container-break:     $gutter;
+// $xsmall-container:    500px;
+// $small-container:			750px;
+// $medium-container:		970px;
+// $large-container:			$max-width;
+// $container-break:     $gutter;
 
 // Breakpoints
-$xsmall:    		new-breakpoint(min-width $xsmall-container + $container-break);   		// Big pocket screens
-$small: 				new-breakpoint(min-width $small-container + $container-break); 		 		// Tablets
-$medium: 				new-breakpoint(min-width $medium-container + $container-break); 	 		// Laptops / Small Desktop
-$large: 				new-breakpoint(min-width $max-container-width + $container-break); 		// Large Desktops
+// $xsmall:    		new-breakpoint(min-width $xsmall-container + $container-break);   		// Big pocket screens
+// $small: 				new-breakpoint(min-width $small-container + $container-break); 		 		// Tablets
+// $medium: 				new-breakpoint(min-width $medium-container + $container-break); 	 		// Laptops / Small Desktop
+// $large: 				new-breakpoint(min-width $max-container-width + $container-break); 		// Large Desktops
 
-$xsmall-max:    new-breakpoint(max-width $xsmall-container + $container-break);   		// Big pocket screens
-$small-max: 		new-breakpoint(max-width $small-container + $container-break); 		 		// Tablets
-$medium-max: 		new-breakpoint(max-width $medium-container + $container-break); 	 		// Laptops / Small Desktop
-$large-max: 		new-breakpoint(max-width $max-container-width + $container-break); 		// Large Desktops
+// $xsmall-max:    new-breakpoint(max-width $xsmall-container + $container-break);   		// Big pocket screens
+// $small-max: 		new-breakpoint(max-width $small-container + $container-break); 		 		// Tablets
+// $medium-max: 		new-breakpoint(max-width $medium-container + $container-break); 	 		// Laptops / Small Desktop
+// $large-max: 		new-breakpoint(max-width $max-container-width + $container-break); 		// Large Desktops
 
-$primary-breakpoint: $medium; // When the site undergoes it most radical changes, such as mobile nav to desktop nav
+// $primary-breakpoint: $medium; // When the site undergoes it most radical changes, such as mobile nav to desktop nav
 
-// Base Settings
-$visual-grid: false;
-$visual-grid-color: #ff0;
-$visual-grid-index: front;
-$visual-grid-opacity: .5;
+// // Base Settings
+// $visual-grid: false;
+// $visual-grid-color: #ff0;
+// $visual-grid-index: front;
+// $visual-grid-opacity: .5;

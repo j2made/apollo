@@ -1,11 +1,11 @@
 // Button Styles
 // -------------
 
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"],
+a[type="button"],
 .btn {
-  @include btn-reset();
-}
-
-#{$all-buttons},
-.btn-default {
   @include btn-reset();
 }

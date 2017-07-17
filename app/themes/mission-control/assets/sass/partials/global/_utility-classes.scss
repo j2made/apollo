@@ -30,6 +30,14 @@
   }
 }
 
+.cover {
+  @include cover;
+}
+
+.bkg-img {
+  @include bkg-img;
+}
+
 // Text and Background Color Classes
 // See $color-styles in sass/utilities/variables/_var-colors.scss
 @each $name, $value in $color-styles {

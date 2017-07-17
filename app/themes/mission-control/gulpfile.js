@@ -20,6 +20,7 @@ var assign = require('lodash.assign');
 var watchify = require('watchify');
 var browserify = require('browserify');
 var browsersync = require('browser-sync');
+var browserifyShim = require('browserify-shim');
 
 var gulp = require('gulp');
 var gutil = require('gulp-util');
@@ -176,6 +177,11 @@ gulp.task('build_single_js', ['lint_single'], function(){
  *
  */
 
+/** Global shims */
+var globalShims = require('browserify-global-shim').configure({
+   'jQuery': '$'
+});
+
 /** Browserify Bundler */
 var b = function() {
   return browserify({
@@ -183,6 +189,8 @@ var b = function() {
     debug: true,
     cache: {},
     paths: ['./node_modules', base.js.modules]
+  }).transform('babelify', {
+    'presets': ['es2015', 'es2016']
   });
 };
 

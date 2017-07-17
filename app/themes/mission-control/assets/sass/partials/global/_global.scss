@@ -27,7 +27,8 @@ html {
 }
 
 body {
-  @include font-feature-settings('kern', 'liga', "frac", 'pnum');
+  font-variant: 'common-ligatures';
+  font-kerning: normal;
   background-color: $base-background-color;
   color: $base-font-color;
   font-family: $base-font-family;
