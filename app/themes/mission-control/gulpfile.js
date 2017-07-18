@@ -176,12 +176,6 @@ gulp.task('build_single_js', ['lint_single'], function(){
  * BROWSERIFY
  *
  */
-
-/** Global shims */
-var globalShims = require('browserify-global-shim').configure({
-   'jQuery': '$'
-});
-
 /** Browserify Bundler */
 var b = function() {
   return browserify({
