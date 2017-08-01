@@ -23,15 +23,11 @@ define("DB_PASSWORD", "root");
 define("DB_HOST",     "localhost");
 
 
-
-
 /**
- * Salts - copy and paste here.
+ * Salts - Via Composer Scripts
  * ----------------------------
- * Run `curl https://api.wordpress.org/secret-key/1.1/salt`
  */
-
-
+require_once( 'salts.php' );
 
 
 /**
