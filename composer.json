@@ -28,7 +28,9 @@
   },
   "scripts": {
     "pre-update-cmd": [
-      "php -r \"if(!file_exists('wp-config.php')) { copy('lib/config/wp-config-sample.php', 'wp-config.php'); }\""
+      "php -r \"if(!file_exists('wp-config.php')) { copy('lib/config/wp-config-sample.php', 'wp-config.php'); }\"",
+      "php -r \"copy('lib/config/salts-example.php', 'salts.php');\"",
+      "curl https://api.wordpress.org/secret-key/1.1/salt >> salts.php"
     ]
   },
   "repositories": [
