@@ -345,8 +345,8 @@ var req = production ? ['clean'] : '';
 
 gulp.task('default', sequence(
   req,
-  'build_sass',
   'build_bundle',
+  'build_sass',
   'build_single_js',
   'build_images',
   'copy_jquery',
