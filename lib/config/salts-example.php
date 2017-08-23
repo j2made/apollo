@@ -1,0 +1,2 @@
+<?php
+// Salty AF
