@@ -16,6 +16,7 @@ wp/*
 lib/vendor/*
 !vendor/.gitkeep
 composer.lock
+.well-known
 
 # Apollo Config
 wp-config.php
