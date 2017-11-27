@@ -5,7 +5,7 @@
 // =============================================================================
 
 @charset 'UTF-8';
-@import '../../../node_modules/sanitize.css/sanitize.css';        // Sanitize
+@import '../partials/utilities/reset';                            // Eric Meyer Reset
 @import '../../../node_modules/partsandlabor/partsandlabor.scss'; // Parts and Labor
 
 // THEME STYLES

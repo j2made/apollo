@@ -1,8 +1,21 @@
 /**
- * CONFIGURATION VARIABLES
+ * CONFIGURE LOCALHOST URL
  *
  */
-var devUrl = 'apollo.dev';
+const devUrl = 'apollo.dev';
+
+/**
+ * CONFIGURE AUTOPREFIXER SUPPORT
+ *
+ */
+const autoprefixSupport = [
+   'last 2 versions',
+   'safari >= 8',
+   'ie >= 10',
+   'ff >= 20',
+   'ios 6',
+   'android 4'
+];
 
 
 
@@ -10,70 +23,93 @@ var devUrl = 'apollo.dev';
  * NPM MODULES
  *
  */
-var node_path = require('path');
-var argv = require('yargs').argv;
-var del = require('del');
-var pngquant = require('imagemin-pngquant');
-var buffer = require('vinyl-buffer');
-var source = require('vinyl-source-stream');
-var assign = require('lodash.assign');
-var watchify = require('watchify');
-var browserify = require('browserify');
-var browsersync = require('browser-sync');
-var browserifyShim = require('browserify-shim');
+const argv            = require('yargs').argv;
+const gulp            = require('gulp');
+const gutil           = require('gulp-util');
+const plumber         = require('gulp-plumber');
+const $p              = require('gulp-load-plugins')();
+const $if             = require('gulp-if');
+const flatmap         = require('gulp-flatmap');
+const changed         = require('gulp-changed');
+const rename          = require('gulp-rename');
+const sequence        = require('gulp-sequence');
+const rev             = require('gulp-rev');
+const del             = require('del');
+const _               = require('lodash');
 
-var gulp = require('gulp');
-var gutil = require('gulp-util');
-var $p = require('gulp-load-plugins')();
-var $if  = require('gulp-if');
-var maps = require('gulp-sourcemaps');
-var sequence = require('gulp-sequence');
-var rev = require('gulp-rev');
-var mediaQuery = require('gulp-group-css-media-queries');
+// Sass
+const sass            = require('gulp-sass');
+const maps            = require('gulp-sourcemaps');
+const autoprefixer    = require('gulp-autoprefixer');
+const cssnano         = require('gulp-cssnano');
+const mediaQuery      = require('gulp-group-css-media-queries');
+
+// JS
+const eslint          = require('gulp-eslint');
+const concat          = require('gulp-concat');
+// const babel           = require('gulp-babel');
+const uglify          = require('gulp-uglify');
+
+// Images
+const imagemin        = require('gulp-imagemin');
+const optipng         = require('imagemin-optipng');
+const jpegtran        = require('imagemin-jpegtran');
+const gifsicle        = require('imagemin-gifsicle');
+
+// Browsersync
+const browsersync     = require('browser-sync');
+
+// Browserify
+const source = require('vinyl-source-stream');
+const buffer = require('vinyl-buffer');
+const browserify = require('browserify');
+const watchify = require('watchify');
+const babelify = require("babelify");
+const fs = require('fs');
+
 
 
 
 /**
  * PRODUCTION FLAG
- *
  * Run --production after any Gulp task to perform a production build
+ *
  */
-var production = argv.production;
+const production = argv.production;
 
 /**
- * PATH VARIABLES
+ * PATHS
  *
  */
-
-/** Paths */
-var enter     = 'assets/';
-var src_base  = './src/';
-var dist_base = './dist/';
-
-/** Base (entry) paths */
-var base = {
-  'img':       enter + 'images/**/*',
-  'fonts':     enter + 'fonts/**/*',
-  'sass':      enter + 'sass',
-  'sassMain':  enter + 'sass/main/*.scss',
-  'js': {
-    'single':  enter + 'js/single/*.js',
-    'main':    enter + 'js/main.js',
-    'modules': enter + 'js/modules'
+const enter_base = 'assets/';
+const src_base   = './src/';
+const dist_base  = './dist/';
+const build_base = production ? dist_base : src_base;
+const assetPath  = {
+  img: {
+    enter: enter_base + 'images/**/*',
+    dest:  dist_base + 'images/',
+  },
+  fonts: {
+    enter: enter_base + 'fonts/**/*',
+    dest:  dist_base + 'fonts/'
+  },
+  sass: {
+    enter: enter_base + 'sass/main/*.scss',
+    dest:  build_base + 'css/'
+  },
+  js: {
+    main: {
+      enter: enter_base + 'js/app.js'
+    },
+    single: {
+      base:  enter_base + 'js/single/',
+      enter: enter_base + 'js/single/*.js'
+    },
+    modules: enter_base + 'js/modules/**.js',
+    dest:    build_base + 'js/'
   }
 }
-
-/** Destination (to) paths */
-var dest = {
-  'css':      src_base + 'css/',
-  'js': {
-    'all':    src_base + 'js/',
-    'single': src_base + 'js/single',
-    'vendor': dist_base + 'js/vendor'
-  },
-  'img':      dist_base + 'images/',
-  'fonts':    dist_base + 'fonts/'
-};
 
 
 
@@ -81,8 +117,8 @@ var dest = {
 
 /**
  * CLEAN TASK
+ * Remove `./src` & `/dist`
  *
- * Remove `./src` & `/dest`
  */
 gulp.task('clean', function() {
   del([src_base, dist_base]);
@@ -94,31 +130,28 @@ gulp.task('clean', function() {
 
 /**
  * SASS TASK
- *
  * Runs foreach on every file in 'sass/main'
+ *
  */
-gulp.task('build_sass', function() {
-  gulp.src( base.sassMain )
-    .pipe($p.flatmap( function(stream, file) {
-      // Get base file name, rename it based on argv
-      var ext = production ? '.min.css' : '.css';
-      var name = node_path.basename(file.path, '.scss') + ext;
-
+gulp.task('build_css', function() {
+  gulp.src( assetPath.sass.enter )
+    .pipe(flatmap( function(stream, file) {
       return stream
-        .pipe( $if( !production, $p.plumber() ) )
-        .pipe( $p.changed( dest.css) )                        // Only run on changed files
-        .pipe( $if( !production, maps.init() ) )              // If no production flag, generate maps
-          .pipe($p.sass().on('error', $p.sass.logError))      // Compile sass
-          .pipe( $if( production, mediaQuery() ) )            // Reorg media queries
-          .pipe( $if( !production, $p.autoprefixer() ) )
-          .pipe( $if( production, $p.cssnano({
-            autoprefixer: { add: true }
-          }) ) )
-          .pipe($p.rename(name))                              // Rename
-        .pipe( $if( !production, maps.write('.') ) );         // If no production flag, write maps
+        .pipe( $if( !production, plumber() ) )
+        .pipe( changed( assetPath.sass.dest ) )
+        .pipe( $if( !production, maps.init() ) )
+          .pipe(sass().on('error', sass.logError))
+          .pipe( $if( production, mediaQuery() ) )
+          .pipe( autoprefixer({
+            browsers: autoprefixSupport,
+            add: true
+          }) )
+          .pipe( $if( production, cssnano() ) )
+          .pipe( $if( production, rename({ suffix: '.min' })) )
+        .pipe( $if( !production, maps.write('.') ) );
     }) )
-    .pipe( gulp.dest( dest.css ) )                            // Ship it
-    .pipe( browsersync.stream({match: '**/*.css'}) );         // Beam it to browsersync
+    .pipe( gulp.dest( assetPath.sass.dest ) )
+    .pipe( browsersync.stream({match: '**/*.css'}) );
 });
 
 
@@ -131,102 +164,117 @@ gulp.task('build_sass', function() {
  * Run single js through the linter
  * Run main browserify file through the linter
  */
-gulp.task('lint_single', function(){
-  return gulp.src( base.js.single )
-    .pipe( $p.jshint() )
-    .pipe( $p.jshint.reporter('jshint-stylish-source') );
-});
-
-gulp.task('lint_bundle', function(){
-  return gulp.src([ base.js.main, base.js.modules + '/**/*.js' ])
-    .pipe( $p.jshint() )
-    .pipe( $p.jshint.reporter('jshint-stylish-source') );
-});
-
-
-
-
-
-/**
- * SINGLE JS TASK
- *
- * For non browserified files saved in `single`
- */
-gulp.task('build_single_js', ['lint_single'], function(){
-  gulp.src( base.js.single )
-    .pipe($p.flatmap( function(stream, file) {
-      // Get base file name, rename it based on argv
-      var name = node_path.basename(file.path, '.js') + '.min.js';
-
-      return stream
-        .pipe( $if( !production, $p.plumber() ) )
-        .pipe( $p.changed( dest.js.all ) )                  // Only run on changed files
-        .pipe( $if( production, $p.uglify() ) )
-        .pipe($p.rename(name))
-    }) )
-  .pipe( gulp.dest( dest.js.single ) )                  // Ship it
-  .pipe( browsersync.reload({stream: true}) );
-});
-
-
-
-
-
-/**
- * BROWSERIFY
- *
- */
-/** Browserify Bundler */
-var b = function() {
-  return browserify({
-    entries: base.js.main,
-    debug: true,
-    cache: {},
-    paths: ['./node_modules', base.js.modules]
-  }).transform('babelify', {
-    'presets': ['es2015', 'es2016']
-  });
+function commonLintTasks(inputStream) {
+  return inputStream
+    .pipe(eslint())
+    .pipe(eslint.formatEach())
+    .pipe( $if( production, eslint.failAfterError() ) )
 };
 
-/** Watchify Bundler */
-var w = watchify(b());
-
-/**
- * Process Bundler
- *
- * Pass either a build or watchify bundler
- */
-function bundle(pkg) {
-  return pkg.bundle()
-    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
-    .pipe( source('bundle.js') )
-    .pipe( buffer() )
-    .pipe( $if( !production, $p.plumber() ) )
-    .pipe( $if( !production, maps.init( {loadMaps: true} ) ) )
-      .pipe( $if( production, $p.uglify() ) )
-    .pipe( $if( !production, maps.write('.') ) )
-    .pipe( gulp.dest(dest.js.all) )
-    .pipe( browsersync.stream( {once: true} ) );
-}
-
-
-
-
-
-/**
- * BROWSERIFY TASKS
- *
- * Build bundle (once and done)
- * Watch bundle (enable watchify)
- */
-gulp.task('build_bundle', function() {
-  return bundle(b())
+gulp.task('lint_single', () => {
+  return commonLintTasks( gulp.src( assetPath.js.single.enter ) );
 });
 
-gulp.task('watch_bundle', function() {
-  bundle(w);
-  w.on('update', bundle.bind(null, w) );
-  w.on('log', gutil.log);
+gulp.task('lint_main', () => {
+  return commonLintTasks( gulp.src([assetPath.js.main.enter, assetPath.js.modules]) );
+});
+
+
+/**
+ * BROWSERIFY CONFIGURATION
+ * Runs on primary `app.js` file and all single files
+ *
+ * @link https://gist.github.com/ramasilveyra/b4309edf809e55121385
+ *
+ */
+let isWatchify = false;
+let bundles = [
+  {
+    entries: assetPath.js.main.enter,
+    output: 'app.js',
+    destination: assetPath.js.dest
+  }
+];
+
+// Make each single js file a bundle
+fs.readdir(assetPath.js.single.base, (err, files) => {
+  files.forEach(file => {
+    if ( file.includes('.js') ) {
+      let bundle = {
+        entries: [assetPath.js.single.base + file],
+        output: file,
+        destination: assetPath.js.dest
+      }
+      bundles.push(bundle);
+    }
+  });
+});
+
+// Setup Bundles
+const createBundle = options => {
+
+  // Browersify Options
+  const opts = _.assign({}, watchify.args, {
+    entries: options.entries,
+    extensions: options.extensions,
+    debug: true,
+    paths: ['./node_modules', assetPath.js.modules]
+  });
+
+  let b = browserify(opts);
+  b.transform(babelify.configure({
+    presets: ["env"]
+  }));
+
+  // Gulp tasks ran on each bundle
+  const rebundle = () =>
+    b.bundle()
+    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+    .pipe(source(options.output))
+    .pipe(buffer())
+    .pipe( $if( !production, plumber() ) )
+    .pipe( $if( !production, maps.init( {loadMaps: true} ) ) )
+    .pipe(maps.init({ loadMaps: true }))
+      .pipe( $if( production, uglify() ) )
+    .pipe( $if( !production, maps.write('.') ) )
+    .pipe( $if( production, rename({ suffix: '.min' })) )
+    .pipe(gulp.dest(assetPath.js.dest))
+    .pipe( browsersync.stream( {once: true} ) );
+
+  if (isWatchify) {
+    b = watchify(b);
+    b.on('update', rebundle);
+    b.on('log', gutil.log);
+  }
+
+  return rebundle();
+};
+
+
+/**
+ * BROWSERIFY BUILD TASK
+ * Builds main app.js and all single scripts
+ *
+ */
+gulp.task('build_bundles', ['lint_main', 'lint_single'], () =>
+  bundles.forEach( bundle =>
+    createBundle({
+      entries: bundle.entries,
+      output: bundle.output,
+      extensions: bundle.extensions,
+      destination: bundle.destination
+    })
+  )
+);
+
+/**
+ * WATCHIFY TASK
+ * Builds main app.js and all single scripts and then runs them
+ *
+ */
+gulp.task('watch_bundles', () => {
+  isWatchify = true;
+  sequence('build_scripts');
 });
 
 
@@ -246,9 +294,9 @@ gulp.task('watch_bundle', function() {
  * Run `build_dest` if you need to revision anything.
  */
 gulp.task('build_rev', function () {
-  if(production) {
-    var cssPath = src_base + '**/*.css';
-    var jsPath = src_base + '**/*.js';
+  if ( production ) {
+    var cssPath = assetPath.sass.dest + '**/*.css';
+    var jsPath = assetPath.js.dest + '**/*.js';
 
     return gulp.src([cssPath, jsPath])
       .pipe(rev())
@@ -264,20 +312,24 @@ gulp.task('build_rev', function () {
 
 /**
  * IMAGE TASK
- *
  * Process images in src folder, move to dist folder
+ *
  */
 gulp.task('build_images', function () {
-  return gulp.src( base.img )
-    .pipe($p.imagemin({
-      progressive: true,
-      svgoPlugins: [
-          {removeViewBox: false},
-          {cleanupIDs: false}
-      ],
-      use: [pngquant()]
-    }))
-    .pipe(gulp.dest(dest.img));
+  return gulp.src( assetPath.img.enter )
+    .pipe(imagemin([
+      imagemin.gifsicle({interlaced: true}),
+      imagemin.jpegtran({progressive: true}),
+      imagemin.optipng({optimizationLevel: 5}),
+      imagemin.svgo({
+        plugins: [
+          {removeViewBox: true},
+          {cleanupIDs: false},
+          {cleanupNumericValues: {floatPrecision: 2}}
+        ]
+      })
+    ]))
+    .pipe(gulp.dest(assetPath.img.dest));
 });
 
 
@@ -292,10 +344,10 @@ gulp.task('build_images', function () {
  */
 gulp.task('copy_jquery', function() {
   return gulp.src('./node_modules/jquery/dist/jquery.min.js')
-    .pipe( gulp.dest( dest.js.vendor ) )
+    .pipe( gulp.dest( assetPath.js.dest ) )
 });
 gulp.task('copy_fonts', function () {
-  return gulp.src( base.fonts ).pipe(gulp.dest(dest.fonts));
+  return gulp.src( assetPath.fonts.enter ).pipe(gulp.dest(assetPath.fonts.dest));
 });
 
 
@@ -306,7 +358,6 @@ gulp.task('copy_fonts', function () {
  * WATCH RELATED TASKS
  *
  */
-gulp.task('watch_js', ['build_single_js'], browsersync.reload);
 gulp.task('watch_reload', function(){ browsersync.reload(); });
 
 
@@ -318,16 +369,15 @@ gulp.task('watch_reload', function(){ browsersync.reload(); });
  * --------------------------------------------------------
  * Initialize browsersync, watch for file changes
  */
-gulp.task('serve', ['watch_bundle', 'build_sass'], function(){
+gulp.task('serve', ['watch_bundles', 'build_css'], function(){
   browsersync({
     proxy: devUrl
   });
 
   // Watch tasks
-  gulp.watch([base.sass + '/**/*.scss'], ['build_sass']);
-  gulp.watch([base.js.single], ['build_single_js']);
-  gulp.watch([base.fonts], ['copy_fonts']);
-  gulp.watch([base.img], ['build_images']);
+  gulp.watch([assetPath.sass.enter + '/**/*.scss'], ['build_css']);
+  gulp.watch([assetPath.fonts.enter], ['copy_fonts']);
+  gulp.watch([assetPath.img.enter], ['build_images']);
   gulp.watch('**/*.php', ['watch_reload']);
   gulp.watch('**/*.html', ['watch_reload']);
 });
@@ -338,16 +388,15 @@ gulp.task('serve', ['watch_bundle', 'build_sass'], function(){
 
 /**
  * DEFAULT TASK
- * --------------------------------------------------------
  * Start the whole show. Run to start a project up.
+ *
  */
 var req = production ? ['clean'] : '';
 
 gulp.task('default', sequence(
   req,
-  'build_bundle',
-  'build_sass',
-  'build_single_js',
+  'build_bundles',
+  'build_css',
   'build_images',
   'copy_jquery',
   'copy_fonts',

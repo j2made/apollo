@@ -114,7 +114,7 @@ function enqueue_assets() {
    * @since  1.0.0
    */
   wp_enqueue_script( 'jquery' );
-  wp_enqueue_script( 'apollo-js', Get_Asset('js/bundle.js'), ['jquery'], null, true );
+  wp_enqueue_script( 'apollo-js', Get_Asset('js/app.js'), ['jquery'], null, true );
 
 
   /**
