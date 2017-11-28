@@ -1,5 +1,7 @@
 /**
  * CONFIGURE LOCALHOST URL
+ * If no localhost url is required, or to just
+ * run on localhost, set to false
  *
  */
 const devUrl = 'apollo.dev';
@@ -23,49 +25,48 @@ const autoprefixSupport = [
  * NPM MODULES
  *
  */
-const argv            = require('yargs').argv;
-const gulp            = require('gulp');
-const gutil           = require('gulp-util');
-const plumber         = require('gulp-plumber');
-const $p              = require('gulp-load-plugins')();
-const $if             = require('gulp-if');
-const flatmap         = require('gulp-flatmap');
-const changed         = require('gulp-changed');
-const rename          = require('gulp-rename');
-const sequence        = require('gulp-sequence');
-const rev             = require('gulp-rev');
-const del             = require('del');
-const _               = require('lodash');
+const argv         = require('yargs').argv;
+const del          = require('del');
+const _            = require('lodash');
+const gulp         = require('gulp');
+const gutil        = require('gulp-util');
+const plumber      = require('gulp-plumber');
+const $p           = require('gulp-load-plugins')();
+const $if          = require('gulp-if');
+const flatmap      = require('gulp-flatmap');
+const changed      = require('gulp-changed');
+const rename       = require('gulp-rename');
+const sequence     = require('gulp-sequence');
+const rev          = require('gulp-rev');
 
 // Sass
-const sass            = require('gulp-sass');
-const maps            = require('gulp-sourcemaps');
-const autoprefixer    = require('gulp-autoprefixer');
-const cssnano         = require('gulp-cssnano');
-const mediaQuery      = require('gulp-group-css-media-queries');
+const sass         = require('gulp-sass');
+const maps         = require('gulp-sourcemaps');
+const autoprefixer = require('gulp-autoprefixer');
+const cssnano      = require('gulp-cssnano');
+const mediaQuery   = require('gulp-group-css-media-queries');
 
 // JS
-const eslint          = require('gulp-eslint');
-const concat          = require('gulp-concat');
-// const babel           = require('gulp-babel');
-const uglify          = require('gulp-uglify');
+const eslint       = require('gulp-eslint');
+const concat       = require('gulp-concat');
+const uglify       = require('gulp-uglify');
 
 // Images
-const imagemin        = require('gulp-imagemin');
-const optipng         = require('imagemin-optipng');
-const jpegtran        = require('imagemin-jpegtran');
-const gifsicle        = require('imagemin-gifsicle');
-
-// Browsersync
-const browsersync     = require('browser-sync');
+const imagemin     = require('gulp-imagemin');
+const optipng      = require('imagemin-optipng');
+const jpegtran     = require('imagemin-jpegtran');
+const gifsicle     = require('imagemin-gifsicle');
 
 // Browserify
-const source = require('vinyl-source-stream');
-const buffer = require('vinyl-buffer');
-const browserify = require('browserify');
-const watchify = require('watchify');
-const babelify = require("babelify");
-const fs = require('fs');
+const source       = require('vinyl-source-stream');
+const buffer       = require('vinyl-buffer');
+const browserify   = require('browserify');
+const watchify     = require('watchify');
+const babelify     = require("babelify");
+const fs           = require('fs');
+
+// Browsersync
+const browsersync  = require('browser-sync');
 
 
 
@@ -180,6 +181,9 @@ gulp.task('lint_main', () => {
 });
 
 
+
+
+
 /**
  * BROWSERIFY CONFIGURATION
  * Runs on primary `app.js` file and all single files
@@ -250,13 +254,7 @@ const createBundle = options => {
   return rebundle();
 };
 
-
-/**
- * BROWSERIFY BUILD TASK
- * Builds main app.js and all single scripts
- *
- */
-gulp.task('build_bundles', ['lint_main', 'lint_single'], () =>
+let bundleBuildTask = () => {
   bundles.forEach( bundle =>
     createBundle({
       entries: bundle.entries,
@@ -265,7 +263,16 @@ gulp.task('build_bundles', ['lint_main', 'lint_single'], () =>
       destination: bundle.destination
     })
   )
-);
+}
+
+/**
+ * BROWSERIFY BUILD TASK
+ * Builds main app.js and all single scripts
+ *
+ */
+gulp.task('build_bundles', ['lint_main', 'lint_single'], () => {
+  bundleBuildTask();
+});
 
 /**
  * WATCHIFY TASK
@@ -274,7 +281,7 @@ gulp.task('build_bundles', ['lint_main', 'lint_single'], () =>
  */
 gulp.task('watch_bundles', () => {
   isWatchify = true;
-  sequence('build_scripts');
+  bundleBuildTask();
 });
 
 
@@ -284,21 +291,20 @@ gulp.task('watch_bundles', () => {
 /**
  * REVISION CSS AND JS ASSETS
  *
- * Clean the distribution folder
- * Take all css and js files in src, revision
- * them, send them to a clean dist folder.
+ * Revision all asset names in `dist/css` and `dist/js`
+ * by appending content hash to filenames. New file names
+ * are stored in `dist/_rev-manifest.json`
  *
- * This task should only be used within a `sequence` task,
- * otherwise image and font assets will be deleted without
- * being re-generated.
- * Run `build_dest` if you need to revision anything.
+ * This task should only be used within a production run
+ * of the default gulp task: `gulp --production`
+ *
  */
 gulp.task('build_rev', function () {
   if ( production ) {
-    var cssPath = assetPath.sass.dest + '**/*.css';
-    var jsPath = assetPath.js.dest + '**/*.js';
+    var cssPath = assetPath.sass.dest + '*.css';
+    var jsPath = assetPath.js.dest + '*.js';
 
-    return gulp.src([cssPath, jsPath])
+    return gulp.src([cssPath, jsPath], {base: dist_base})
       .pipe(rev())
       .pipe(gulp.dest(dist_base))
       .pipe(rev.manifest('_rev-manifest.json'))
@@ -341,6 +347,7 @@ gulp.task('build_images', function () {
  *
  * Copy jQuery for local fallback
  * Copy Fonts to distribution folder
+ *
  */
 gulp.task('copy_jquery', function() {
   return gulp.src('./node_modules/jquery/dist/jquery.min.js')
@@ -356,6 +363,7 @@ gulp.task('copy_fonts', function () {
 
 /**
  * WATCH RELATED TASKS
+ * Trigger BrowserSync to reload
  *
  */
 gulp.task('watch_reload', function(){ browsersync.reload(); });
@@ -366,13 +374,14 @@ gulp.task('watch_reload', function(){ browsersync.reload(); });
 
 /**
  * SERVE TASK
- * --------------------------------------------------------
  * Initialize browsersync, watch for file changes
+ *
  */
-gulp.task('serve', ['watch_bundles', 'build_css'], function(){
-  browsersync({
-    proxy: devUrl
-  });
+gulp.task('serve', ['build_css', 'watch_bundles'], function(){
+
+  let opts = devUrl ? { proxy: devUrl } : { proxy: 'localhost' };
+
+  browsersync(opts);
 
   // Watch tasks
   gulp.watch([assetPath.sass.enter + '/**/*.scss'], ['build_css']);
@@ -391,16 +400,11 @@ gulp.task('serve', ['watch_bundles', 'build_css'], function(){
  * Start the whole show. Run to start a project up.
  *
  */
-var req = production ? ['clean'] : '';
-
-gulp.task('default', sequence(
-  req,
-  'build_bundles',
-  'build_css',
-  'build_images',
-  'copy_jquery',
-  'copy_fonts',
-  'build_rev'
+gulp.task('default', ['clean'], sequence(
+  ['build_bundles'],
+  ['build_css', 'build_images'],
+  ['copy_jquery', 'copy_fonts'],
+  ['build_rev']
 ));
 
 

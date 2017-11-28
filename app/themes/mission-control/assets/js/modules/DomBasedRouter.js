@@ -19,7 +19,7 @@ export default (routes) => {
       Router.fire('common');
 
       // do all the classes too.
-      $.each(document.body.className.split(/\s+/),function(i,classnm){
+      $.each(document.body.className.replace(/-/g, '_').split(/\s+/),function(i,classnm){
         Router.fire(classnm);
         Router.fire(classnm,bodyId);
       });
