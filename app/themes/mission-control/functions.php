@@ -5,7 +5,7 @@
  *
  * @since  1.0.0
  */
-if ( ! defined( 'WP_ENV' ) {
+if ( ! defined( 'WP_ENV' ) ) {
 
   define( 'WP_ENV', 'production' );
 
