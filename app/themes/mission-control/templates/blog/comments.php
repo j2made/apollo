@@ -1,36 +1,65 @@
 <?php
-  if (post_password_required()) {
-    return;
-  }
+/**
+ * Template modified version of _s theme from Automattic
+ * @link https://github.com/Automattic/_s/blob/master/comments.php
+ *
+ * @since  1.0.0
+ */
+
+if ( post_password_required() ) {
+  return;
+}
+
 ?>
 
-<section id="comments" class="comments">
-  <?php if (have_comments()) : ?>
-    <h2><?php printf(_nx('One response to &ldquo;%2$s&rdquo;', '%1$s responses to &ldquo;%2$s&rdquo;', get_comments_number(), 'comments title', ''), number_format_i18n(get_comments_number()), '<span>' . get_the_title() . '</span>'); ?></h2>
+<section class="post-comments">
 
-    <ol class="comments__list">
-      <?php wp_list_comments(['style' => 'ol', 'short_ping' => true]); ?>
-    </ol>
+  <?php
 
-    <?php if (get_comment_pages_count() > 1 && get_option('page_comments')) : ?>
-      <nav>
-        <ul class="comments__pager">
-          <?php if (get_previous_comments_link()) : ?>
-            <li class="previous"><?php previous_comments_link('Older comments'); ?></li>
-          <?php endif; ?>
-          <?php if (get_next_comments_link()) : ?>
-            <li class="next"><?php next_comments_link('Newer comments &rarr;'); ?></li>
-          <?php endif; ?>
-        </ul>
-      </nav>
-    <?php endif; ?>
-  <?php endif; // have_comments() ?>
+    if ( have_comments() ) : ?>
+      <h2>
+        <?php
+        $comment_count = get_comments_number();
+        if ( 1 === $comment_count ) {
+          printf(
+            /* translators: 1: title. */
+            esc_html_e( 'A comment on &ldquo;%1$s&rdquo;' ),
+            '<span>' . get_the_title() . '</span>'
+          );
+        } else {
+          printf( // WPCS: XSS OK.
+            /* translators: 1: comment count number, 2: title. */
+            esc_html( _nx( '%1$s comment on &ldquo;%2$s&rdquo;', '%1$s comments on &ldquo;%2$s&rdquo;', $comment_count, 'comments title' ) ),
+            number_format_i18n( $comment_count ),
+            '<span>' . get_the_title() . '</span>'
+          );
+        }
+        ?>
+      </h2>
 
-  <?php if (!comments_open() && get_comments_number() != '0' && post_type_supports(get_post_type(), 'comments')) : ?>
-    <div class="comments__closed">
-      Comments are closed.
-    </div>
-  <?php endif; ?>
+      <?php the_comments_navigation(); ?>
 
-  <?php comment_form(); ?>
+      <ol class="post-comments__list">
+        <?php
+          wp_list_comments( array(
+            'style'      => 'ol',
+            'short_ping' => true,
+          ) );
+        ?>
+      </ol>
+
+      <?php the_comments_navigation();
+
+      // If comments are closed and there are comments, let's leave a little note, shall we?
+      if ( ! comments_open() ) : ?>
+        <p class="post-comments__none"><?php esc_html_e( 'Comments are closed.' ); ?></p>
+      <?php
+      endif;
+
+    endif; // Check for have_comments().
+
+    comment_form();
+
+  ?>
+
 </section>

@@ -161,6 +161,33 @@ add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\enqueue_assets', 100 );
 
 
 /**
+ * Add Admin CSS Sheets
+ *
+ * @since 1.0.0
+ */
+// function load_admin_styles() {
+
+//   if ( FONTAWESOME ) {
+//     wp_enqueue_style( 'font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' );
+//   }
+
+//   // Create file `assets/scss/main/admin.js`
+//   $css = WP_ENV === 'development' ? 'admin.css' : 'admin.min.css';
+//   wp_enqueue_style( 'apollo-admin-css', Get_Asset( 'css/' . $css ), false, null );
+
+//   // Create file `assets/js/single/admin.js`
+//   $js = WP_ENV === 'development' ? 'admin.js' : 'admin.min.js';
+//   wp_enqueue_script( 'apollo-admin-js', Get_Asset( 'js/single/' . $js ), ['jquery'], null );
+
+// }
+
+// add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\load_admin_styles' );
+
+
+
+
+
+/**
  * Add Typekit to head if ID is added
  *
  * @since 1.0.0
