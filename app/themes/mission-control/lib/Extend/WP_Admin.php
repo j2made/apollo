@@ -1,10 +1,8 @@
 <?php
 
-namespace Apollo\Extend\Admin;
+/* Change aspects of WP Admin */
+namespace Apollo\Extend\WP_Admin;
 
-// =============================================================================
-// Functions to alter the appearance of admin pages
-// =============================================================================
 
 /**
  * Add custom editor styles.
@@ -21,6 +19,9 @@ function add_editor_styles() {
 add_action( 'after_setup_theme', __NAMESPACE__ . '\\add_editor_styles' );
 
 
+
+
+
 /**
  * Remove Post Type Support for specific Post Types.
  *
@@ -28,9 +29,8 @@ add_action( 'after_setup_theme', __NAMESPACE__ . '\\add_editor_styles' );
  */
 function hide_on_screen() {
 
-	$post_types = ['page'];
-
-	$features = ['editor'];
+  $post_types = ['page'];
+  $features   = ['editor'];
 
 	foreach ( $post_types as $post_type ) {
 		foreach ( $features as $feature ) {
@@ -40,7 +40,10 @@ function hide_on_screen() {
 
 }
 
-add_action( 'init', __NAMESPACE__ . '\\hide_on_screen', 10 );
+// add_action( 'init', __NAMESPACE__ . '\\hide_on_screen', 10 );
+
+
+
 
 
 /**

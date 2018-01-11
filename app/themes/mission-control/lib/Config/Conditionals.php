@@ -1,7 +1,7 @@
 <?php
 
-namespace Apollo\Config\Condition;
-
+/* Conditionals for layout, display, etc. */
+namespace Apollo\Config\Conditionals;
 
 
 /**
@@ -19,6 +19,8 @@ function hide_sidebar() {
 
   }
 }
+
+
 
 
 
@@ -41,6 +43,10 @@ function get_page_header() {
 
 }
 
+
+
+
+
 /**
  * Determine if page header template part should be displayed
  * If condition returns false, page header will not be displayed.
@@ -59,6 +65,8 @@ function get_page_footer() {
   return true;
 
 }
+
+
 
 
 
@@ -81,4 +89,3 @@ function sidebar_switch() {
   // }
 
 }
-

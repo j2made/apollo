@@ -1,5 +1,5 @@
 <?php
-  use Apollo\Extend\Util;
+  use Apollo\Theme\Utilities;
 ?>
 
 <header class="navigation" role="banner">
@@ -10,7 +10,7 @@
     <nav role="navigation">
       <?php
 
-        echo Util\Listless_WP_Nav('primary_navigation');
+        echo Utilities\Listless_WP_Nav('primary_navigation');
 
         // if (has_nav_menu('primary_navigation')) :
         //   echo '<ul class="navigation-menu">';

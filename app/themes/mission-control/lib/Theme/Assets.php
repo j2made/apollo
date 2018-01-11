@@ -1,17 +1,8 @@
 <?php
 
-namespace Apollo\Assets;
-use Apollo\Extend\Util;
-
-
-/**
- * Add Custom Image Sizes
- *
- * @since  1.0.0
- */
-
-// add_image_size($name, $width, $height, $hard_crop);
-
+/* Load css, js, and other assets */
+namespace Apollo\Theme\Assets;
+      use Apollo\Theme\Utilities;
 
 
 /**
@@ -32,7 +23,7 @@ function Get_Asset( $revpath ) {
   } else {
 
     // Get revisioned assets from Rev Manifest
-    if ( $manifest = json_decode( Util\Fetch_Url( dirname(__DIR__) . '/dist/_rev-manifest.json', 'r' ) ) ) {
+    if ( $manifest = json_decode( Utilities\Fetch_Url( dirname(__DIR__) . '/dist/_rev-manifest.json', 'r' ) ) ) {
 
       $asset_path = $manifest->$revpath ? $home_path . DIST_DIR . $manifest->$revpath : $src_path;
 
@@ -47,6 +38,8 @@ function Get_Asset( $revpath ) {
   return $asset_path;
 
 }
+
+
 
 
 
@@ -141,7 +134,6 @@ function enqueue_assets() {
   }
 
 
-
   /**
    * Enqueue Fonts
    *
@@ -166,6 +158,8 @@ add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\enqueue_assets', 100 );
 
 
 
+
+
 /**
  * Add Typekit to head if ID is added
  *
@@ -183,6 +177,8 @@ if ( TYPEKIT_ID ) {
   add_action('wp_head', __NAMESPACE__ . '\\typekit', 1);
 
 }
+
+
 
 
 
@@ -206,6 +202,9 @@ function apollo_ga_id_settings_section() {
 }
 
 
+
+
+
 /**
  * Callback for Google Analytics ID field
  *
@@ -221,6 +220,9 @@ function ga_id_callback() {
 }
 
 
+
+
+
 /**
  * Save Analytics Field
  *
@@ -232,6 +234,8 @@ function ga_id_textbox_callback( $args ) {
   echo '<input type="text" id="'. $args[0] .'" name="'. $args[0] .'" value="' . $option . '" />';
 
 }
+
+
 
 
 

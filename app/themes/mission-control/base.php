@@ -1,13 +1,13 @@
 <?php
 
 namespace Apollo\Base;
-use Apollo\Admin\Structure;
-use Apollo\Config\Condition;
+use Apollo\Theme\Structure;
+use Apollo\Config\Conditionals;
 
 get_header();
 
   // Conditionally get the page header
-  if ( Condition\get_page_header() ) {
+  if ( Conditionals\get_page_header() ) {
     get_template_part( 'templates/page-header/_page-header-main' );
   }
 
@@ -29,7 +29,7 @@ get_header();
   <?php
 
   // Conditionally get the page header
-  if ( Condition\get_page_footer() ) {
+  if ( Conditionals\get_page_footer() ) {
     get_template_part( 'templates/page-footer/_page-footer-main' );
   }
 

@@ -1,16 +1,15 @@
 <?php
 
+/* @scribu WordPress Theme Wrapper */
 namespace Apollo\Theme\Wrapper;
-// Theme Wrapper function from Sage:
-// https://github.com/roots/sage/blob/8.0.0/lib/wrapper.php
+
 
 /**
- * Theme wrapper
- *
- * @link http://roots.io/getting-started/theme-wrapper/
+ * Theme wrapper Path
  * @link http://scribu.net/wordpress/theme-wrappers.html
+ *
+ * @since  1.0.0
  */
-
 function template_path() {
 
   return Apollo_Wrapper::$main_template;
@@ -18,6 +17,15 @@ function template_path() {
 }
 
 
+
+
+
+/**
+ * Theme Wrapper Class
+ * @link http://scribu.net/wordpress/theme-wrappers.html
+ *
+ * @since  1.0.0
+ */
 class Apollo_Wrapper {
 
   /**

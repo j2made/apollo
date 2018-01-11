@@ -1,12 +1,8 @@
 <?php
 
-namespace Apollo\Modules;
+/* Create modular, reusable HTML components */
+namespace Apollo\Theme\Modules;
 
-/**
- * Create modular, reusable HTML components
- *
- * @since  1.0.0
- */
 
 /**
  * Post Module

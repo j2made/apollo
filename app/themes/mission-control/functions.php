@@ -7,19 +7,22 @@
  * @since 1.0.0
  */
 $function_includes = [
-  'config-settings',          // Variables and Theme Support
-  'config-conditionals',      // Config Conditionals
-  'theme-structure',          // Build Theme Layouts
-  'theme-wrapper',            // Theme wrapper class
-  'theme-assets',             // Scripts and stylesheets
-  'theme-modules',            // Modular HTML Components
-  'theme-utilities',         // Custom Functions for Practical Purposes
+  'Config/Definitions',     // Setup Definitions for Config/Settings
+  'Config/Settings',        // Theme Setup, contol WordPress `<head>` output
+  'Config/Conditionals',    // Conditionals for layout, display, etc.
 
-  /* Uncomment as needed */
-  // 'misc/extend-post-types',      // Custom Post Types
-  // 'misc/extend-taxonomy',        // Custom Taxonomies
-  // 'misc/extend-admin',           // Customize WP Admin
-  // 'misc/extend-queries',         // Alterations to queries via hooks
+  'Theme/Wrapper',          // @scribu WordPress Theme Wrapper
+  'Theme/Structure',        // Determine the base html structure based on settings
+  'Theme/Assets',           // Load css, js, and other assets
+  'Theme/Utilities',        // Theme based utility functions
+  'Theme/Modules',          // Create modular, reusable HTML components
+
+  'Extend/Queries',         // Change how queries operate
+  'Extend/Images',          // Add new Image sizes
+  'Extend/Post_Types',      // Add Custom Post Types
+  'Extend/Taxonomy',        // Add Custom Taxonomies
+  'Extend/WP_Admin',        // Change aspects of WP Admin
+  'Extend/WP_Output',       // Change output of default WP HTML, i.e. nav items, oembeds, and body classes
 ];
 
 
@@ -30,8 +33,8 @@ $function_includes = [
  */
 foreach ( $function_includes as $filename ) {
 
-  $filepath = 'lib/' . $filename . '.php';
-  require_once locate_template($filepath);
+  $filepath = '/lib/' . $filename . '.php';
+  require_once get_template_directory() . $filepath;
 
 }
 

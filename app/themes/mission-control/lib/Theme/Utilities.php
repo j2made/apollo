@@ -1,74 +1,7 @@
 <?php
 
-namespace Apollo\Extend\Util;
-
-/**
- * Add custom body classes
- *
- * @return array
- * @since 1.0.0
- */
-function Add_Custom_Body_Classes( $classes ) {
-
-  // Add Non-Development Env Class
-  if ( WP_ENV === 'development' ) {
-
-    $classes[] = 'development-env';
-
-  }
-
-  // Front Page
-  if ( is_front_page() ) {
-
-    $classes[] = 'front-page';
-
-  }
-
-  return $classes;
-
-}
-
-add_filter( 'body_class', __NAMESPACE__ . '\\Add_Custom_Body_Classes' );
-
-
-/**
- * Add Video Wrapper to Embeds
- *
- * @since  1.0.0
- */
-function Embed_Wrapper( $html ) {
-
-    return '<div class="video-container">' . $html . '</div>';
-
-}
-add_filter( 'video_embed_html', __NAMESPACE__ . '\\Embed_Wrapper' );
-
-
-/**
- * Add Wrapper to oEmbeds
- *
- * @since  1.0.0
- */
-function Video_oEmbed_Wrapper( $html, $url ) {
-
-  $class  = 'oembed-wrapper';
-  $base   = parse_url($url, PHP_URL_HOST);
-  $base   = str_replace( array( 'www.', '.com', '.tv', '.co' ), '', $base);
-  $class .= ' oembed-' . $base;
-
-  if (
-    false !== strpos( $base, 'youtube') ||
-    false !== strpos( $base, 'youtu.be') ||
-    false !== strpos( $base, 'vimeo')
-  ) {
-    $class .= ' video-container';
-  }
-
-  return '<div class="' . $class . '">' . $html . '</div>';
-
-}
-
-add_filter( 'embed_oembed_html', __NAMESPACE__ . '\\Video_oEmbed_Wrapper', 10, 3 );
+/* Theme based utility functions */
+namespace Apollo\Theme\Utilities;
 
 
 /**
@@ -125,6 +58,7 @@ function Listless_WP_Nav( $menu_name, $echo = false ) {
     }
   }
 }
+
 
 
 

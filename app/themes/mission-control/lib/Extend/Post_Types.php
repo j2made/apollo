@@ -1,6 +1,7 @@
 <?php
 
-namespace Apollo\Extend\PostTypes;
+/* Add Custom Post Types */
+namespace Apollo\Extend\Post_Types;
 
 
 /**
@@ -9,6 +10,8 @@ namespace Apollo\Extend\PostTypes;
  * @param  string $singular Singular form of CPT label
  * @param  string $plural   Plural for of CPT label
  * @return array            Label array neecessary for CPT
+ *
+ * @since  1.0.0
  */
 function label_factory( $name, $singular = false, $plural = false ) {
 
@@ -44,27 +47,27 @@ function label_factory( $name, $singular = false, $plural = false ) {
 
 /**
  * Generate a custom post type
- * Sample page-type custom post type, uncomment to use.
- *
  * To customize further, refer to: http://generatewp.com/post-type/
+ *
+ * @since  1.0.0
  */
-function apollo_cpt() {
+// function apollo_cpt() {
 
-  $labels = label_factory('Singular', 'Singular', 'Plural');
+//   $labels = label_factory('Singular', 'Singular', 'Plural');
 
-  $args = array(
-    'label'                 => $labels['name'],
-    'labels'                => $labels,
-    'supports'              => array( 'title' ),
-    'taxonomies'            => array(),
-    'hierarchical'          => true,
-    'public'                => true,
-    'menu_position'         => 20,
-    'menu_icon'             => 'dashicons-admin-page'
-  );
+//   $args = array(
+//     'label'                 => $labels['name'],
+//     'labels'                => $labels,
+//     'supports'              => array( 'title' ),
+//     'taxonomies'            => array(),
+//     'hierarchical'          => true,
+//     'public'                => true,
+//     'menu_position'         => 20,
+//     'menu_icon'             => 'dashicons-admin-page'
+//   );
 
-  register_post_type( 'apollo_post_type', $args );
+//   register_post_type( 'apollo_post_type', $args );
 
-}
+// }
 
-add_action( 'init', __NAMESPACE__ . '\\apollo_cpt', 0 );
+// add_action( 'init', __NAMESPACE__ . '\\apollo_cpt', 0 );

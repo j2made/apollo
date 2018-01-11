@@ -1,57 +1,28 @@
 <?php
 
-namespace Apollo\Admin\Structure;
-use Apollo\Config\Condition;
-use Apollo\Theme\Wrapper;
-
-
-// SIDEBAR LOGIC
-// =============================================================================
+/* Change output of default WP HTML, i.e. nav items, oembeds, and body classes */
+namespace Apollo\Extend\WP_Output;
 
 
 /**
- * Determine sidebar layout
+ * Add custom body classes
  *
- * @return string `right` or `left`
- * @since  1.0.0
- */
-function Sidebar_Orientation() {
-
-  // Determine layout orientation
-  $sidebar_direction = SIDEBAR_DEFAULT_LAYOUT;
-
-  if ( Condition\sidebar_switch() ) {
-
-    $sidebar_direction = $sidebar_direction === 'right' ? 'left' : 'right';
-
-  }
-
-  return $sidebar_direction;
-
-}
-
-
-/**
- * Add Sidebar Class to <body>
- *
- * @param  array $classes inherited classes from WP
+ * @return array
  * @since 1.0.0
  */
-function Sidebar_Body_Class( $classes ) {
+function Add_Custom_Body_Classes( $classes ) {
 
-  // Do not add any classes if value is false
-  if ( !SIDEBAR_DEFAULT_LAYOUT ) {
+  // Add Non-Development Env Class
+  if ( WP_ENV === 'development' ) {
 
-    return $classes;
+    $classes[] = 'development-env';
 
   }
 
-  $sidebar_direction = Sidebar_Orientation();
+  // Front Page
+  if ( is_front_page() ) {
 
-  if ( !Condition\hide_sidebar() ) {
-
-    $classes[] = 'sidebar-layout';
-    $classes[] = 'sidebar-' . $sidebar_direction;
+    $classes[] = 'front-page';
 
   }
 
@@ -59,66 +30,10 @@ function Sidebar_Body_Class( $classes ) {
 
 }
 
-add_filter( 'body_class', __NAMESPACE__ . '\\Sidebar_Body_Class' );
+add_filter( 'body_class', __NAMESPACE__ . '\\Add_Custom_Body_Classes' );
 
 
-/**
- * BASE STRUCTURE
- * ============================================================================
- */
 
-/**
- * Create the base layout structure, based on sidebar settings
- *
- * @since 1.0.0
- */
-function Base_Structure( $main_class = 'main-content', $sidebar_class = 'sidebar' ) {
-
-  if ( !Condition\hide_sidebar() ) {
-
-    // Determine layout orientation
-    $sidebar_direction = Sidebar_Orientation();
-
-    // Create classes for sidebar
-    $sidebar_open      = '<aside class="' . $sidebar_class . '" role="complementary">';
-    $sidebar_close     = '</aside>';
-
-    // Left Sidebar
-    if ( $sidebar_direction === 'left' ) {
-
-      echo $sidebar_open;
-      get_sidebar();
-      echo $sidebar_close;
-
-    }
-
-    // Content Container
-    ?>
-      <section class="<?= $main_class ?> has-sidebar">
-        <?php include Wrapper\template_path(); ?>
-      </section>
-    <?php
-
-    // Right Sidebar
-    if ( $sidebar_direction === 'right' ) {
-
-      echo $sidebar_open;
-      get_sidebar();
-      echo $sidebar_close;
-
-    }
-
-  } else {
-
-    // Layout without sidebar
-    ?>
-      <section class="<?= $main_class ?>">
-        <?php include Wrapper\template_path(); ?>
-      </section>
-    <?php
-
-  }
-}
 
 
 /**
@@ -218,4 +133,55 @@ function Strip_Empty_Classes( $menu ) {
 }
 
 add_filter ('wp_nav_menu', __NAMESPACE__ . '\\Strip_Empty_Classes');
+
+
+
+
+
+/**
+ * OEmbeds
+ * Modify default WP HTML for videos
+ *
+ * @since  1.0.0
+ */
+
+/**
+ * Add Wrapper to oEmbeds
+ *
+ * @since  1.0.0
+ */
+function Video_oEmbed_Wrapper( $html, $url ) {
+
+  $class  = 'oembed-wrapper';
+  $base   = parse_url($url, PHP_URL_HOST);
+  $base   = str_replace( array( 'www.', '.com', '.tv', '.co' ), '', $base);
+  $class .= ' oembed-' . $base;
+
+  if (
+    false !== strpos( $base, 'youtube') ||
+    false !== strpos( $base, 'youtu.be') ||
+    false !== strpos( $base, 'vimeo')
+  ) {
+    $class .= ' video-container';
+  }
+
+  return '<div class="' . $class . '">' . $html . '</div>';
+
+}
+
+add_filter( 'embed_oembed_html', __NAMESPACE__ . '\\Video_oEmbed_Wrapper', 10, 3 );
+
+
+/**
+ * Add Video Wrapper to Embeds
+ * Overwrites JetPack functionality if used
+ *
+ * @since  1.0.0
+ */
+function Embed_Wrapper( $html ) {
+
+    return '<div class="video-container">' . $html . '</div>';
+
+}
+add_filter( 'video_embed_html', __NAMESPACE__ . '\\Embed_Wrapper' );
 

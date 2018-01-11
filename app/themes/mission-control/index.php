@@ -1,6 +1,6 @@
 <?php
 
-use Apollo\Modules;
+use Apollo\Theme\Modules;
 
 if ( !have_posts() ) : ?>
   <div class="alert alert-warning">

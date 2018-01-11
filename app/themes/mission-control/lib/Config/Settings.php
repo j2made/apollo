@@ -1,106 +1,7 @@
 <?php
 
+/* Theme Setup, contol WordPress `<head>` output */
 namespace Apollo\Config\Settings;
-
-/**
- * THEME SETTING CONFIGURATION
- * Setup theme output, WordPress output and other options
- *
- * @since  1.0.0
- */
-
-/**
- * If enviornment is not defined, set production as default
- *
- * @since  1.0.0
- */
-if ( !defined('WP_ENV') ) {
-
-  define( 'WP_ENV', 'production' );
-
-}
-
-
-
-/**
- * CONSTANT DEFINITIONS
- * ====================
- *
- * @since  1.0.0 Unless otherwise marked
- */
-
-/**
- * Default Sidebar Orientation.
- * Accepted values: 'right', 'left', or false
- *
- */
-define( 'SIDEBAR_DEFAULT_LAYOUT', 'right' );
-
-/**
- * Content Width
- * @link https://codex.wordpress.org/
- *
- */
-define( 'CONTENT_WIDTH', '1140' );
-
-/**
- * Clean up wp head
- * Boolean value
- *
- */
-define( 'CLEAN_THEME_WP_HEAD', true );
-
-/**
- * Remove Emoji - boolean value
- *
- */
-define( 'REMOVE_EMOJI', false );
-
-/**
- * Use Typekit font.
- * Value should be Typekit Kit ID (int) or false
- *
- * @since 1.0.0
- */
-define( 'TYPEKIT_ID', false );
-
-/**
- * Include FontAwesome from general CDN - boolean value
- *
- */
-define( 'FONTAWESOME', false );
-
-/**
- * Google Fonts
- *
- * To define Google Fonts, set definition name to `?family=` parameter of font url.
- *
- * Example Google stylesheet link:
- *   <link href='https://fonts.googleapis.com/css?family=Dosis:400,300' ... >
- * Resulting definition:
- *   define('GOOGLE_FONTS', 'Dosis:400,300');
- *
- */
-define( 'GOOGLE_FONTS', false );              // Google Fonts           False or Font Family
-
-
-/**
- * Define build directory
- * ----------------------
- * Value points to enviornment appropriate assets directory.
- *
- * @since  1.0.0
- */
-if ( WP_ENV == 'development' ) {
-
-  define('DIST_DIR', '/src/');
-
-} else {
-
-  define('DIST_DIR', '/dist/');
-
-}
-
 
 
 /**
@@ -159,23 +60,31 @@ add_action( 'after_setup_theme', __NAMESPACE__ . '\\Theme_Setup' );
 
 
 
+
+
 /**
  * Disable XMLRPC
  * --------------
  *
  * @since  1.0.0
  */
-add_filter( 'xmlrpc_enabled', '__return_false' );
+if ( REMOVE_XML_RPC ) {
 
-function remove_x_pingback( $headers ) {
+  add_filter( 'xmlrpc_enabled', '__return_false' );
 
-    unset($headers['X-Pingback']);
+  function remove_x_pingback( $headers ) {
 
-    return $headers;
+      unset($headers['X-Pingback']);
+
+      return $headers;
+
+  }
+
+  add_filter( 'wp_headers', __NAMESPACE__ . '\\remove_x_pingback' );
 
 }
 
-add_filter( 'wp_headers', __NAMESPACE__ . '\\remove_x_pingback' );
+
 
 
 
@@ -197,6 +106,8 @@ if ( CLEAN_THEME_WP_HEAD ) {
   remove_action( 'wp_head', 'wp_shortlink_wp_head' );
 
 }
+
+
 
 
 
@@ -246,6 +157,8 @@ if ( REMOVE_EMOJI ) {
 
 
 
+
+
 /**
  * Content Width
  * -------------
@@ -258,6 +171,8 @@ if ( !isset( $content_width ) ) {
   $content_width = CONTENT_WIDTH;
 
 }
+
+
 
 
 
