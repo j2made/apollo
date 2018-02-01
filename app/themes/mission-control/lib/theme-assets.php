@@ -69,7 +69,7 @@ function enqueue_assets() {
    */
   if ( !is_admin() ) {
 
-    $pkg_json     = json_decode( file_get_contents( TEMPLATEPATH . '/package.json', "r" ) );
+    $pkg_json     = json_decode( file_get_contents( get_stylesheet_directory() . '/package.json', "r" ) );
     $jquery_ver   = str_replace('^', '', $pkg_json->dependencies->jquery);
     $url          = 'https://ajax.googleapis.com/ajax/libs/jquery/' . $jquery_ver . '/jquery.min.js';
     $local_jquery = get_bloginfo( 'stylesheet_directory' ) . '/dist/js/vendor/jquery.min.js';

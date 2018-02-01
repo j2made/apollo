@@ -73,6 +73,19 @@ register_theme_directory(ABSPATH . 'wp-content/themes');
 
 
 /**
+ * Set default WP_ENV if not already defined
+ * -----------------------------------------
+ *
+ * @since  1.0.0
+ */
+if ( ! defined( WP_ENV !== 'production' ) ) {
+
+  define( 'WP_ENV', 'production' );
+
+}
+
+
+/**
  * Configure privacy settings conditionally
  * ----------------------------------------
  * Prevents search engine indexing in `development` and `staging` enviornments
@@ -83,7 +96,7 @@ if ( !function_exists( 'EVA_wp_indexing' ) ) {
 
   function EVA_wp_indexing() {
 
-    if (WP_ENV !== 'production') {
+    if ( WP_ENV !== 'production' ) {
 
       update_option( 'blog_public', '0' );
 

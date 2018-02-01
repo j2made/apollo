@@ -1,6 +1,18 @@
 <?php
 
 /**
+ * Fallback definition for WP_ENV
+ *
+ * @since  1.0.0
+ */
+if ( ! defined( 'WP_ENV' ) ) {
+
+  define( 'WP_ENV', 'production' );
+
+}
+
+
+/**
  * List function files by name to be included
  *
  * @var   array List of function file names
