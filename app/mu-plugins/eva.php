@@ -78,12 +78,11 @@ register_theme_directory(ABSPATH . 'wp-content/themes');
  *
  * @since  1.0.0
  */
-if ( ! defined( WP_ENV !== 'production' ) ) {
+// if (!defined('WP_ENV')) define('WP_ENV', 'production');
 
-  define( 'WP_ENV', 'production' );
-
+if (!defined('WP_ENV')) {
+  define('WP_ENV', 'production');
 }
-
 
 /**
  * Configure privacy settings conditionally
